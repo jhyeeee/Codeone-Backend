@@ -10,5 +10,6 @@ public class Main {
 	public void list() {
 		// 어쩌구 저쩌구
 		// ~~~
+		// 글 목록은 이렇게 저렇게
 	}
 }
