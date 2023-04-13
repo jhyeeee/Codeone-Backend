@@ -8,6 +8,8 @@ import lombok.Data;
 
 @Data
 public class StudygroupCommand {
+	private int seq;							// 모집글 번호
+	private int memberSeq;						// 모집글 작성 회원 번호(스터디장)
 	private String title;						// 모집글 제목
 	private String contents;					// 모집글 내용
 	private int recruitmentType;				// 모집 구분
@@ -30,6 +32,8 @@ public class StudygroupCommand {
 	
 	public StudygroupDto toDto() {
 		StudygroupDto dto = new StudygroupDto();
+		dto.setSeq(seq);
+		dto.setMemberSeq(memberSeq);
 		dto.setTitle(title);
 		dto.setContents(contents);
 		dto.setRecruitmentType(recruitmentType);
