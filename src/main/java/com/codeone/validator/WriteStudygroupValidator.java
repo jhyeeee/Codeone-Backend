@@ -9,8 +9,7 @@ import com.codeone.command.studygroup.StudygroupCommand;
 import com.codeone.etc.SearchUtils;
 import com.codeone.etc.StaticVariable;
 
-public class StudygroupValidator implements Validator {
-	
+public class WriteStudygroupValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return StudygroupCommand.class.isAssignableFrom(clazz);

@@ -10,6 +10,14 @@
 	VALUES (#{memberSeq}, #{title}, #{contents}, #{recruitmentType}, #{wayOfProceeding}, #{numberOfRecruits}, #{startDate}, #{endDate}, #{deadlineForRecruitment}, #{isVisible})
 </insert>
 
+<select id="selectOneBySeq" parameterType="com.codeone.command.studygroup.StudygroupCommand" resultType="com.codeone.dto.studygroup.StudygroupDto">
+	SELECT * FROM studygroup WHERE seq = #{seq}
+</select>
+
+<update id="deleteStudygroupRecruitment" parameterType="int">
+	UPDATE studygroup SET isDeleted = b'1' WHERE seq = #{seq}
+</update>
+
 <select id="getAll" resultType="com.codeone.dto.studygroup.StudygroupDto">
 	SELECT *
 	FROM studygroup
