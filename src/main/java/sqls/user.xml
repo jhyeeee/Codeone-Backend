@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 인터페이스 위치 -->
+<mapper namespace="com.codeone.dao.user.userDao">
+
+<!-- 이메일 중복체크 -->
+<select id="checkEmail" parameterType="String" resultType="Integer">
+	select count(*)
+	from user
+	where email=#{email}
+</select>
+
+<!-- 아이디 중복체크 -->
+<select id="checkId" parameterType="String" resultType="Integer">
+	select count(*)
+	from user
+	where id=#{id}
+</select>
+
+<!-- 회원가입 -->
+<insert id="addUser" parameterType="com.codeone.dto.user.userDto">
+	insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth)
+	values(#{email}, #{emailKey}, #{emailAuth}, #{name}, #{id}, null, now(), null, null, 0, 1  )
+</insert>
+
+<!-- 메일키 회원정보에 업데이트 -->
+<update id="updateEmailKey" parameterType="com.codeone.dto.user.userDto">
+    update user 
+    set emailKey=#{emailKey} 
+    where email=#{email}
+</update> 
+
+<!-- 로그인 -->
+<select id="getMember" parameterType="com.codeone.dto.user.userDto" resultType="com.codeone.dto.user.userDto">
+	select *
+	from user
+	where email=#{email}
+</select>
+
+</mapper>

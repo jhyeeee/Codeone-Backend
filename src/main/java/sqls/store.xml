@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.store.storeDao">
+
+<!-- ref 체크하기 -->
+<!-- 중고거래 글쓰기 -->
+<insert id="writeStore" parameterType="com.codeone.dto.store.storeItemDto">
+	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg )
+	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},0, now(), 0, #{filename}, #{newfilename}, 0 )
+</insert>
+
+</mapper>
