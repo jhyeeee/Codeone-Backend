@@ -33,25 +33,25 @@ public class DatabaseConfigurer {
 		return dataSource;
 	}
 	
-//	@Bean
-//	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-//		System.out.println("DatabaseConfig sqlSessionFactory");
-//		
-//		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-//		sqlSessionFactoryBean.setDataSource(dataSource);
-//		
-//		Resource[] arrResource = new PathMatchingResourcePatternResolver().getResources("classpath:sqls/*.xml");
-//		sqlSessionFactoryBean.setMapperLocations(arrResource);
-//		sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-//		
-//		return (SqlSessionFactory)sqlSessionFactoryBean.getObject();		
-//		
-//	}
-//	
-//	@Bean
-//	public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
-//		return new SqlSessionTemplate(sqlSessionFactory);
-//	}
+	@Bean
+	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+		System.out.println("DatabaseConfig sqlSessionFactory");
+		
+		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+		sqlSessionFactoryBean.setDataSource(dataSource);
+		
+		Resource[] arrResource = new PathMatchingResourcePatternResolver().getResources("classpath:sqls/*.xml");
+		sqlSessionFactoryBean.setMapperLocations(arrResource);
+		sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+		
+		return (SqlSessionFactory)sqlSessionFactoryBean.getObject();		
+		
+	}
+	
+	@Bean
+	public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
+		return new SqlSessionTemplate(sqlSessionFactory);
+	}
 	
 	
 }
