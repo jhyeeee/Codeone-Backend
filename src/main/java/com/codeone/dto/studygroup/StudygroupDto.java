@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 public class StudygroupDto {
-	private int seq;							// 스터디그룹 식별값
-	private int memberSeq;						// 모집글 작성 회원 번호(스터디장)
+	private int seq;							// 스터디그룹 정보 번호
+	private int managementSeq;					// 이 정보를 사용하는 스터디 그룹 번호
 	private String title;						// 모집글 제목
 	private String name;						// 스터디그룹 명
 	private String contents;					// 모집글 내용
@@ -18,10 +18,7 @@ public class StudygroupDto {
 	private LocalDate startDate;				// 진행 기간(시작 날짜)
 	private LocalDate endDate;					// 진행 기간(종료 날짜)
 	private LocalDate deadlineForRecruitment;	// 모집 마감 날짜
-	private boolean isVisible;					// 공개, 비공개
-	private boolean isClosed;					// 모집 마감
-	private boolean isDeleted;					// 삭제 여부
-	private LocalDateTime regdate;				// 모집글 등록일
+	private LocalDateTime regdate;				// 이 정보를 등록한 날짜
 	
 	private int[] recruitmentPart;				// 모집 분야
 	private int[] technologyStack;				// 기술 스택

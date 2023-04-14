@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.studygroup.StudygroupManagementDao">
+
+<insert id="insert" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto" useGeneratedKeys="true" keyProperty="seq">
+	INSERT INTO studygroup_management(memberSeq, isVisible) VALUES (#{memberSeq}, #{isVisible});
+</insert>
+
+<update id="updateInfoSeq" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	UPDATE studygroup_management SET infoSeq = #{infoSeq} WHERE seq = #{seq}
+</update>
+
+</mapper>
