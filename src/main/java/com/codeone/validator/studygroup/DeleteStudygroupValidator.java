@@ -1,4 +1,4 @@
-package com.codeone.validator;
+package com.codeone.validator.studygroup;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

@@ -1,4 +1,4 @@
-package com.codeone.validator;
+package com.codeone.validator.studygroup;
 
 import java.time.LocalDate;
 
