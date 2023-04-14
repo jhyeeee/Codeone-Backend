@@ -13,4 +13,8 @@
 	</foreach>
 </insert>
 
+<delete id="delete" parameterType="int">
+	DELETE FROM studygroup_stack WHERE studygroupSeq = #{studygroupSeq}
+</delete>
+
 </mapper>

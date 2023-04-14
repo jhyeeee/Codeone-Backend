@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.studygroup.StudygroupMemberVotingDao">
+
+<select id="getAgreementMemberAmount">
+	SELECT COUNT(*) FROM studygroup_member_voting WHERE studygroup_seq = #{studygroupSeq} AND isAgreement = 1
+</select>
+
+<select id="isExceededMajority" parameterType="com.codeone.dto.studygroup.StudygroupMemberVotingDto" resultType="boolean">
+	SELECT IF(agreementMemberAmount.amount / totalMemberAmount.amount >= 0.5, TRUE, FALSE) AS isExceededMajority
+	FROM (
+		SELECT COUNT(*) AS amount
+		FROM studygroup_member_voting
+		WHERE studygroup_seq = #{studygroupSeq} AND voting_seq = #{votingSeq} AND isAgreement = TRUE
+	) agreementMemberAmount, (
+		SELECT COUNT(*) AS amount
+		FROM studygroup_member
+		WHERE studygroup_seq = #{studygroupSeq}
+	) totalMemberAmount
+</select>
+
+</mapper>
