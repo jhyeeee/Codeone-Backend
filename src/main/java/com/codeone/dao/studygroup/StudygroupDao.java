@@ -10,6 +10,7 @@ import com.codeone.dto.studygroup.StudygroupDto;
 @Repository
 public interface StudygroupDao {
 	int writeStudygroupRecruitment(StudygroupDto studygroup);
-	StudygroupDto selectOneBySeq(StudygroupCommand studygroup);
+	StudygroupDto selectOneBySeq(int seq);
 	int deleteStudygroupRecruitment(int seq);
+	int updateStudygroupRecruitment(StudygroupDto studygroup);
 }

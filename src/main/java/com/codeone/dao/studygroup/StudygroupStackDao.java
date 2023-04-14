@@ -11,4 +11,5 @@ import com.codeone.dto.studygroup.StudygroupStackDto;
 @Repository
 public interface StudygroupStackDao {
 	void insert(List<StudygroupStackDto> studygroupStackDtoList);
+	void delete(int studygroupSeq);
 }
