@@ -1,27 +1,24 @@
 package com.codeone.controller.studygroup;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.command.studygroup.StudygroupCommand;
 import com.codeone.dto.studygroup.StudygroupDto;
 import com.codeone.service.studygroup.StudygroupService;
 import com.codeone.validator.StudygroupValidator;
 
-@Controller
+@RestController
 public class StudyGroupMainController {
 	@Autowired
 	StudygroupService studygroupService;
 	
 	@PostMapping("/studygroup")
-	public @ResponseBody ResponseEntity<List<StudygroupDto>> writeStudyGroupRecruitment(StudygroupCommand studygroupCommand, BindingResult errors) {
+	public ResponseEntity<Void> writeStudyGroupRecruitment(StudygroupCommand studygroupCommand, BindingResult errors) {
 		// 로그인 여부 확인 코드 필요
 		int memberSeq = 1;
 		
@@ -35,12 +32,10 @@ public class StudyGroupMainController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 커맨드 객체를 DTO로 변환
-		StudygroupDto studygroupDto = studygroupCommand.toDto();
-		studygroupDto.setMemberSeq(memberSeq);
+		studygroupCommand.setMemberSeq(memberSeq);
 		
 		// 모집글 작성
-		studygroupService.writeStudyGroupRecruitment(studygroupDto);
+		studygroupService.writeStudyGroupRecruitment(studygroupCommand);
 		
 		return ResponseEntity.ok().build();
 	}
