@@ -14,7 +14,7 @@ import com.codeone.command.studygroup.StudygroupDeleteCommand;
 import com.codeone.command.studygroup.StudygroupInfoCommand;
 import com.codeone.command.studygroup.StudygroupUpdateCommand;
 import com.codeone.exception.NotPermissionToModifyException;
-import com.codeone.service.studygroup.StudygroupService;
+import com.codeone.service.studygroup.StudygroupInfoService;
 import com.codeone.validator.studygroup.DeleteStudygroupValidator;
 import com.codeone.validator.studygroup.UpdateStudygroupValidator;
 import com.codeone.validator.studygroup.WriteStudygroupValidator;
@@ -22,7 +22,7 @@ import com.codeone.validator.studygroup.WriteStudygroupValidator;
 @RestController
 public class StudyGroupMainController {
 	@Autowired
-	StudygroupService studygroupService;
+	StudygroupInfoService studygroupService;
 	
 	@PostMapping("/studygroup")
 	public ResponseEntity<Void> writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand, BindingResult errors) {

@@ -22,5 +22,19 @@ public class StudygroupManagementDto {
 		return isVisible;
 	}
 	
+	public void setIsClosed(boolean isClosed) {
+		this.isClosed = isClosed;
+	}
 	
+	public boolean getIsClosed() {
+		return isClosed;
+	}
+	
+	public void setIsDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
 }
