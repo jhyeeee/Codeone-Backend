@@ -9,12 +9,12 @@
 	INSERT INTO studygroup_stack
 	VALUES
 	<foreach collection="studygroupStackDtoList" item="studygroupStack" separator=",">
-		(#{studygroupStack.studygroupSeq}, #{studygroupStack.stackSeq})
+		(#{studygroupStack.managementSeq}, #{studygroupStack.stackSeq})
 	</foreach>
 </insert>
 
 <delete id="delete" parameterType="int">
-	DELETE FROM studygroup_stack WHERE studygroupSeq = #{studygroupSeq}
+	DELETE FROM studygroup_stack WHERE managementSeq = #{managementSeq}
 </delete>
 
 </mapper>

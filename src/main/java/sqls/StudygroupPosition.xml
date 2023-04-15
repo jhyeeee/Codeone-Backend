@@ -9,12 +9,12 @@
 	INSERT INTO studygroup_position
 	VALUES
 	<foreach collection="studygroupPositionList" item="studygroupPosition" separator=",">
-		(#{studygroupPosition.studygroupSeq}, #{studygroupPosition.positionSeq})
+		(#{studygroupPosition.managementSeq}, #{studygroupPosition.positionSeq})
 	</foreach>
 </insert>
 
 <delete id="delete" parameterType="int">
-	DELETE FROM studygroup_position WHERE studygroupSeq = #{studygroupSeq}
+	DELETE FROM studygroup_position WHERE managementSeq = #{managementSeq}
 </delete>
 
 </mapper>

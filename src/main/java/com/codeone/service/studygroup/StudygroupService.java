@@ -8,24 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.codeone.dao.studygroup.StudygroupDao;
+import com.codeone.command.studygroup.StudygroupInfoCommand;
+import com.codeone.command.studygroup.StudygroupDeleteCommand;
+import com.codeone.command.studygroup.StudygroupUpdateCommand;
+import com.codeone.dao.studygroup.StudygroupInfoDao;
+import com.codeone.dao.studygroup.StudygroupManagementDao;
 import com.codeone.dao.studygroup.StudygroupMemberDao;
 import com.codeone.dao.studygroup.StudygroupMemberVotingDao;
 import com.codeone.dao.studygroup.StudygroupPositionDao;
 import com.codeone.dao.studygroup.StudygroupStackDao;
-import com.codeone.dto.studygroup.StudygroupDto;
+import com.codeone.dto.studygroup.StudygroupInfoDto;
+import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.dto.studygroup.StudygroupMemberVotingDto;
 import com.codeone.dto.studygroup.StudygroupPositionDto;
 import com.codeone.dto.studygroup.StudygroupStackDto;
 import com.codeone.enumVariable.VotingType;
-import com.codeone.exception.AlreadyStudygroupStartedException;
 import com.codeone.exception.NotPermissionToModifyException;
 
 @Service
 @Transactional
 public class StudygroupService {
 	@Autowired
-	StudygroupDao studygroupDao;
+	StudygroupManagementDao studygroupManagementDao;
+	@Autowired
+	StudygroupInfoDao studygroupInfoDao;
 	@Autowired
 	StudygroupPositionDao studygroupPositionDao;
 	@Autowired
@@ -42,10 +48,14 @@ public class StudygroupService {
 	 * @param requestMemberSeq 수정을 요청한 사용자의 번호
 	 * @return 수정할 권한이 있다면 true, 없다면 false
 	 */
-	private boolean checkStudygroupWithPermissionToModify(int seq, int requestMemberSeq) {
-		StudygroupDto studygroup = studygroupDao.selectOneBySeq(seq);
+	private StudygroupManagementDto checkPermissionToModify(int seq, int requestMemberSeq) {
+		StudygroupManagementDto studygroupManagement = studygroupManagementDao.selectOne(seq);
 		
-		return studygroup != null && studygroup.getMemberSeq() == requestMemberSeq;
+		if(studygroupManagement == null || studygroupManagement.getMemberSeq() != requestMemberSeq) {
+			return null;
+		} else {
+			return studygroupManagement;
+		}
 	}
 	
 	/**
@@ -55,7 +65,7 @@ public class StudygroupService {
 	 * @param votingType 수정 유형
 	 * @return 수정 가능하다면 true, 불가능하다면 false
 	 */
-	private boolean isModifiableStudygroup(StudygroupDto studygroup, VotingType votingType) {
+	private boolean isModifiableStudygroup(StudygroupInfoDto studygroup, VotingType votingType) {
 		// 수정을 요청한 날짜
 		LocalDate now = LocalDate.now();
 		// 수정을 요청한 스터디그룹 번호
@@ -94,12 +104,14 @@ public class StudygroupService {
 	 * 
 	 * @param studygroup 모집 분야를 초기화할 스터디 그룹 정보
 	 */
-	private void resetStudygroupPosition(StudygroupDto studygroup) {
+	private void resetStudygroupPosition(StudygroupInfoDto studygroup, boolean isDelete) {
 		// 모집 분야를 초기화할 스터디 그룹의 번호
-		int requestStudygroupSeq = studygroup.getSeq();
+		int managementSeq = studygroup.getManagementSeq();
 		
-		// 모집 분야 삭제
-		studygroupPositionDao.delete(requestStudygroupSeq);
+		if(isDelete) {
+			// 모집 분야 삭제
+			studygroupPositionDao.delete(managementSeq);
+		}
 		
 		// -- 모집 분야 등록 --
 		int[] recruitementPart = studygroup.getRecruitmentPart();
@@ -107,7 +119,7 @@ public class StudygroupService {
 		List<StudygroupPositionDto> studygroupPositionList = new ArrayList<>(recruitementPart.length);
 		for(int rp : recruitementPart) {
 			StudygroupPositionDto sgpd = new StudygroupPositionDto();
-			sgpd.setStudygroupSeq(requestStudygroupSeq);
+			sgpd.setManagementSeq(managementSeq);
 			sgpd.setPositionSeq(rp);
 			
 			studygroupPositionList.add(sgpd);
@@ -122,12 +134,14 @@ public class StudygroupService {
 	 * 
 	 * @param studygroup 기술 스택을 초기화할 스터디 그룹 정보
 	 */
-	private void resetStudygroupStack(StudygroupDto studygroup) {
+	private void resetStudygroupStack(StudygroupInfoDto studygroup, boolean isDelete) {
 		// 모집 분야를 초기화할 스터디 그룹의 번호
-		int requestStudygroupSeq = studygroup.getSeq();
+		int managementSeq = studygroup.getManagementSeq();
 		
-		// 모집 분야 삭제
-		studygroupStackDao.delete(requestStudygroupSeq);
+		if(isDelete) {
+			// 모집 분야 삭제
+			studygroupStackDao.delete(managementSeq);
+		}
 		
 		// -- 기술 스택 등록 --
 		int[] technologyStack = studygroup.getTechnologyStack();
@@ -135,7 +149,7 @@ public class StudygroupService {
 		List<StudygroupStackDto> StudygroupStackList = new ArrayList<>(technologyStack.length);
 		for(int ts : technologyStack) {
 			StudygroupStackDto ssd = new StudygroupStackDto();
-			ssd.setStudygroupSeq(requestStudygroupSeq);
+			ssd.setManagementSeq(managementSeq);
 			ssd.setStackSeq(ts);
 			
 			StudygroupStackList.add(ssd);
@@ -145,67 +159,77 @@ public class StudygroupService {
 		// -- 기술 스택 등록 --
 	}
 	
-	public boolean deleteStudygroupRecruitment(StudygroupDto studygroup) throws AlreadyStudygroupStartedException {
-		// 삭제를 요청한 스터디그룹 모집 글 번호
+	/**
+	 * 스터디 그룹 삭제
+	 * 
+	 * @param studygroup
+	 * @return
+	 * @throws NotPermissionToModifyException
+	 */
+	public boolean deleteStudygroupRecruitment(StudygroupDeleteCommand studygroup) throws NotPermissionToModifyException {
+		// 삭제를 요청한 스터디 그룹 관리 번호
 		int seq = studygroup.getSeq();
 		// 삭제를 요청한 사용자의 번호
 		int requestMemberSeq = studygroup.getMemberSeq();
-		// 삭제를 요청한 날짜
-		LocalDate now = LocalDate.now();
 		
-		// 삭제할 모집글 조회
-		StudygroupDto oldStudygroup = studygroupDao.selectOneBySeq(seq);
-		if(oldStudygroup == null || oldStudygroup.getMemberSeq() != requestMemberSeq) {
+		// 삭제를 요청한 사용자가 해당 스터디 그룹을 삭제할 수 있는 권한이 있는지 확인
+		StudygroupManagementDto oldStudygroup = checkPermissionToModify(seq, requestMemberSeq);
+		if(oldStudygroup == null) {
 			// 존재 하지 않는 seq 번호를 전달했거나 삭제할 모집글의 작성자가 아닐 경우
-			return false;
+			throw new NotPermissionToModifyException();
 		} else if(oldStudygroup.isDeleted()) {
 			// 이미 삭제 처리된 모집 글에 다시 삭제 요청을 했을 경우
 			return true;
-		} else if(oldStudygroup.getStartDate().isBefore(now)) {
-			// 이미 시작된 스터디그룹일 경우
-			throw new AlreadyStudygroupStartedException();
 		}
 		
-		// 삭제할 모집글의 작성자일 경우
-		// 모집글 삭제 처리
-		studygroupDao.deleteStudygroupRecruitment(studygroup.getSeq());
-		
-		return true;
+		// 스터디 그룹 정보 조회
+		StudygroupInfoDto oldStudygroupInfo = studygroupInfoDao.selectOneBySeq(oldStudygroup.getInfoSeq());
+		// 삭제를 요청한 스터디 그룹을 삭제할 수 있는지 여부 확인
+		if(isModifiableStudygroup(oldStudygroupInfo, VotingType.DELETE)) {
+			// 삭제를 요청한 스터디 그룹을 삭제할 수 있다면
+			studygroupManagementDao.deleteStudygroupRecruitment(studygroup.getSeq());
+			
+			return true;
+		} else {
+			// 삭제를 요청한 스터디 그룹을 삭제할 수 없다면
+			return false;
+		}
 	}
 	
 	/**
-	 * 스터디 그룹 정보 수정<br>
-	 * 스터디 그룹 정보를 수정했다면 true<br>
-	 * 스터디 그룹 정보를 수정하지 못했다면 false<br>
-	 * 스터디 그룹이 시작되면 스터디 그룹은 내 소유가 아닌 우리의 소유이기 때문에 수정 시 과반수 이상의 동의가 필요함<br>
+	 * 스터디 그룹 수정
 	 * 
-	 * @param studygroup 수정할 스터디 그룹 정보
-	 * @return 스터디 그룹 정보를 수정했다면 true
-	 * @throws NotPermissionToModifyException 스터디 그룹을 수정할 권한이 없을 경우
+	 * @param studygroup
+	 * @return
+	 * @throws NotPermissionToModifyException
 	 */
-	public boolean updateStudygroupRecruitment(StudygroupDto studygroup) throws NotPermissionToModifyException {
-		// 수정을 요청한 스터디 그룹 모집 글 번호
-		int requestStudygroupSeq = studygroup.getSeq();
+	public boolean updateStudygroupRecruitment(StudygroupUpdateCommand studygroup) throws NotPermissionToModifyException {
+		// 수정을 요청한 스터디 그룹 관리 번호
+		int seq = studygroup.getSeq();
 		// 수정을 요청한 사용자의 번호
 		int requestMemberSeq = studygroup.getMemberSeq();
 		
 		// 수정을 요청한 사용자가 해당 스터디 그룹을 수정할 수 있는 권한이 있는지 확인
-		boolean isPermission = checkStudygroupWithPermissionToModify(requestStudygroupSeq, requestMemberSeq);
-		if(!isPermission) {
-			// 수정할 수 있는 권한이 없다면
+		StudygroupManagementDto oldStudygroup = checkPermissionToModify(seq, requestMemberSeq);
+		if(oldStudygroup == null) {
+			// 존재 하지 않는 seq 번호를 전달했거나 수정할 스터디 그룹의 팀장이 아닐 경우
 			throw new NotPermissionToModifyException();
 		}
 		
+		// 스터디 그룹 정보 조회
+		StudygroupInfoDto oldStudygroupInfo = studygroupInfoDao.selectOneBySeq(oldStudygroup.getInfoSeq());
 		// 수정을 요청한 스터디 그룹을 수정할 수 있는지 여부 확인
-		if(isModifiableStudygroup(studygroup, VotingType.UPDATE)) {
+		if(isModifiableStudygroup(oldStudygroupInfo, VotingType.UPDATE)) {
+			StudygroupInfoDto newStudygroupInfo = studygroup.toStudygroupInfoDto();
+			
 			// 수정을 요청한 스터디 그룹을 수정할 수 있다면
-			studygroupDao.updateStudygroupRecruitment(studygroup);
+			studygroupInfoDao.updateStudygroupRecruitment(newStudygroupInfo);
 			
 			// -- 스터디 그룹의 모집 분야 초기화 --
-			resetStudygroupPosition(studygroup);
+			resetStudygroupPosition(newStudygroupInfo, true);
 			
 			// -- 스터디 그룹의 기술 스택 초기화 --
-			resetStudygroupStack(studygroup);
+			resetStudygroupStack(newStudygroupInfo, true);
 			
 			return true;
 		} else {
@@ -214,41 +238,30 @@ public class StudygroupService {
 		}
 	}
 	
-	public void writeStudygroupRecruitment(StudygroupDto studygroup) {
-		// 모집글 작성
-		studygroupDao.writeStudygroupRecruitment(studygroup);
+	/**
+	 * 스터디 그룹 생성
+	 * 
+	 * @param studygroupCommand
+	 */
+	public void writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand) {
+		// -- 스터디 그룹 관리 정보 생성 --
+		StudygroupManagementDto newStudygroupManagement = studygroupCommand.toStudygroupManagementDto();
+		studygroupManagementDao.insert(newStudygroupManagement);
 		
-		// 작성한 모집글 번호
-		int seq = studygroup.getSeq();
+		// -- 스터디 그룹 정보 생성 --
+		StudygroupInfoDto newStudygroupInfo = studygroupCommand.toStudygroupInfoDto();
+		newStudygroupInfo.setManagementSeq(newStudygroupManagement.getSeq());
+		
+		studygroupInfoDao.writeStudygroupRecruitment(newStudygroupInfo);
+		
+		// -- 스터디 그룹 관리 정보와 스터디 그룹 정보 연결 --
+		newStudygroupManagement.setInfoSeq(newStudygroupInfo.getSeq());
+		studygroupManagementDao.updateInfoSeq(newStudygroupManagement);
 		
 		// -- 모집글의 모집 분야 등록 --
-		int[] recruitementPart = studygroup.getRecruitmentPart();
-		
-		List<StudygroupPositionDto> studygroupPositionList = new ArrayList<>(recruitementPart.length);
-		for(int rp : recruitementPart) {
-			StudygroupPositionDto sgpd = new StudygroupPositionDto();
-			sgpd.setStudygroupSeq(seq);
-			sgpd.setPositionSeq(rp);
-			
-			studygroupPositionList.add(sgpd);
-		}
-		
-		studygroupPositionDao.insert(studygroupPositionList);
-		// -- 모집글의 모집 분야 등록 --
+		resetStudygroupPosition(newStudygroupInfo, false);
 		
 		// -- 모집글의 기술 스택 등록 --
-		int[] technologyStack = studygroup.getTechnologyStack();
-		
-		List<StudygroupStackDto> StudygroupStackList = new ArrayList<>(technologyStack.length);
-		for(int ts : technologyStack) {
-			StudygroupStackDto ssd = new StudygroupStackDto();
-			ssd.setStudygroupSeq(seq);
-			ssd.setStackSeq(ts);
-			
-			StudygroupStackList.add(ssd);
-		}
-		
-		studygroupStackDao.insert(StudygroupStackList);
-		// -- 모집글의 기술 스택 등록 --
+		resetStudygroupStack(newStudygroupInfo, false);
 	}
 }

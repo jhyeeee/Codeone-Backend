@@ -3,17 +3,17 @@ package com.codeone.validator.studygroup;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.codeone.command.studygroup.StudygroupCommand;
+import com.codeone.command.studygroup.StudygroupDeleteCommand;
 
 public class DeleteStudygroupValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return StudygroupCommand.class.isAssignableFrom(clazz);
+		return StudygroupDeleteCommand.class.isAssignableFrom(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		StudygroupCommand studygroup = (StudygroupCommand) target;
+		StudygroupDeleteCommand studygroup = (StudygroupDeleteCommand) target;
 		
 		int seq = studygroup.getSeq();
 		if(seq <= 0) {
