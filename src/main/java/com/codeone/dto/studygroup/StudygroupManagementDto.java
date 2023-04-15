@@ -1,11 +1,12 @@
 package com.codeone.dto.studygroup;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import lombok.Data;
 
 @Data
-public class StudygroupManagementDto {
+public class StudygroupManagementDto implements Serializable {
 	private int seq;				// 스터디 그룹 번호
 	private int memberSeq;			// 스터디 그룹 팀장 번호
 	private int infoSeq;			// 스터디 그룹 정보 번호
