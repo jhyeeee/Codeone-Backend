@@ -1,8 +1,12 @@
 package com.codeone.dao.studygroup;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.codeone.command.studygroup.StudygroupListCommand;
+import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 
 @Mapper
@@ -12,4 +16,5 @@ public interface StudygroupManagementDao {
 	void updateInfoSeq(StudygroupManagementDto newStudygroupManagement);
 	StudygroupManagementDto selectOne(int seq);
 	int deleteStudygroupRecruitment(int seq);
+	List<StudygroupListDto> selectAllStudygroupList(StudygroupListCommand studygroupListCommand);
 }
