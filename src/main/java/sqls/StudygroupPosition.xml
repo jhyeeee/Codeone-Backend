@@ -17,4 +17,8 @@
 	DELETE FROM studygroup_position WHERE managementSeq = #{managementSeq}
 </delete>
 
+<select id="selectAll" parameterType="int" resultType="Integer">
+	SELECT positionSeq FROM studygroup_position WHERE managementSeq = #{managementSeq}
+</select>
+
 </mapper>

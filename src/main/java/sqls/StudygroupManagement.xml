@@ -13,8 +13,8 @@
 	UPDATE studygroup_management SET infoSeq = #{infoSeq} WHERE seq = #{seq}
 </update>
 
-<select id="selectOne" parameterType="int">
-	SELECT studygroup_management SET seq = #{seq}
+<select id="selectOne" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	SELECT * FROM studygroup_management WHERE seq = #{seq}
 </select>
 
 <update id="deleteStudygroupRecruitment" parameterType="int">

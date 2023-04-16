@@ -10,7 +10,7 @@
 	WHERE seq = #{seq}
 </update>
 
-<insert id="writeStudyGroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto" useGeneratedKeys="true" keyProperty="seq">
+<insert id="writeStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto" useGeneratedKeys="true" keyProperty="seq">
 	INSERT INTO studygroup_info(managementSeq, title, contents, recruitmentType, wayOfProceeding, numberOfRecruits, startDate, endDate, deadlineForRecruitment)
 	VALUES (#{managementSeq}, #{title}, #{contents}, #{recruitmentType}, #{wayOfProceeding}, #{numberOfRecruits}, #{startDate}, #{endDate}, #{deadlineForRecruitment})
 </insert>
