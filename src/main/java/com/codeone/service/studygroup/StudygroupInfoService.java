@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codeone.command.studygroup.StudygroupDeleteCommand;
 import com.codeone.command.studygroup.StudygroupInfoCommand;
+import com.codeone.command.studygroup.StudygroupListCommand;
 import com.codeone.command.studygroup.StudygroupUpdateCommand;
 import com.codeone.dao.studygroup.StudygroupPositionDao;
 import com.codeone.dao.studygroup.StudygroupStackDao;
 import com.codeone.dto.studygroup.StudygroupInfoDto;
+import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.dto.studygroup.StudygroupPositionDto;
 import com.codeone.dto.studygroup.StudygroupStackDto;
@@ -187,5 +189,9 @@ public class StudygroupInfoService extends StudygroupService {
 		
 		// -- 모집글의 기술 스택 등록 --
 		resetStudygroupStack(newStudygroupInfo, false);
+	}
+
+	public List<StudygroupListDto> getStudygroupList(StudygroupListCommand studygroupListCommand) {
+		return studygroupManagementDao.selectAllStudygroupList(studygroupListCommand);
 	}
 }
