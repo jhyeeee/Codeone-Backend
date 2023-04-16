@@ -13,7 +13,6 @@ import com.codeone.dto.studygroup.StudygroupDetailUserDto;
 import com.codeone.dto.studygroup.StudygroupInfoDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.dto.user.UserDto;
-import com.codeone.enumVariable.VotingType;
 import com.codeone.etc.ToUtils;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.StudygroupNotFoundException;
@@ -29,17 +28,6 @@ public class StudygroupDetailService extends StudygroupService {
 	StudygroupStackDao studygroupStackDao;
 	@Autowired
 	StudygroupLikeDao studygroupLikeDao;
-	
-	public boolean checkIsModifiable(int seq, int memberSeq, VotingType votingType) {
-		// 수정을 요청한 사용자가 해당 스터디 그룹을 수정할 수 있는 권한이 있는지 확인
-		StudygroupManagementDto studygroupManagement = checkPermissionToModify(seq, memberSeq);
-		if(studygroupManagement == null) {
-			// 존재 하지 않는 seq 번호를 전달했거나 수정할 스터디 그룹의 팀장이 아닐 경우
-			return false;
-		}
-		
-		return isModifiableStudygroup(studygroupManagement.getInfoSeq(), votingType);
-	}
 
 	public StudygroupDetailDto getStudygroupInfo(int seq) throws StudygroupNotFoundException, DeletedStudygroupException {
 		// 스터디 그룹 관리 정보 조회
