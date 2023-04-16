@@ -9,4 +9,7 @@
 	SELECT COUNT(*) FROM studygroup_member WHERE studygroup_seq = #{studygroupSeq}
 </select>
 
+<insert id="joinMember" parameterType="com.codeone.dto.studygroup.StudygroupMemberDto">
+	INSERT INTO studygroup_member(studygroupSeq, memberSeq) VALUES(#{studygroupSeq}, #{memberSeq})
+</insert>
 </mapper>

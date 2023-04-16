@@ -16,6 +16,7 @@ import com.codeone.dao.studygroup.StudygroupStackDao;
 import com.codeone.dto.studygroup.StudygroupInfoDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
+import com.codeone.dto.studygroup.StudygroupMemberDto;
 import com.codeone.dto.studygroup.StudygroupPositionDto;
 import com.codeone.dto.studygroup.StudygroupStackDto;
 import com.codeone.enumVariable.VotingType;
@@ -151,10 +152,10 @@ public class StudygroupInfoService extends StudygroupService {
 			// 수정을 요청한 스터디 그룹을 수정할 수 있다면
 			studygroupInfoDao.updateStudygroupRecruitment(newStudygroupInfo);
 			
-			// -- 스터디 그룹의 모집 분야 초기화 --
+			// 스터디 그룹의 모집 분야 초기화
 			resetStudygroupPosition(newStudygroupInfo, true);
 			
-			// -- 스터디 그룹의 기술 스택 초기화 --
+			// 스터디 그룹의 기술 스택 초기화
 			resetStudygroupStack(newStudygroupInfo, true);
 			
 			return true;
@@ -170,25 +171,32 @@ public class StudygroupInfoService extends StudygroupService {
 	 * @param studygroupCommand
 	 */
 	public void writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand) {
-		// -- 스터디 그룹 관리 정보 생성 --
+		// 스터디 그룹 관리 정보 생성
 		StudygroupManagementDto newStudygroupManagement = studygroupCommand.toStudygroupManagementDto();
 		studygroupManagementDao.insert(newStudygroupManagement);
 		
-		// -- 스터디 그룹 정보 생성 --
+		// 스터디 그룹 정보 생성
 		StudygroupInfoDto newStudygroupInfo = studygroupCommand.toStudygroupInfoDto();
 		newStudygroupInfo.setManagementSeq(newStudygroupManagement.getSeq());
 		
 		studygroupInfoDao.writeStudygroupRecruitment(newStudygroupInfo);
 		
-		// -- 스터디 그룹 관리 정보와 스터디 그룹 정보 연결 --
+		// 스터디 그룹 관리 정보와 스터디 그룹 정보 연결
 		newStudygroupManagement.setInfoSeq(newStudygroupInfo.getSeq());
 		studygroupManagementDao.updateInfoSeq(newStudygroupManagement);
 		
-		// -- 모집글의 모집 분야 등록 --
+		// 모집글의 모집 분야 등록
 		resetStudygroupPosition(newStudygroupInfo, false);
 		
-		// -- 모집글의 기술 스택 등록 --
+		// 모집글의 기술 스택 등록
 		resetStudygroupStack(newStudygroupInfo, false);
+		
+		// 스터디 그룹을 생성한 회원(팀장)을 그룹원으로 등록
+		StudygroupMemberDto studygroupMember = new StudygroupMemberDto();
+		studygroupMember.setStudygroupSeq(newStudygroupManagement.getSeq());
+		studygroupMember.setMemberSeq(studygroupCommand.getMemberSeq());
+		
+		studygroupMemberDao.joinMember(studygroupMember);
 	}
 
 	public List<StudygroupListDto> getStudygroupList(StudygroupListCommand studygroupListCommand) {
