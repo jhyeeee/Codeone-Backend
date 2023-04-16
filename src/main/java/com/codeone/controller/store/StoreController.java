@@ -5,18 +5,18 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.codeone.dto.store.storeItemDto;
-import com.codeone.service.store.storeService;
+import com.codeone.dto.store.StoreItemDto;
+import com.codeone.service.store.StoreService;
 
 @RestController
-public class storeController {
+public class StoreController {
 
 	@Autowired
-	storeService service;
+	StoreService service;
 	
 	// 중고거래 글쓰기
 	@PostMapping(value = "/storewrite")
-	public String storewrite(storeItemDto item) {		
+	public String storewrite(StoreItemDto item) {		
 		System.out.println("storeController storewrite() " + new Date());			
 		
 		boolean isWriteStore = service.writeStore(item);

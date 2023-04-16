@@ -1,27 +1,23 @@
 package com.codeone.service.user;
 
-import java.io.UnsupportedEncodingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.codeone.dao.user.userDao;
-import com.codeone.dto.user.userDto;
+import com.codeone.dao.user.UserDao;
+import com.codeone.dto.user.UserDto;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
 @Transactional
-public class userService {
+public class UserService {
 	
 	// userDao 연결
 	@Autowired
-	userDao dao;
+	UserDao dao;
 	
 	// 메일
 	@Autowired
@@ -38,7 +34,7 @@ public class userService {
 	}
 	
 
-	public boolean addUser(userDto dto) {
+	public boolean addUser(UserDto dto) {
 		int n = dao.addUser(dto);
 		return n>0?true:false;
 	}
@@ -87,12 +83,12 @@ public class userService {
 		
 	}
     
-    public userDto getMember(String email) {
+    public UserDto getMember(String email) {
 		return dao.getMember(email);
 	}
     
     // 회원정보에 메일키 업데이트
-    public int updateEmailKey(userDto dto) {
+    public int updateEmailKey(UserDto dto) {
 		return dao.updateEmailKey(dto);
 	}
 }
