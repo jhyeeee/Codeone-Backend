@@ -17,4 +17,5 @@ public interface StudygroupManagementDao {
 	StudygroupManagementDto selectOne(int seq);
 	int deleteStudygroupRecruitment(int seq);
 	List<StudygroupListDto> selectAllStudygroupList(StudygroupListCommand studygroupListCommand);
+	void toggleIsClosed(int seq);
 }

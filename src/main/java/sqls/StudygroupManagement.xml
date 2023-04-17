@@ -63,4 +63,8 @@
 	LIMIT #{start}, #{end}
 </select>
 
+<update id="toggleIsClosed" parameterType="int">
+	UPDATE studygroup_management SET isClosed = !isClosed WHERE seq = #{seq}
+</update>
+
 </mapper>
