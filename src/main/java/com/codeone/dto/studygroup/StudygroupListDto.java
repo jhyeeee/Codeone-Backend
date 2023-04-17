@@ -1,11 +1,12 @@
 package com.codeone.dto.studygroup;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Data;
 
 @Data
-public class StudygroupListDto {
+public class StudygroupListDto implements Serializable {
 	private int recruitmentType;								// 모집 분야
 	
 	private LocalDate deadlineForRecruitment;					// 모집 마감 날짜

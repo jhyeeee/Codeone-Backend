@@ -1,12 +1,16 @@
 package com.codeone.service.studygroup;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codeone.command.studygroup.StudygroupCommentCommand;
 import com.codeone.dao.studygroup.StudygroupCommentDao;
 import com.codeone.dao.studygroup.StudygroupManagementDao;
 import com.codeone.dto.studygroup.StudygroupCommentDto;
+import com.codeone.dto.studygroup.StudygroupCommentListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.NotFoundCommentException;
@@ -72,5 +76,9 @@ public class StudygroupCommentService {
 		
 		// 댓글수 감소
 		studygroupManagementDao.decreaseCommentAmount(oldStudygroupCommentDto.getStudygroupSeq());
+	}
+
+	public List<StudygroupCommentListDto> getList(StudygroupCommentCommand studygroupCommentCommand) {
+		return studygroupCommentDao.getList(studygroupCommentCommand);
 	}
 }

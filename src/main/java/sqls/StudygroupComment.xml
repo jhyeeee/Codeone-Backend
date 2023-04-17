@@ -21,4 +21,14 @@
 	DELETE FROM studygroup_comment WHERE seq = #{seq}
 </delete>
 
+<select id="getList" parameterType="com.codeone.command.studygroup.StudygroupCommentCommand" resultType="com.codeone.dto.studygroup.StudygroupCommentListDto">
+	SELECT sc.*, u.id as `user.id`, u.filename as `user.filename`, IF(commentSeq IS NOT NULL, true, false) as haveReply, IF(sc.memberSeq = #{memberSeq}, true, false) as isMine
+	FROM studygroup_comment sc
+	JOIN user u
+	ON sc.memberSeq = u.seq
+	WHERE sc.studygroupSeq = #{studygroupSeq}
+	ORDER BY sc.regdate DESC
+	LIMIT #{start}, #{end}
+</select>
+
 </mapper>
