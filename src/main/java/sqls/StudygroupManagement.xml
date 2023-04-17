@@ -31,7 +31,7 @@
 		si.recruitmentType, si.deadlineForRecruitment, si.title,
 	    GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
 	    GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
-	    user.id, user.filename,
+	    user.id as `user.id`, user.filename as `user.filename`,
 	    sm.isClosed
 	FROM studygroup_management sm
 	JOIN studygroup_info si

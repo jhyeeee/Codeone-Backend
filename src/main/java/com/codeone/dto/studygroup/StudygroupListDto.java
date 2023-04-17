@@ -7,22 +7,22 @@ import lombok.Data;
 
 @Data
 public class StudygroupListDto implements Serializable {
-	private int recruitmentType;								// 모집 분야
+	private int recruitmentType;				// 모집 분야
 	
-	private LocalDate deadlineForRecruitment;					// 모집 마감 날짜
-	private String title;										// 제목
+	private LocalDate deadlineForRecruitment;	// 모집 마감 날짜
+	private String title;						// 제목
 	
-	private int[] recruitmentPart;								// 모집 분야
-	private int[] technologyStack;								// 기술 스택
+	private int[] recruitmentPart;				// 모집 분야
+	private int[] technologyStack;				// 기술 스택
 	
-	private StudygroupDetailUserDto studygroupDetailUserDto;	// 스터디 그룹 팀장 정보
+	private StudygroupDetailUserDto user;		// 스터디 그룹 팀장 정보
 	
-	private boolean isClosed;									// 모집 마감 여부
-	private int viewAmount;										// 조회수
-	private int commentAmount;									// 댓글수
+	private boolean isClosed;					// 모집 마감 여부
+	private int viewAmount;						// 조회수
+	private int commentAmount;					// 댓글수
 	
 	public StudygroupListDto() {
-		studygroupDetailUserDto = new StudygroupDetailUserDto();
+		user = new StudygroupDetailUserDto();
 	}
 	
 	public void setRecruitmentPart(String recruitmentPart) {
@@ -43,13 +43,13 @@ public class StudygroupListDto implements Serializable {
 		}
 	}
 	
-	public void setId(String id) {
-		studygroupDetailUserDto.setId(id);
-	}
-	
-	public void setFilename(String filemane) {
-		studygroupDetailUserDto.setFilename(filemane);
-	}
+//	public void setId(String id) {
+//		studygroupDetailUserDto.setId(id);
+//	}
+//	
+//	public void setFilename(String filemane) {
+//		studygroupDetailUserDto.setFilename(filemane);
+//	}
 	
 	public void setIsClosed(boolean isClosed) {
 		this.isClosed = isClosed;
