@@ -19,14 +19,18 @@ import com.codeone.command.studygroup.StudygroupDeleteCommand;
 import com.codeone.command.studygroup.StudygroupInfoCommand;
 import com.codeone.command.studygroup.StudygroupListCommand;
 import com.codeone.command.studygroup.StudygroupUpdateCommand;
+import com.codeone.dto.studygroup.PositionDto;
+import com.codeone.dto.studygroup.RecruitmentTypeDto;
 import com.codeone.dto.studygroup.StudygroupDetailDto;
 import com.codeone.dto.studygroup.StudygroupLikeDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
+import com.codeone.dto.studygroup.TechnologyStackDto;
 import com.codeone.etc.StaticVariable;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.NotPermissionToModifyException;
 import com.codeone.exception.StudygroupNotFoundException;
 import com.codeone.service.studygroup.StudygroupDetailService;
+import com.codeone.service.studygroup.StudygroupFilterService;
 import com.codeone.service.studygroup.StudygroupInfoService;
 import com.codeone.service.studygroup.StudygroupLikeService;
 import com.codeone.validator.studygroup.DeleteStudygroupValidator;
@@ -43,6 +47,9 @@ public class StudyGroupMainController {
 	StudygroupDetailService studygroupDetailService;
 	@Autowired
 	StudygroupLikeService StudygroupLikeService;
+	
+	@Autowired
+	StudygroupFilterService studygroupFilterService;
 	
 	@PostMapping()
 	public ResponseEntity<Void> writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand, BindingResult errors) {
@@ -202,5 +209,26 @@ public class StudyGroupMainController {
 			// 삭제된 스터디 그룹일 경우
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
+	}
+	
+	@GetMapping("/filter/position")
+	public ResponseEntity<List<PositionDto>> getPositionList() {
+		List<PositionDto> positionList = studygroupFilterService.getPositionList();
+		
+		return ResponseEntity.ok(positionList);
+	}
+	
+	@GetMapping("/filter/technology_stack")
+	public ResponseEntity<List<TechnologyStackDto>> getTechnologyStackList() {
+		List<TechnologyStackDto> technologyStackList = studygroupFilterService.getTechnologyStackList();
+		
+		return ResponseEntity.ok(technologyStackList);
+	}
+	
+	@GetMapping("/filter/recruitment_type")
+	public ResponseEntity<List<RecruitmentTypeDto>> getRecruitmentTypeList() {
+		List<RecruitmentTypeDto> recruitmentTypeList = studygroupFilterService.getRecruitmentTypeList();
+		
+		return ResponseEntity.ok(recruitmentTypeList);
 	}
 }
