@@ -67,12 +67,16 @@
 	UPDATE studygroup_management SET isClosed = !isClosed WHERE seq = #{seq}
 </update>
 
-<update id="increaseLike" parameterType="int">
+<update id="increaseLikeAmount" parameterType="int">
 	UPDATE studygroup_management SET likeAmount = likeAmount + 1 WHERE seq = #{seq}
 </update>
 
-<update id="decreaseLike" parameterType="int">
+<update id="decreaseLikeAmount" parameterType="int">
 	UPDATE studygroup_management SET likeAmount = likeAmount - 1 WHERE seq = #{seq}
+</update>
+
+<update id="increaseCommentAmount" parameterType="int">
+	UPDATE studygroup_management SET commentAmount = commentAmount + 1 WHERE seq = #{seq}
 </update>
 
 </mapper>

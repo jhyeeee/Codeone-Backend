@@ -30,11 +30,11 @@ public class StudygroupLikeService {
 		
 		if(oldStudygroupLike == null) {
 			// 좋아요 하지 않은 스터디 그룹일 경우
-			studygroupManagementDao.increaseLike(studygroupLike.getStudygroupSeq());
+			studygroupManagementDao.increaseLikeAmount(studygroupLike.getStudygroupSeq());
 			studygroupLikeDao.insert(studygroupLike);
 		} else {
 			// 좋아요 한 스터디 그룹일 경우
-			studygroupManagementDao.decreaseLike(studygroupLike.getStudygroupSeq());
+			studygroupManagementDao.decreaseLikeAmount(studygroupLike.getStudygroupSeq());
 			studygroupLikeDao.delete(studygroupLike);
 		}
 	}

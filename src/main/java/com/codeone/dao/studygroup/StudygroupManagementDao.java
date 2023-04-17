@@ -18,6 +18,7 @@ public interface StudygroupManagementDao {
 	int deleteStudygroupRecruitment(int seq);
 	List<StudygroupListDto> selectAllStudygroupList(StudygroupListCommand studygroupListCommand);
 	void toggleIsClosed(int seq);
-	void increaseLike(int seq);
-	void decreaseLike(int seq);
+	void increaseLikeAmount(int seq);
+	void decreaseLikeAmount(int seq);
+	void increaseCommentAmount(int seq);
 }
