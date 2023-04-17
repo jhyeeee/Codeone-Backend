@@ -11,4 +11,18 @@
 	WHERE studygroupSeq = #{studygroupSeq}
 </select>
 
+<select id="selectOne" parameterType="com.codeone.dto.studygroup.StudygroupLikeDto" resultType="com.codeone.dto.studygroup.StudygroupLikeDto">
+	SELECT *
+	FROM studygroup_like
+	WHERE studygroupSeq = #{studygroupSeq} AND memberSeq = #{memberSeq}
+</select>
+
+<insert id="insert" parameterType="com.codeone.dto.studygroup.StudygroupLikeDto">
+	INSERT INTO studygroup_like(studygroupSeq, memberSeq) VALUES(#{studygroupSeq}, #{memberSeq});
+</insert>
+
+<delete id="delete" parameterType="com.codeone.dto.studygroup.StudygroupLikeDto">
+	DELETE FROM studygroup_like WHERE studygroupSeq = #{studygroupSeq} AND memberSeq = #{memberSeq}
+</delete>
+
 </mapper>

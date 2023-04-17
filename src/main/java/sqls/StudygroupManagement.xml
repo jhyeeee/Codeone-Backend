@@ -67,4 +67,12 @@
 	UPDATE studygroup_management SET isClosed = !isClosed WHERE seq = #{seq}
 </update>
 
+<update id="increaseLike" parameterType="int">
+	UPDATE studygroup_management SET likeAmount = likeAmount + 1 WHERE seq = #{seq}
+</update>
+
+<update id="decreaseLike" parameterType="int">
+	UPDATE studygroup_management SET likeAmount = likeAmount - 1 WHERE seq = #{seq}
+</update>
+
 </mapper>

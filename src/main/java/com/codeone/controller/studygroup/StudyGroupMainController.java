@@ -20,6 +20,7 @@ import com.codeone.command.studygroup.StudygroupInfoCommand;
 import com.codeone.command.studygroup.StudygroupListCommand;
 import com.codeone.command.studygroup.StudygroupUpdateCommand;
 import com.codeone.dto.studygroup.StudygroupDetailDto;
+import com.codeone.dto.studygroup.StudygroupLikeDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.etc.StaticVariable;
 import com.codeone.exception.DeletedStudygroupException;
@@ -27,6 +28,7 @@ import com.codeone.exception.NotPermissionToModifyException;
 import com.codeone.exception.StudygroupNotFoundException;
 import com.codeone.service.studygroup.StudygroupDetailService;
 import com.codeone.service.studygroup.StudygroupInfoService;
+import com.codeone.service.studygroup.StudygroupLikeService;
 import com.codeone.validator.studygroup.DeleteStudygroupValidator;
 import com.codeone.validator.studygroup.StudygroupListValidator;
 import com.codeone.validator.studygroup.UpdateStudygroupValidator;
@@ -39,6 +41,8 @@ public class StudyGroupMainController {
 	StudygroupInfoService studygroupInfoService;
 	@Autowired
 	StudygroupDetailService studygroupDetailService;
+	@Autowired
+	StudygroupLikeService StudygroupLikeService;
 	
 	@PostMapping()
 	public ResponseEntity<Void> writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand, BindingResult errors) {
@@ -176,4 +180,27 @@ public class StudyGroupMainController {
 		}
 	}
 	
+	@PostMapping("/toggleLike/{seq}")
+	public ResponseEntity<Void> toggleLike(@PathVariable("seq") int seq){
+		if(seq <= 0) {
+			// 클라이언트가 잘못된 값을 보냈다면
+			return ResponseEntity.badRequest().build();
+		}
+		
+		// 로그인 여부 확인 코드 필요
+		int memberSeq = 1;
+		
+		
+		StudygroupLikeDto studygroupLike = new StudygroupLikeDto();
+		studygroupLike.setStudygroupSeq(seq);
+		studygroupLike.setMemberSeq(memberSeq);
+		
+		try {
+			StudygroupLikeService.toggleLike(studygroupLike);
+			return ResponseEntity.ok().build(); 
+		} catch(DeletedStudygroupException e) {
+			// 삭제된 스터디 그룹일 경우
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
 }
