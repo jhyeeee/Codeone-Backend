@@ -9,4 +9,6 @@ import com.codeone.dto.studygroup.StudygroupCommentDto;
 @Repository
 public interface StudygroupCommentDao {
 	void writeComment(StudygroupCommentDto studygroupComment);
+	void updateComment(StudygroupCommentDto studygroupComment);
+	StudygroupCommentDto selectOneBySeq(int seq);
 }

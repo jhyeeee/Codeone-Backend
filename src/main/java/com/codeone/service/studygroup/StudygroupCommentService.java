@@ -9,6 +9,8 @@ import com.codeone.dao.studygroup.StudygroupManagementDao;
 import com.codeone.dto.studygroup.StudygroupCommentDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.exception.DeletedStudygroupException;
+import com.codeone.exception.NotFoundCommentException;
+import com.codeone.exception.NotPermissionToModifyException;
 import com.codeone.exception.StudygroupNotFoundException;
 
 @Service
@@ -37,5 +39,20 @@ public class StudygroupCommentService {
 		
 		// 댓글수 증가
 		studygroupManagementDao.increaseCommentAmount(studygroupComment.getStudygroupSeq());
+	}
+
+	public void updateComment(StudygroupCommentDto studygroupComment) throws NotFoundCommentException, NotPermissionToModifyException {
+		StudygroupCommentDto oldStudygroupCommentDto = studygroupCommentDao.selectOneBySeq(studygroupComment.getSeq());
+		
+		if(oldStudygroupCommentDto == null) {
+			// 존재 하지 않는 댓글을 수정하려는 경우
+			throw new NotFoundCommentException();
+		} else if(oldStudygroupCommentDto.getMemberSeq() != studygroupComment.getMemberSeq()) {
+			// 다른 사람이 작성한 댓글을 수정하려는 경우
+			throw new NotPermissionToModifyException();
+		}
+		
+		// 댓글 수정
+		studygroupCommentDao.updateComment(studygroupComment);
 	}
 }

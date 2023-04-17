@@ -9,5 +9,12 @@
 	INSERT INTO studygroup_comment(studygroupSeq, memberSeq, comment) VALUES(#{studygroupSeq}, #{memberSeq}, #{comment});
 </insert>
 
+<update id="updateComment" parameterType="com.codeone.dto.studygroup.StudygroupCommentDto">
+	UPDATE studygroup_comment SET comment = #{comment} WHERE seq = #{seq}
+</update>
+
+<select id="selectOneBySeq" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupCommentDto">
+	SELECT * FROM studygroup_comment WHERE seq = #{seq}
+</select>
 
 </mapper>
