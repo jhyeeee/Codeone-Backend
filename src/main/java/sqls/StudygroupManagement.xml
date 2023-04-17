@@ -79,4 +79,8 @@
 	UPDATE studygroup_management SET commentAmount = commentAmount + 1 WHERE seq = #{seq}
 </update>
 
+<update id="decreaseCommentAmount" parameterType="int">
+	UPDATE studygroup_management SET commentAmount = commentAmount - 1 WHERE seq = #{seq}
+</update>
+
 </mapper>

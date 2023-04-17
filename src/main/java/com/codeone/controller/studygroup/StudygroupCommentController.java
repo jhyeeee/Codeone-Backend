@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.codeone.exception.NotFoundCommentException;
 import com.codeone.exception.NotPermissionToModifyException;
 import com.codeone.exception.StudygroupNotFoundException;
 import com.codeone.service.studygroup.StudygroupCommentService;
+import com.codeone.validator.studygroup.DeleteCommentValidator;
 import com.codeone.validator.studygroup.UpdateCommentValidator;
 import com.codeone.validator.studygroup.WriteCommentValidator;
 
@@ -80,6 +82,32 @@ public class StudygroupCommentController {
 		} catch(NotFoundCommentException | NotPermissionToModifyException e) {
 			// 존재 하지 않는 댓글을 수정하려는 경우 또는
 			// 다른 사람이 작성한 댓글을 수정하려는 경우
+			return ResponseEntity.badRequest().build();
+		}
+	}
+	
+	@DeleteMapping()
+	public ResponseEntity<Void> deleteComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors) {
+		Validator validator = new DeleteCommentValidator();
+		validator.validate(studygroupCommentCommand, errors);
+		
+		if(errors.hasErrors()) {
+			// 클라이언트가 잘못된 값을 전달했을 경우
+			return ResponseEntity.badRequest().build();
+		}
+		
+		// 로그인 여부 확인 코드 필요
+		int memberSeq = 1;
+		
+		StudygroupCommentDto studygroupComment = studygroupCommentCommand.toDto();
+		studygroupComment.setMemberSeq(memberSeq);
+		
+		try {
+			studygroupCommentService.deleteComment(studygroupComment);
+			return ResponseEntity.ok().build();
+		} catch(NotFoundCommentException | NotPermissionToModifyException e) {
+			// 존재 하지 않는 댓글을 삭제하려는 경우 또는
+			// 다른 사람이 작성한 댓글을 삭제하려는 경우
 			return ResponseEntity.badRequest().build();
 		}
 	}

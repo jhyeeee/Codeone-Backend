@@ -17,4 +17,8 @@
 	SELECT * FROM studygroup_comment WHERE seq = #{seq}
 </select>
 
+<delete id="deleteComment" parameterType="int">
+	DELETE FROM studygroup_comment WHERE seq = #{seq}
+</delete>
+
 </mapper>

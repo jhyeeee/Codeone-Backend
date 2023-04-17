@@ -11,4 +11,5 @@ public interface StudygroupCommentDao {
 	void writeComment(StudygroupCommentDto studygroupComment);
 	void updateComment(StudygroupCommentDto studygroupComment);
 	StudygroupCommentDto selectOneBySeq(int seq);
+	void deleteComment(int seq);
 }

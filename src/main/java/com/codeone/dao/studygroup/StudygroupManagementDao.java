@@ -21,4 +21,5 @@ public interface StudygroupManagementDao {
 	void increaseLikeAmount(int seq);
 	void decreaseLikeAmount(int seq);
 	void increaseCommentAmount(int seq);
+	void decreaseCommentAmount(int seq);
 }

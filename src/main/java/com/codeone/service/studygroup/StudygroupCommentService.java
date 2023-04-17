@@ -55,4 +55,22 @@ public class StudygroupCommentService {
 		// 댓글 수정
 		studygroupCommentDao.updateComment(studygroupComment);
 	}
+	
+	public void deleteComment(StudygroupCommentDto studygroupComment) throws NotFoundCommentException, NotPermissionToModifyException {
+		StudygroupCommentDto oldStudygroupCommentDto = studygroupCommentDao.selectOneBySeq(studygroupComment.getSeq());
+		
+		if(oldStudygroupCommentDto == null) {
+			// 존재 하지 않는 댓글을 삭제하려는 경우
+			throw new NotFoundCommentException();
+		} else if(oldStudygroupCommentDto.getMemberSeq() != studygroupComment.getMemberSeq()) {
+			// 다른 사람이 작성한 댓글을 삭제하려는 경우
+			throw new NotPermissionToModifyException();
+		}
+		
+		// 댓글 삭제
+		studygroupCommentDao.deleteComment(studygroupComment.getSeq());
+		
+		// 댓글수 감소
+		studygroupManagementDao.decreaseCommentAmount(oldStudygroupCommentDto.getStudygroupSeq());
+	}
 }
