@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codeone.dao.calendar.CalendarDao">
+
+	<!-- 일정 달력에 불러오기 -->
+	<select id="getCalendarList" parameterType="Map" resultType="com.codeone.dto.calendar.CalendarDto">
+		select * from calendar
+		where id=#{id}
+	</select>
+	
+	<!-- 일정추가 -->
+	<insert id="writeCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
+		insert into calendar(id, title, content, start, end, backgroundColor, textColor, allDay)
+		values(#{id}, #{title}, #{content}, #{start}, #{end},#{backgroundColor},#{textColor},#{allDay})
+	</insert>
+	
+	<!-- 일정수정 -->
+	<select id="updateCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
+		update calendar set
+		title = #{title}, content=#{content}, rdate=#{rdate}
+		where seq=#{seq}		
+	</select>
+	
+	<!-- 일정삭제 -->
+	<select id="deleteCalendar" parameterType="Integer">
+		delete from calendar
+		where seq=#{seq}
+	</select>
+	
+	
+</mapper>
