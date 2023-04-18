@@ -9,5 +9,4 @@ public class CodeoneBackEndApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CodeoneBackEndApplication.class, args);
 	}
-
 }
