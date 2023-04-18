@@ -15,8 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
-import com.codeone.socialLogin.dto.GoogleUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,10 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GoogleOauth implements SocialOauth {
+public class KakaoOauth implements SocialOauth {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	private final SocialDao dao;
     @Value("${sns.google.url}")
     private String GOOGLE_SNS_BASE_URL;
     @Value("${sns.google.client.id}")
@@ -40,15 +37,12 @@ public class GoogleOauth implements SocialOauth {
     private String GOOGLE_SNS_CALLBACK_URL;
     @Value("${sns.google.client.secret}")
     private String GOOGLE_SNS_CLIENT_SECRET;
-    @Value("${sns.google.token.url}")
-    private String GOOGLE_SNS_TOKEN_BASE_URL;
+    private final String GOOGLE_SNS_TOKEN_BASE_URL = "https://oauth2.googleapis.com/token";
 
-    
-    
     @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
-        params.put("scope", "email%20profile");
+        params.put("scope", "profile");
         params.put("response_type", "code");
         params.put("client_id", GOOGLE_SNS_CLIENT_ID);
         params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
@@ -60,11 +54,6 @@ public class GoogleOauth implements SocialOauth {
         return GOOGLE_SNS_BASE_URL + "?" + parameterString;
     }
 
-    
-    /*
-     * 인증코드를 통해서 accessToken을 받는다.
-     * 
-     */
     @Override
     public GoogleOAuthToken requestAccessTokenAndParsing(String code) throws JsonProcessingException {
     	RestTemplate restTemplate = new RestTemplate();
@@ -80,16 +69,15 @@ public class GoogleOauth implements SocialOauth {
                 restTemplate.postForEntity(GOOGLE_SNS_TOKEN_BASE_URL, params, String.class);
         // accessToken 값이 여기 들어 있다.
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-        	System.out.println(responseEntity.getBody() + " accessToken값");
         	GoogleOAuthToken googleOAuthToken = objectMapper.readValue(responseEntity.getBody(), GoogleOAuthToken.class);
 
             return googleOAuthToken;
         }
         return null;
-
+//    	 
+//    	 System.out.println(googleOAuthToken.getAccess_token());
+//         return googleOAuthToken;
     }
-
-    
     
     public ResponseEntity<String> requestUserInfo(GoogleOAuthToken oAuthToken) {
         String GOOGLE_USERINFO_REQUEST_URL="https://www.googleapis.com/oauth2/v1/userinfo";
@@ -110,47 +98,12 @@ public class GoogleOauth implements SocialOauth {
         );
 
         log.info("response.getBody() = " + response.getBody());
-        log.info("response = " + response);
         return response;
     }
-    
-    
-    /*
-     * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
-     * 
-     * 
-     */
     public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
-    	System.out.println(userInfoRes.getBody() + " getUserInfo");
-    	GoogleUser googleUser = objectMapper.readValue(userInfoRes.getBody(), GoogleUser.class);
-    	UserDto user = new UserDto();
-    	
-    	user.setName(googleUser.getName());
-    	//user.setEmailKey(googleUser.getVerifiedEmail());
-    	user.setEmail(googleUser.getEmail());
-    	user.setFilename(googleUser.getPicture());
-    	user.setId(googleUser.getId());
-    	
-    	// DB 확인
-    	if(checkUser(user.getEmail()) == 0) {
-    		//신규
-    		System.out.println("신규");
-    	} else {
-    		// 기존
-    		System.out.println("기존");
-    	};
-    	
-    	
-        
-        return user;
-    }
-    
-    /*
-     * DB체크
-     * 
-     */
-    
-    private int checkUser(String email) {    	
-    	return dao.checkUser(email);
+    	System.out.println(userInfoRes.getBody());
+    	UserDto googleUser = objectMapper.readValue(userInfoRes.getBody(), UserDto.class);
+        log.info(googleUser.toString());
+        return googleUser;
     }
 }

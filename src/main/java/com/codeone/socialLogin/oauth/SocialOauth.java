@@ -1,10 +1,10 @@
-package com.codeone.socialLogin;
+package com.codeone.socialLogin.oauth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.*;
 
+import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
-import com.codeone.socialLogin.oauth.GoogleOauth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface SocialOauth {
