@@ -38,7 +38,7 @@ public class CalendarController {
 	}
 	
 	
-//	일정추가
+	//	일정추가
 	@PostMapping(value="/writeCalendar")
     public String writeCalendar(CalendarDto dto) {
 		System.out.println("CalendarController writeCalendar() " + new Date());
@@ -50,4 +50,14 @@ public class CalendarController {
         return "NO";
         
     }
+	
+	// 일정조회
+	@GetMapping(value = "/detailCalendar")
+	public CalendarDto detailCalendar(int seq) {
+		System.out.println("CalendarController detailCalendar() " + new Date());
+		
+		return service.detailCalendar(seq);
+	}
+	
+	
 }

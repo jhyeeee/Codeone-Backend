@@ -19,4 +19,7 @@ public interface CalendarDao {
 	
 	//일정추가
 	boolean writeCalendar(CalendarDto dto);
+	
+	//일정조회
+	public CalendarDto detailCalendar (int seq);
 }
