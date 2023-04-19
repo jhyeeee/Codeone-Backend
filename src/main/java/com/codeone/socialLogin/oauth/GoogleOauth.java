@@ -42,13 +42,14 @@ public class GoogleOauth implements SocialOauth {
     private String GOOGLE_SNS_CLIENT_SECRET;
     @Value("${sns.google.token.url}")
     private String GOOGLE_SNS_TOKEN_BASE_URL;
-
+    @Value("${sns.google.scope.setting}")
+    private String GOOGLE_SCOPE_SETTING;
     
     
     @Override
     public String getOauthRedirectURL() {
         Map<String, Object> params = new HashMap<>();
-        params.put("scope", "email%20profile");
+        params.put("scope", GOOGLE_SCOPE_SETTING);
         params.put("response_type", "code");
         params.put("client_id", GOOGLE_SNS_CLIENT_ID);
         params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
@@ -117,8 +118,6 @@ public class GoogleOauth implements SocialOauth {
     
     /*
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
-     * 
-     * 
      */
     public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
     	System.out.println(userInfoRes.getBody() + " getUserInfo");
@@ -134,10 +133,10 @@ public class GoogleOauth implements SocialOauth {
     	// DB 확인
     	if(checkUser(user.getEmail()) == 0) {
     		//신규
-    		System.out.println("신규");
+    		System.out.println("신규 - GoogleOauth");
     	} else {
     		// 기존
-    		System.out.println("기존");
+    		System.out.println("기존 - GoogleOauth");
     	};
     	
     	

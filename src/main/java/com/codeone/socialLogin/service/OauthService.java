@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 import com.codeone.socialLogin.SocialLoginType;
@@ -18,16 +19,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 @Service
+
 @RequiredArgsConstructor
 @Slf4j
 public class OauthService {
     private final List<SocialOauth> socialOauthList;
-    private final RestTemplate restTemplate;
     private final HttpServletResponse response;
-    private final SocialDao dao;
 
     /**
-     * 어떤 소셜 로그인인지 확인하고 해당 소셜의 로그인 요청을 처리한다.
+     * 어떤 소셜 로그인인지 확인하고 해당 소셜의 로그인 페이지로 이동 CORS처리 문제가 있음
      * @param socialLoginType (GOOGLE, NAVER, KAKAO)
      */
     public void request(SocialLoginType socialLoginType) {

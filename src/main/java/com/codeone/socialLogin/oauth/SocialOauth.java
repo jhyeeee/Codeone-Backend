@@ -3,6 +3,7 @@ package com.codeone.socialLogin.oauth;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.*;
 
+import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,11 +17,16 @@ public interface SocialOauth {
 	   /**
      * API Server로부터 받은 code를 활용하여 사용자 인증 정보 요청
      * @param code API Server 에서 받아온 code
-     * @return API 서버로 부터 응답받은 Json 형태의 결과를 string으로 반
+     * @return 임시!!! GoogleOAuthToken
 	 * @throws JsonProcessingException 
      */
     GoogleOAuthToken requestAccessTokenAndParsing(String code) throws JsonProcessingException;
     
+    /**
+     * 
+     * 받은 유저 정보를 DB에서체크
+     */
+    UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException;
    
     
     default SocialLoginType type() {

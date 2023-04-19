@@ -1,8 +1,10 @@
 package com.codeone.socialLogin.controller;
 
-import javax.inject.Inject;
+import java.nio.charset.Charset;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +18,14 @@ import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.oauth.GoogleOauth;
 import com.codeone.socialLogin.service.OauthService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins="http://localhost:3000/")
 @RequiredArgsConstructor
 @RequestMapping(value = "/auth")
 @Slf4j
@@ -44,21 +48,42 @@ public class OauthController {
 	/**
      * Social Login API Server 요청에 의한 callback 을 처리
      * @param socialLoginType (GOOGLE, NAVER, KAKAO)
-     * @param code API Server 로부터 넘어노는 code
-     * @return SNS Login 요청 결과로 받은 Json 형태의 String 문자열 (access_token, refresh_token 등)
+     * @param code API Server 로부터 넘어오는 code
+     * @return ResponseEntity를 신규냐 기존회원인가에 따라 다르게 정보를 준다
 	 * @throws Exception 
      */
     @GetMapping(value = "/{socialLoginType}/callback")
-    public void callback(
+    public void  callback(
             @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
             @RequestParam(name = "code") String code,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response,
+            HttpServletRequest request) throws Exception {
         log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
 
         // User정보 생성 ()
         UserDto user =  googleOauth.getUserInfo( googleOauth.requestUserInfo(oauthService.requestAccessTokenAndParsing(socialLoginType, code)));
-        System.out.println(user.toString());
-        
-        response.sendRedirect("http://localhost:3000/");
+        HttpSession httpSession = request.getSession();
+        	httpSession.setAttribute("user", user);
+//        if(httpSession.isNew()) {
+//        	String url =  response.encodeURL("http://localhost:3000/signUp");
+//        	System.out.println("isNew");
+//        	response.sendRedirect(url);
+//        }
+//        
+        response.sendRedirect("http://localhost:3000/signUp");
     }
+    
+    
+    @GetMapping(value="/getSessionUser")
+    public ResponseEntity<UserDto> getSessionUser(HttpServletRequest request, HttpServletResponse response) {
+    	HttpSession httpSession = request.getSession();
+    	UserDto user = (UserDto)httpSession.getAttribute("user");
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+    	return ResponseEntity.ok()
+    				.headers(header)
+    				.body(user);
+    	
+    }
+    
 }
