@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codeone.dto.user.userDto;
+import com.codeone.dto.user.UserDto;
 import com.codeone.etc.TempKey;
-import com.codeone.service.user.userService;
+import com.codeone.service.user.UserService;
 
 @RestController
-public class userController {
+public class UserController {
 
 	// userService 연결
 	@Autowired
-	userService service;
+	UserService service;
 
 	// 회원가입 이메일 중복체크, 이메일 전송
 	@PostMapping(value = "/checkEmail")
@@ -51,7 +51,7 @@ public class userController {
 		
 		// 아이디 중복 검사
 		boolean isIdCheck = service.checkId(id);
-		if (isIdCheck) {	// 중복된 아이디 있음
+		if (isIdCheck == true) {	// 중복된 아이디 있음
 			return "DUPLICATED_ID";
 		}
 		return "SUCCESS";
@@ -62,7 +62,7 @@ public class userController {
 	// 이메일 인증 넣어주기
 	// 회원가입
 	@PostMapping(value = "/addUser")
-	public String addUser(userDto dto) {
+	public String addUser(UserDto dto) {
 		System.out.println("userController addUser() " + new Date());
 		
 		// 넘어온 값 확인 
@@ -74,17 +74,17 @@ public class userController {
 			return "DUPLICATED_EMAIL";
 		}
 		
-		// 중복 이메일 없을 때
+		// 중복 이메일 없을 때	
 		
-		// 이메일인증여부 여기서 업데이트 해주기
-		
+		// 회원가입
 		boolean isSignupSuccess = service.addUser(dto);
+		
+		// 이메일인증여부 업데이트
+		service.updateEmailAuth(dto);
 		
 		if (isSignupSuccess == false) { // 회원가입 실패
 			return "NO";
-		}
-		
-		
+		}	
 		
 		return "YES"; // 회원가입 성공
 	}
@@ -94,7 +94,7 @@ public class userController {
 		System.out.println("userController login() " + new Date());
 		
 		// 이메일넣고 회원정보 불러오기
-		userDto dto = service.getMember(email);
+		UserDto dto = service.getMember(email);
 		System.out.println(dto);
 		
 		if(dto == null) {		// 가입정보가 없을 때

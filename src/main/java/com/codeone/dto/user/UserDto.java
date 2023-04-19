@@ -19,28 +19,28 @@ import java.io.Serializable;
 	);*/
 
 // Serializable 꼭 써주기
-public class userDto implements Serializable {
+public class UserDto implements Serializable {
 
-	int seq;					
-	String email;				// 이메일 중복불가
-	String emailKey;			// 이메일 인증 랜덤키
-	int emailAuth;				// 이메일 인증여부 1이면 인증한 메일
-	String name;				// 이름
-	String id;					// 아이디 중복불가
-	String phoneNumber;			// 전화번호
-	String regdate;				// 가입일
-	String filename;			// 파일명. 프로필사진
-	String newfilename;
-	int delflg;					// 기본 0으로 가입, 삭제시 1 
-	int auth;					// 0:관리자, 1:일반회원, 2:기업회원
+	private int seq;					
+	private String email;				// 이메일 중복불가
+	private String emailKey;			// 이메일 인증 랜덤키
+	private int emailAuth;				// 이메일 인증여부 1이면 인증한 메일
+	private String name;				// 이름
+	private String id;					// 아이디 중복불가
+	private String phoneNumber;			// 전화번호
+	private String regdate;				// 가입일
+	private String filename;			// 파일명. 프로필사진
+	private String newfilename;
+	private int delflg;					// 기본 0으로 가입, 삭제시 1 
+	private int auth;					// 0:관리자, 1:일반회원, 2:기업회원
 	
 	
-	public userDto() {
+	public UserDto() {
 		
 	}
 
 
-	public userDto(int seq, String email, String emailKey, int emailAuth, String name, String id, String phoneNumber,
+	public UserDto(int seq, String email, String emailKey, int emailAuth, String name, String id, String phoneNumber,
 			String regdate, String filename, String newfilename, int delflg, int auth) {
 		super();
 		this.seq = seq;
