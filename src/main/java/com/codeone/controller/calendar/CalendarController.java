@@ -17,6 +17,7 @@ import com.codeone.dto.calendar.CalendarDto;
 import com.codeone.service.calendar.CalendarService;
 
 
+
 @RestController
 public class CalendarController {
 
@@ -33,7 +34,7 @@ public class CalendarController {
 	    map.put("list", list);
 	    
 	    
-//	    System.out.println("////////확인 " + list);
+	    System.out.println("////////확인 " + list);
 	    return map;
 	}
 	
@@ -57,6 +58,19 @@ public class CalendarController {
 		System.out.println("CalendarController detailCalendar() " + new Date());
 		
 		return service.detailCalendar(seq);
+	}
+	
+	// 일정수정
+	@PostMapping(value="/updateCalendar")
+	public String updateCalendar(CalendarDto dto) {
+		System.out.println("CalendarController updateCalendar() " + new Date());
+		System.out.println("/////////////" + dto);
+		
+		boolean result = service.updateCalendar(dto);
+		if(result == true) {
+			return "YES";
+		} 
+		return "NO";		
 	}
 	
 	

@@ -24,11 +24,12 @@
 	</select>
 	
 	<!-- 일정수정 -->
-	<select id="updateCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
+	<update id="updateCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
 		update calendar set
-		title = #{title}, content=#{content}, rdate=#{rdate}
+		title = #{title}, content=#{content}, start=#{start}, end=#{end}, 
+		backgroundColor=#{backgroundColor}, textColor=#{textColor}, allDay=#{allDay}
 		where seq=#{seq}		
-	</select>
+	</update>
 	
 	<!-- 일정삭제 -->
 	<select id="deleteCalendar" parameterType="Integer">
