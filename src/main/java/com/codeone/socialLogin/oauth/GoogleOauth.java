@@ -10,11 +10,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
+import com.codeone.socialLogin.Token.OAuthToken;
 import com.codeone.socialLogin.dao.SocialDao;
 import com.codeone.socialLogin.dto.GoogleUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +46,8 @@ public class GoogleOauth implements SocialOauth {
     private String GOOGLE_SNS_TOKEN_BASE_URL;
     @Value("${sns.google.scope.setting}")
     private String GOOGLE_SCOPE_SETTING;
-    
+    @Value("${sns.google.userInfo}")
+    private String GOOGLE_USERINFO_REQUEST_URL;
     
     @Override
     public String getOauthRedirectURL() {
@@ -83,7 +86,6 @@ public class GoogleOauth implements SocialOauth {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
         	System.out.println(responseEntity.getBody() + " accessToken값");
         	GoogleOAuthToken googleOAuthToken = objectMapper.readValue(responseEntity.getBody(), GoogleOAuthToken.class);
-
             return googleOAuthToken;
         }
         return null;
@@ -91,10 +93,9 @@ public class GoogleOauth implements SocialOauth {
     }
 
     
-    
-    public ResponseEntity<String> requestUserInfo(GoogleOAuthToken oAuthToken) {
-        String GOOGLE_USERINFO_REQUEST_URL="https://www.googleapis.com/oauth2/v1/userinfo";
-
+    @Override
+    public ResponseEntity<String> requestUserInfo(OAuthToken oAuthToken) {
+    	System.out.println("GoogleOauth RequestUserInfo");
         //header에 accessToken을 담는다.
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer "+oAuthToken.getAccess_token());
@@ -103,27 +104,28 @@ public class GoogleOauth implements SocialOauth {
         //HttpEntity를 하나 생성해 헤더를 담아서 restTemplate으로 구글과 통신하게 된다.
         HttpEntity request = new HttpEntity(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
+        ResponseEntity<String> userInfoRes = restTemplate.exchange(
                 GOOGLE_USERINFO_REQUEST_URL,
                 HttpMethod.GET,
                 request,
                 String.class
         );
 
-        log.info("response.getBody() = " + response.getBody());
-        log.info("response = " + response);
-        return response;
+        log.info("response.getBody() = " + userInfoRes.getBody());
+        log.info("response = " + userInfoRes);
+        return userInfoRes;
     }
+    
+
     
     
     /*
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
      */
+    @Override
     public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
-    	System.out.println(userInfoRes.getBody() + " getUserInfo");
     	GoogleUser googleUser = objectMapper.readValue(userInfoRes.getBody(), GoogleUser.class);
-    	UserDto user = new UserDto();
-    	
+    	UserDto user = new UserDto();    	
     	user.setName(googleUser.getName());
     	//user.setEmailKey(googleUser.getVerifiedEmail());
     	user.setEmail(googleUser.getEmail());
@@ -137,10 +139,7 @@ public class GoogleOauth implements SocialOauth {
     	} else {
     		// 기존
     		System.out.println("기존 - GoogleOauth");
-    	};
-    	
-    	
-        
+    	};   	
         return user;
     }
     
@@ -152,4 +151,6 @@ public class GoogleOauth implements SocialOauth {
     private int checkUser(String email) {    	
     	return dao.checkUser(email);
     }
+
+
 }

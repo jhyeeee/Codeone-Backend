@@ -31,8 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OauthController {
     private final OauthService oauthService;
-    //임시
-    private final GoogleOauth googleOauth;
+
 
     /**
      * 사용자가 소셜로그인 요청을 보냈을 때 처리하는 로직
@@ -55,22 +54,14 @@ public class OauthController {
     @GetMapping(value = "/{socialLoginType}/callback")
     public void  callback(
             @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType,
-            @RequestParam(name = "code") String code,
             HttpServletResponse response,
             HttpServletRequest request) throws Exception {
-        log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
-
-        // User정보 생성 ()
-        UserDto user =  googleOauth.getUserInfo( googleOauth.requestUserInfo(oauthService.requestAccessTokenAndParsing(socialLoginType, code)));
-        HttpSession httpSession = request.getSession();
-        	httpSession.setAttribute("user", user);
-//        if(httpSession.isNew()) {
-//        	String url =  response.encodeURL("http://localhost:3000/signUp");
-//        	System.out.println("isNew");
-//        	response.sendRedirect(url);
-//        }
-//        
-        response.sendRedirect("http://localhost:3000/signUp");
+        	String code = request.getParameter("code"); 
+        	// 하나의 메소드로 퉁쳐버리기
+        	UserDto user = oauthService.requestUserInfo(socialLoginType,code);
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", user);
+            response.sendRedirect("http://localhost:3000/signUp");
     }
     
     
@@ -82,8 +73,7 @@ public class OauthController {
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
     	return ResponseEntity.ok()
     				.headers(header)
-    				.body(user);
-    	
+    				.body(user);    	
     }
     
 }

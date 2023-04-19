@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
+import com.codeone.socialLogin.Token.OAuthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface SocialOauth {
@@ -20,7 +21,10 @@ public interface SocialOauth {
      * @return 임시!!! GoogleOAuthToken
 	 * @throws JsonProcessingException 
      */
-    GoogleOAuthToken requestAccessTokenAndParsing(String code) throws JsonProcessingException;
+    OAuthToken requestAccessTokenAndParsing(String code) throws JsonProcessingException;
+    
+    
+    ResponseEntity<String> requestUserInfo(OAuthToken oAuthToken);
     
     /**
      * 
@@ -29,11 +33,18 @@ public interface SocialOauth {
     UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException;
    
     
+    
+    
+    // 소셜 타입을 여기서 정해준다
     default SocialLoginType type() {
     	if (this instanceof GoogleOauth) {
             return SocialLoginType.GOOGLE;
+        } else if(this instanceof NaverOauth){
+        	return SocialLoginType.NAVER;
+        } else if(this instanceof KakaoOauth){
+        	return SocialLoginType.KAKAO;
         } else {
-            return null;
+        	return null;
         }
     }
 }
