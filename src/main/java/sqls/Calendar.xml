@@ -17,7 +17,7 @@
 	</insert>
 	
 	<!-- 일정조회 -->
-	<select id="detailCalendar" parameterType="Integer" resultType="ITzy.OTT.dto.CalDto">
+	<select id="detailCalendar" parameterType="Integer" resultType="com.codeone.dto.calendar.CalendarDto">
 		select *
 		from calendar
 		where seq=#{seq}
