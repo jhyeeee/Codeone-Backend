@@ -10,7 +10,8 @@ public class WebConfigurer implements WebMvcConfigurer{
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		// 접속 크라이언트를 허가
-		registry.addMapping("/**").allowedOrigins("*");
+		registry.addMapping("/**").allowedOrigins("*")		
+		.allowedMethods("GET", "POST", "PUT", "DELETE"); // PUT 메소드 허용
 	}
 	
 	
