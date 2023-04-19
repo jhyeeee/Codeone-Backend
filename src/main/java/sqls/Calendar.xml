@@ -16,6 +16,13 @@
 		values(#{id}, #{title}, #{content}, #{start}, #{end},#{backgroundColor},#{textColor},#{allDay})
 	</insert>
 	
+	<!-- 일정조회 -->
+	<select id="detailCalendar" parameterType="Integer" resultType="ITzy.OTT.dto.CalDto">
+		select *
+		from calendar
+		where seq=#{seq}
+	</select>
+	
 	<!-- 일정수정 -->
 	<select id="updateCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
 		update calendar set
