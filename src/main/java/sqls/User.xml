@@ -22,7 +22,7 @@
 <!-- 회원가입 -->
 <insert id="addUser" parameterType="com.codeone.dto.user.UserDto">
 	insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth)
-	values(#{email}, #{emailKey}, #{emailAuth}, #{name}, #{id}, null, now(), null, null, 0, 1  )
+	values(#{email}, #{emailKey}, 0, #{name}, #{id}, null, now(), null, null, 0, 1  )
 </insert>
 
 <!-- 메일키 회원정보에 업데이트 -->
@@ -31,6 +31,13 @@
     set emailKey=#{emailKey} 
     where email=#{email}
 </update> 
+
+<!-- 메일인증여부 emailAuth 1로 바꿔주기 -->
+<update id="updateEmailAuth" parameterType="com.codeone.dto.user.UserDto">
+    update user 
+    set emailAuth=1 
+    where email=#{email} and emailKey=#{emailKey}
+</update>
 
 <!-- 로그인 -->
 <select id="getMember" parameterType="com.codeone.dto.user.UserDto" resultType="com.codeone.dto.user.UserDto">

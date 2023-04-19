@@ -13,13 +13,18 @@ public interface UserDao {
 	int checkEmail(String email);
 	
 	// 이메일 중복체크
-	int checkId(String email);
+	int checkId(String id);
 	
 	int addUser(UserDto dto);
 	
 	int updateEmailKey(UserDto dto);
 	
+
+	int updateEmailAuth(UserDto dto);
+	
 	UserDto getMember(String email);
 	
+	
 	UserDto selectOneBySeq(int seq);
+
 }

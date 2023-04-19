@@ -50,7 +50,7 @@ public class UserController {
 		
 		// 아이디 중복 검사
 		boolean isIdCheck = service.checkId(id);
-		if (isIdCheck) {	// 중복된 아이디 있음
+		if (isIdCheck == true) {	// 중복된 아이디 있음
 			return "DUPLICATED_ID";
 		}
 		return "SUCCESS";
@@ -73,17 +73,17 @@ public class UserController {
 			return "DUPLICATED_EMAIL";
 		}
 		
-		// 중복 이메일 없을 때
+		// 중복 이메일 없을 때	
 		
-		// 이메일인증여부 여기서 업데이트 해주기
-		
+		// 회원가입
 		boolean isSignupSuccess = service.addUser(dto);
+		
+		// 이메일인증여부 업데이트
+		service.updateEmailAuth(dto);
 		
 		if (isSignupSuccess == false) { // 회원가입 실패
 			return "NO";
-		}
-		
-		
+		}	
 		
 		return "YES"; // 회원가입 성공
 	}
