@@ -42,6 +42,10 @@ public interface StoreDao {
 	// 좋아요 취소카운트
 	int countCancelLike(int seq);
 	
+	// 중고거래 글 수정
 	int updateStoreWrite(StoreItemDto item);
+	
+	// 중고거래 글 삭제
+	int deleteStoreWrite(int seq);
 
 }

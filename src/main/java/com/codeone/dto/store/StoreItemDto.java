@@ -34,7 +34,7 @@ public class StoreItemDto implements Serializable {
 	private int likecount;			// 좋아요 수
 	private String filename;		// 사진
 	private String newfilename;	
-	private int delflg;				// 삭제여부
+	private int delflg;				// 삭제여부 삭제된글:1
 	
 	public StoreItemDto() {
 		// TODO Auto-generated constructor stub

@@ -70,6 +70,12 @@ public class StoreService {
 		int n = dao.updateStoreWrite(item);
 		return n>0?true:false;
 	}
+	
+	// 중고거래 글 삭제
+	public boolean deleteStoreWrite(int seq) {
+		int n = dao.deleteStoreWrite(seq);
+		return n>0?true:false; 
+	}
 }
 
 

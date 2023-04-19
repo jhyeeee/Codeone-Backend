@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,6 +75,9 @@ public class StoreController {
 		// filename 취득		
 		String filename = uploadFile.getOriginalFilename();	// 원본 파일명
 //		String filepath = path + "/" + filename;	// 실제경로 + 파일네임
+		
+		
+		
 		item.setFilename(filename);
 //		System.out.println(filepath);
 		
@@ -259,7 +263,7 @@ public class StoreController {
 		// 업로드 파일이 없을 경우
 		if(uploadFile == null || uploadFile.isEmpty()) {
 			
-			// db에 파일, item 넣어주기
+			// db에 원래파일이름, item 넣어주기
 	        boolean isUpdateWrite = service.updateStoreWrite(item);
 	        
 	        if(isUpdateWrite == true) {
@@ -267,7 +271,8 @@ public class StoreController {
 	        }
 	        return ResponseEntity.badRequest().build();    // 글수정 실패
 	    }
-		// 업로드 파일이 있을 경우
+		
+		// 업로드 파일이 있을 경우 파일 생성
 		
 		// 경로
 		String path = req.getServletContext().getRealPath("/storeImage");		
@@ -313,6 +318,19 @@ public class StoreController {
 //		}
 //		// 글 수정 실패
 //		return ResponseEntity.badRequest().build();
+	}
+	
+	// 중고거래 글 삭제
+	@DeleteMapping("/storeitem")
+	public ResponseEntity<Void> deleteStoreWrite(int seq){
+		System.out.println("StoreController deleteStoreWrite() " + new Date());
+		
+		System.out.println(seq);
+		boolean isDeleteItem = service.deleteStoreWrite(seq);
+		if(isDeleteItem) {
+			return ResponseEntity.ok().build();		// 글삭제 성공
+		}
+		return ResponseEntity.badRequest().build();		// 글삭제 실패
 	}
 
 }
