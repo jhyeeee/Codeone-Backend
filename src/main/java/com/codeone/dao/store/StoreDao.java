@@ -1,18 +1,23 @@
 package com.codeone.dao.store;
 
+
 import java.util.List;
+
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.codeone.dto.store.StoreItemDto;
+
 import com.codeone.dto.store.StoreLikeDto;
 import com.codeone.dto.store.StoreParam;
+
 
 @Mapper
 @Repository
 public interface StoreDao {
 	
+
 	// 중고거래 글쓰기	
 	int writeStore(StoreItemDto item);
 
@@ -38,4 +43,5 @@ public interface StoreDao {
 	int countCancelLike(int seq);
 	
 	int updateStoreWrite(StoreItemDto item);
+
 }

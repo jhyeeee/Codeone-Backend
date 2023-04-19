@@ -40,6 +40,15 @@ import com.codeone.service.store.StoreService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.codeone.dto.store.StoreItemDto;
+import com.codeone.service.store.StoreService;
+
+
 @RestController
 public class StoreController {
 
@@ -171,9 +180,14 @@ public class StoreController {
 		// 좋아요 취소
 		boolean isCancleLike = service.cancelLike(dto);
 		
-		// 좋아요수 내려주기
-		service.countCancelLike(dto.getSeq());
-		return "CANCLE_LIKE";
+		if(isCancleLike == true) {
+			// 좋아요수 내려주기
+			service.countCancelLike(dto.getSeq());
+			return "CANCLE_LIKE";
+		}
+		return "CANCLE_LIKE_FAIL";
+		
+		
 		
 	}
 	
@@ -302,10 +316,6 @@ public class StoreController {
 	}
 
 }
-
-
-
-
 
 
 

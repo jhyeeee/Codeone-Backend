@@ -1,18 +1,18 @@
-package com.codeone.validator;
+package com.codeone.validator.studygroup;
 
 import java.time.LocalDate;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.codeone.command.studygroup.StudygroupCommand;
+import com.codeone.command.studygroup.StudygroupInfoCommand;
 import com.codeone.etc.SearchUtils;
 import com.codeone.etc.StaticVariable;
 
 public class WriteStudygroupValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return StudygroupCommand.class.isAssignableFrom(clazz);
+		return StudygroupInfoCommand.class.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class WriteStudygroupValidator implements Validator {
 		// 진행 기간(시작 날짜, 종료 날짜), 마감 날짜를 검증하기 위한 현재 날짜
 		LocalDate now = LocalDate.now();
 		
-		StudygroupCommand studygroup = (StudygroupCommand) target;
+		StudygroupInfoCommand studygroup = (StudygroupInfoCommand) target;
 		
 		// 검증할 값들을 꺼냄
 		String title = studygroup.getTitle();

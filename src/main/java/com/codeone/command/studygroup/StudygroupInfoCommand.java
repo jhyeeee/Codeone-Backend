@@ -2,14 +2,14 @@ package com.codeone.command.studygroup;
 
 import java.time.LocalDate;
 
-import com.codeone.dto.studygroup.StudygroupDto;
+import com.codeone.dto.studygroup.StudygroupInfoDto;
+import com.codeone.dto.studygroup.StudygroupManagementDto;
 
 import lombok.Data;
 
 @Data
-public class StudygroupCommand {
-	private int seq;							// 모집글 번호
-	private int memberSeq;						// 모집글 작성 회원 번호(스터디장)
+public class StudygroupInfoCommand {
+	private int memberSeq;						// 모집글 작성자 번호
 	private String title;						// 모집글 제목
 	private String contents;					// 모집글 내용
 	private int recruitmentType;				// 모집 구분
@@ -30,10 +30,16 @@ public class StudygroupCommand {
 		this.isVisible = isVisible;
 	}
 	
-	public StudygroupDto toDto() {
-		StudygroupDto dto = new StudygroupDto();
-		dto.setSeq(seq);
+	public StudygroupManagementDto toStudygroupManagementDto() {
+		StudygroupManagementDto dto = new StudygroupManagementDto();
 		dto.setMemberSeq(memberSeq);
+		dto.setIsVisible(isVisible);
+		
+		return dto;
+	}
+	
+	public StudygroupInfoDto toStudygroupInfoDto() {
+		StudygroupInfoDto dto = new StudygroupInfoDto();
 		dto.setTitle(title);
 		dto.setContents(contents);
 		dto.setRecruitmentType(recruitmentType);
@@ -44,7 +50,6 @@ public class StudygroupCommand {
 		dto.setRecruitmentPart(recruitmentPart);
 		dto.setTechnologyStack(technologyStack);
 		dto.setDeadlineForRecruitment(deadlineForRecruitment);
-		dto.setVisible(isVisible);
 		
 		return dto;
 	}

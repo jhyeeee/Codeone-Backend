@@ -19,7 +19,12 @@ public interface UserDao {
 	
 	int updateEmailKey(UserDto dto);
 	
+
 	int updateEmailAuth(UserDto dto);
 	
 	UserDto getMember(String email);
+	
+	
+	UserDto selectOneBySeq(int seq);
+
 }

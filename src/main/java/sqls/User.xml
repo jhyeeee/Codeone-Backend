@@ -46,4 +46,10 @@
 	where email=#{email}
 </select>
 
+<select id="selectOneBySeq" parameterType="com.codeone.dto.user.UserDto" resultType="com.codeone.dto.user.UserDto">
+	SELECT *
+	FROM user
+	WHERE seq = #{seq}
+</select>
+
 </mapper>

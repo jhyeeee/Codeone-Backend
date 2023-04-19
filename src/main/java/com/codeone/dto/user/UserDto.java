@@ -2,6 +2,8 @@ package com.codeone.dto.user;
 
 import java.io.Serializable;
 
+import com.codeone.dto.studygroup.StudygroupDetailUserDto;
+
 // DB user table
 /*create table user (
 		seq int auto_increment primary key,
@@ -186,7 +188,12 @@ public class UserDto implements Serializable {
 				+ "]";
 	}
 	
-	
-	
+	public StudygroupDetailUserDto toStudygroupDetailUserDto() {
+		StudygroupDetailUserDto studygroupDetailUser = new StudygroupDetailUserDto();
+		studygroupDetailUser.setId(id);
+		studygroupDetailUser.setFilename(filename);
+		
+		return studygroupDetailUser;
+	}
 	
 }

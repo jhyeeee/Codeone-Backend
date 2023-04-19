@@ -1,6 +1,8 @@
 package com.codeone.service.store;
 
+
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codeone.dao.store.StoreDao;
 import com.codeone.dto.store.StoreItemDto;
+
 import com.codeone.dto.store.StoreLikeDto;
 import com.codeone.dto.store.StoreParam;
+
 
 @Service
 @Transactional
@@ -23,6 +27,7 @@ public class StoreService {
 		int n = dao.writeStore(item);
 		return n>0?true:false;
 	}
+
 	
 	public List<StoreItemDto> getStoreList(StoreParam param) {
 		return dao.getStoreList(param);
@@ -66,6 +71,7 @@ public class StoreService {
 		return n>0?true:false;
 	}
 }
+
 
 
 
