@@ -31,4 +31,9 @@ public class CalendarService {
 	public CalendarDto detailCalendar(int seq) {
 		return dao.detailCalendar(seq);
 	}
+	
+	//일정수정
+	public boolean updateCalendar(CalendarDto dto) {
+		return dao.updateCalendar(dto);
+	}
 }
