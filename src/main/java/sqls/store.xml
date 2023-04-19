@@ -11,4 +11,78 @@
 	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},0, now(), 0, #{filename}, #{newfilename}, 0 )
 </insert>
 
+<!-- 중고거래 목록 정렬 최신순 -->
+<select id="getStoreList" parameterType="com.codeone.dto.store.StoreParam" resultType="com.codeone.dto.store.StoreItemDto">
+	select *
+	from item
+	where 1=1 	<!-- 참일때 -->	<!-- del=0 지워지지않은 것 -->
+		<if test="choice != null and choice != ''  and search != null and search != ''">
+			<if test="choice == 'title'">
+				and title like concat('%', #{search},'%')and delflg=0
+			</if>
+			<if test="choice == 'content'">
+				and content like concat('%', #{search},'%')and delflg=0
+			</if>
+			<if test="choice == 'writer'">
+				and id=#{search} and delflg=0
+			</if>
+		</if>
+	order by wdate desc;
+</select>
+
+<!-- 중고거래 item -->
+<select id="getStoreItem" parameterType="Integer" resultType="com.codeone.dto.store.StoreItemDto">
+	select *
+	from item
+	where seq=#{seq}
+</select>
+
+<!-- 중고거래글 좋아요 -->
+<insert id="likeItem" parameterType="com.codeone.dto.store.StoreLikeDto">
+	insert into itemlike(id, seq, liketime)
+	values(#{id}, #{seq}, now())
+</insert>
+
+<!-- 좋아요중인지 확인 -->
+<select id="checkLike" parameterType="com.codeone.dto.store.StoreLikeDto" resultType="Integer">
+	select ifnull(count(*), 0)
+	from itemlike
+	where id=#{id} and seq=#{seq}
+</select>
+
+<!-- 좋아요 취소 -->
+<delete id="cancelLike" parameterType="com.codeone.dto.store.StoreLikeDto">
+	delete from itemlike
+	where id=#{id} and seq=#{seq}
+</delete>
+
+<!-- 좋아요 카운트 -->
+<update id="countLike" parameterType="Integer">
+	update item
+	set likecount=likecount+1
+	where seq=#{seq}
+</update>
+
+<!-- 좋아요 취소 카트 -->
+<update id="countCancelLike" parameterType="Integer">
+	update item
+	set likecount=likecount-1
+	where seq=#{seq}
+</update>
+
+<!-- 중고거래 글수정 -->
+<update id="updateStoreWrite">
+	update item
+	set title=#{title}, content=#{content}, location=#{location}, price=#{price}, itemcondition=#{itemcondition}, 
+	filename=#{filename}, newfilename=#{newfilename}
+	where seq=#{seq}
+</update>
+
 </mapper>
+
+
+
+
+
+
+
