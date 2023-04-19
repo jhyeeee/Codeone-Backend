@@ -147,8 +147,8 @@ public class GoogleOauth implements SocialOauth {
      * DB체크
      * 
      */
-    
-    private int checkUser(String email) {    	
+    @Override
+    public int checkUser(String email) {    	
     	return dao.checkUser(email);
     }
 

@@ -46,10 +46,7 @@ public class KakaoOauth implements SocialOauth {
     private String KAKAO_SNS_CLIENT_ID;
     @Value("${sns.kakao.callback.url}")
     private String KAKAO_SNS_CALLBACK_URL;
-//    @Value("${sns.kakao.client.secret}")
-//    private String kakao_SNS_CLIENT_SECRET;
-//    @Value("${sns.kakao.state}")
-//    private String kakao_SNS_STATE;
+
     @Value("${sns.kakao.token.url}")
     private String KAKAO_SNS_TOKEN_BASE_URL;
     @Value("${sns.kakao.userInfo}")
@@ -167,8 +164,8 @@ public class KakaoOauth implements SocialOauth {
      * DB체크
      * 
      */
-    
-    private int checkUser(String email) {    	
+    @Override
+    public int checkUser(String email) {    	
     	return dao.checkUser(email);
     }
 }
