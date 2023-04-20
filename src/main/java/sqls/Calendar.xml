@@ -32,10 +32,10 @@
 	</update>
 	
 	<!-- 일정삭제 -->
-	<select id="deleteCalendar" parameterType="Integer">
+	<delete id="deleteCalendar" parameterType="Integer">
 		delete from calendar
 		where seq=#{seq}
-	</select>
+	</delete>
 	
 	
 </mapper>

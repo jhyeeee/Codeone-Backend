@@ -36,4 +36,9 @@ public class CalendarService {
 	public boolean updateCalendar(CalendarDto dto) {
 		return dao.updateCalendar(dto);
 	}
+	
+	//일정삭제
+	public boolean deleteCalendar(int seq) {
+		return dao.deleteCalendar(seq);
+	}
 }

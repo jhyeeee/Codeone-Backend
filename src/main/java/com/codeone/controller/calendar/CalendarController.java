@@ -6,10 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -72,6 +78,31 @@ public class CalendarController {
 		} 
 		return "NO";		
 	}
+	
+	// 일정삭제
+	@GetMapping(value = "/deleteCalendar")
+	public String deleteCalendar(int seq) {
+		System.out.println("CalendarController deleteCalendar() " + new Date());
+	    //System.out.println("////////확인 " + seq);  -> seq가 잘 넘어오는지 확인
+	    
+	    boolean result = service.deleteCalendar(seq);
+	    if(result == true) {
+	    	return "YES";
+	    }
+	    return "NO";
+	}
+	
+//	@DeleteMapping(value = "/deleteCalendar")
+//	public ResponseEntity<String> deleteCalendar(@RequestParam int seq) {
+//	    System.out.println("CalendarController deleteCalendar() " + new Date());
+//	    System.out.println("////////확인" + seq);
+//	    boolean result = service.deleteCalendar(seq);
+//	    
+//	    if(result == true) {
+//			return ResponseEntity.ok("YES");
+//		}
+//		return ResponseEntity.ok("NO");
+//	}
 	
 	
 }
