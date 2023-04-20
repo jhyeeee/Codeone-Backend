@@ -49,7 +49,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codeone.dto.store.StoreItemDto;
 import com.codeone.service.store.StoreService;
 
-
 @RestController
 public class StoreController {
 
@@ -58,166 +57,192 @@ public class StoreController {
 
 	// 중고거래 글쓰기
 	@PostMapping(value = "/storewrite")
-	public String storewrite(StoreItemDto item, 
-							@RequestParam("uploadFile")MultipartFile uploadFile, 
-							HttpServletRequest req) {		
-		System.out.println("StoreController storewrite() " + new Date());			
-		
+	public String storewrite(StoreItemDto item, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile,
+			HttpServletRequest req) {
+		System.out.println("StoreController storewrite() " + new Date());
+
 		// System.out.println(item);
 		
+		 if (uploadFile == null || uploadFile.isEmpty()) {
+
+		        // db에 원래파일이름, item 넣어주기
+		        boolean isUpdateWrite = service.updateStoreWrite(item);
+
+		        if (isUpdateWrite == true) {
+		        	return "WRITE_OK"; // 글쓰기 성공
+		        }
+		        return "WRITE_FAIL"; // 글쓰기 실패
+		    }
+
+		    // 업로드 파일이 있을 경우 파일 생성
+		    boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+
+		    if (isUploadImg == true) {
+		    	
+		    	// 파일이 생성되면 글작성
+		    	boolean isWriteStore = service.writeStore(item);
+		    	
+		    	if (isWriteStore == true) {
+					return "WRITE_OK"; // 글쓰기 성공
+				}else {
+					return "WRITE_FAIL"; // 글쓰기 실패
+				}		    
+		    }else {
+		    	return "NO_IMAGE"; // 글쓰기 실패
+		    }
+		    
+	}
 		// 파일 만들어주기
+
 		
 		// 파일 확장자, 사이즈 제한 추가하기
-		
-		// 경로
-		String path = req.getServletContext().getRealPath("/storeImage");		
-		
-		// filename 취득		
-		String filename = uploadFile.getOriginalFilename();	// 원본 파일명
-//		String filepath = path + "/" + filename;	// 실제경로 + 파일네임
-		
-		
-		
-		item.setFilename(filename);
-//		System.out.println(filepath);
-		
-		// 파일명을 충돌되지 않는 명칭(Date)으로 변경
-		String newfilename = ItemUtil.getNewFileName(filename);
-		item.setNewfilename(newfilename);	// 변경된 파일명 db에 넣어줌		
-		
-		// 파일 생성
-		File file = new File(path + "/" + newfilename);		
-		System.out.println(file);		// 파일경로
-//		System.out.println(item.toString());
-		try {
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-			bos.write(uploadFile.getBytes());
-			bos.close();	
-			
-			// db에 파일, item 넣어주기
-			boolean isWriteStore = service.writeStore(item);
-			
-			if(isWriteStore == true) {
-				return "WRITE_OK";		// 글쓰기 성공
-			}
-			return "WRITE_FAIL";		// 글쓰기 실패
-			
-		} catch (Exception e) {
-			return "file upload fail";
-		} 
-}		
-		
+
+//		// 경로
+//		String path = req.getServletContext().getRealPath("/storeImage");
+//
+//		// filename 취득
+//		String filename = uploadFile.getOriginalFilename(); // 원본 파일명
+//
+//		// 확장자 제한
+//		String filecheck = filename.substring(filename.lastIndexOf('.'));
+//
+//		// img 파일일때 파일생성
+//		if (filecheck.equals(".png") || filecheck.equals(".jpg") || filecheck.equals(".jpeg")) {
+//			item.setFilename(filename);
+//
+//			// 파일명을 충돌되지 않는 명칭(Date)으로 변경
+//			String newfilename = ItemUtil.getNewFileName(filename);
+//			item.setNewfilename(newfilename); // 변경된 파일명 db에 넣어줌
+//
+//			// 파일 생성
+//			File file = new File(path + "/" + newfilename);
+//			System.out.println(file); // 파일경로
+////			System.out.println(item.toString());
+//			try {
+//				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//				bos.write(uploadFile.getBytes());
+//				bos.close();
+//
+//				// db에 파일, item 넣어주기
+//				boolean isWriteStore = service.writeStore(item);
+//
+//				if (isWriteStore == true) {
+//					return "WRITE_OK"; // 글쓰기 성공
+//				}
+//				return "WRITE_FAIL"; // 글쓰기 실패
+//
+//			} catch (Exception e) {
+//				return "UPLOAD_FAIL";
+//			}
+//		}
+//		return "NO_IMAGE";
+
+	
+
 	// 중고거래 리스트
 	// 좋아요 여부 같이보내주기
 	@GetMapping(value = "/getStoreList")
 	public List<StoreItemDto> getStoreList(StoreParam param) {
-		System.out.println("StoreController getStoreList() " + new Date());	
-		
+		System.out.println("StoreController getStoreList() " + new Date());
+
 		// search, choice 넣어주고 리스트 불러오기
 		List<StoreItemDto> list = service.getStoreList(param);
-		
+
 		// 로그인 id받아서 그사람이 좋아요중인지 여부 확인
 
-	    
 		return list;
 	}
-	
-	// 서버에 있는 이미지 불러와서 리액트에 반환해주기	
+
+	// 서버에 있는 이미지 불러와서 리액트에 반환해주기
 	@GetMapping(value = "image/{imagename}", produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> searchImage(@PathVariable("imagename") String imagename) throws IOException {
-		System.out.println("StoreController searchImage() " + new Date());	
-		//System.out.println("이미지: " + imagename);
-		
+		System.out.println("StoreController searchImage() " + new Date());
+		// System.out.println("이미지: " + imagename);
+
 		// 이미지 경로 설정
-        String imagePath = "src/main/webapp/storeImage/" + imagename;
-        Path imageFilePath = Paths.get(imagePath);
+		String imagePath = "src/main/webapp/storeImage/" + imagename;
+		Path imageFilePath = Paths.get(imagePath);
 
-        // 이미지 파일 읽어오기
-        byte[] imageBytes = Files.readAllBytes(imageFilePath);
+		// 이미지 파일 읽어오기
+		byte[] imageBytes = Files.readAllBytes(imageFilePath);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(imageBytes);
-		
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+
 //	    Resource resource = new FileSystemResource("src/main/webapp/storeImage/" + imagename);	// 이미지경로 + 이미지이름
 //	    System.out.println(resource);
 //	    return ResponseEntity.ok()
 //	            .contentType(MediaType.IMAGE_JPEG)
 //	            .body(resource);
 	}
-	
+
 	// 거래글 상세보기
 	@GetMapping(value = "/storedetail")
 	public StoreItemDto getStoreItem(int seq) {
-		System.out.println("StoreController getStoreItem() " + new Date());	
-		
+		System.out.println("StoreController getStoreItem() " + new Date());
+
 		StoreItemDto item = service.getStoreItem(seq);
 		return item;
-		
+
 	}
-	
+
 	// 좋아요
 	@GetMapping(value = "/likeItem")
 	public String likeItem(StoreLikeDto dto) {
-		System.out.println("StoreController likeItem() " + new Date());	
-		
-		System.out.println(dto);		
-		
+		System.out.println("StoreController likeItem() " + new Date());
+
+		System.out.println(dto);
+
 		// 좋아요 중인지 확인
 		boolean isLiking = service.checkLike(dto);
 		System.out.println(isLiking);
-		if(isLiking == false) {			// 좋아요 중이 아닐때
+		if (isLiking == false) { // 좋아요 중이 아닐때
 			// 좋아요
-			boolean isLike = service.likeItem(dto);	
-			
-			if(isLike == true) {
+			boolean isLike = service.likeItem(dto);
+
+			if (isLike == true) {
 				// 좋아요하고 좋아요수 올려주기
 				service.countLike(dto.getSeq());
-				return "LIKE_OK";	
-				
+				return "LIKE_OK";
+
 			}
 			return "LIKE_FAIL";
-		}	
+		}
 		// 이미 좋아요한 글일 때
 		// return "LIKING";
-		
+
 		// 좋아요 취소
 		boolean isCancleLike = service.cancelLike(dto);
-		
-		if(isCancleLike == true) {
+
+		if (isCancleLike == true) {
 			// 좋아요수 내려주기
 			service.countCancelLike(dto.getSeq());
 			return "CANCLE_LIKE";
 		}
 		return "CANCLE_LIKE_FAIL";
-		
-		
-		
+
 	}
-	
+
 	// 좋아요 중인지 확인
 	@GetMapping(value = "/checkLike")
 	public String checkLike(StoreLikeDto dto) {
-	    System.out.println("StoreController checkLike() " + new Date());
-	    
-	    System.out.println(dto.getSeq());
-	    // 리액트에서 id도 같이 넘겨주기
-	    String id = "sss";	    
-	    dto.setId(id);
-	    
+		System.out.println("StoreController checkLike() " + new Date());
+
+		System.out.println(dto.getSeq());
+		// 리액트에서 id도 같이 넘겨주기
+		String id = "sss";
+		dto.setId(id);
+
 		System.out.println(dto);
-	    boolean isLiking = service.checkLike(dto);
-	    
-	    if(isLiking == true) {
-	    	return "LIKING";
+		boolean isLiking = service.checkLike(dto);
+
+		if (isLiking == true) {
+			return "LIKING";
 		}
 		return "NOT_LIKE";
-	} 
-	
-	
+	}
+
 	// 글 목록에서 좋아요중인지 확인 추가하기
-	
-	
+
 //	    System.out.println(seqArray);
 //	    String id = "sss";
 //	    boolean isLiking = false;
@@ -238,7 +263,7 @@ public class StoreController {
 //	    }
 //	    
 //	    return "NOT_LIKE";
-		    
+
 //		String id = "sss";
 //		
 //		StoreLikeDto dto = new StoreLikeDto();
@@ -252,93 +277,135 @@ public class StoreController {
 //			return "LIKING";
 //		}
 //		return "NOT_LIKE";
+
 	
-	// 중고거래 글 수정 파일 만드는 부분 추가하기
+	// 중고거래 글 수정 파일생성은 service로 뺌
 	@PutMapping(value = "/writeStore")
-	public ResponseEntity<Void> updateStoreWrite(StoreItemDto item,
-											@RequestParam(value = "uploadFile", required = false)MultipartFile uploadFile, 
-											HttpServletRequest req){
-		System.out.println("StoreController writeStore() " + new Date());
-		System.out.println(item);
-		// 업로드 파일이 없을 경우
-		if(uploadFile == null || uploadFile.isEmpty()) {
-			
-			// db에 원래파일이름, item 넣어주기
+	public ResponseEntity<String> updateStoreWrite(StoreItemDto item,
+	        @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
+	    System.out.println("StoreController writeStore() " + new Date());
+	    System.out.println(item);
+	    // 업로드 파일이 없을 경우
+	    if (uploadFile == null || uploadFile.isEmpty()) {
+
+	        // db에 원래파일이름, item 넣어주기
 	        boolean isUpdateWrite = service.updateStoreWrite(item);
-	        
-	        if(isUpdateWrite == true) {
-	            return ResponseEntity.ok().build();        // 글수정 성공
+
+	        if (isUpdateWrite == true) {
+	            return ResponseEntity.ok().build(); // 글수정 성공
 	        }
-	        return ResponseEntity.badRequest().build();    // 글수정 실패
+	        return ResponseEntity.badRequest().build(); // 글수정 실패
 	    }
-		
-		// 업로드 파일이 있을 경우 파일 생성
-		
-		// 경로
-		String path = req.getServletContext().getRealPath("/storeImage");		
-		
-		// filename 취득		
-		String filename = uploadFile.getOriginalFilename();	// 원본 파일명
-		item.setFilename(filename);
-//				System.out.println(filepath);
-		
-		// 파일명을 충돌되지 않는 명칭(Date)으로 변경
-		String newfilename = ItemUtil.getNewFileName(filename);
-		item.setNewfilename(newfilename);	// 변경된 파일명 db에 넣어줌		
-		
-		// 파일 생성
-		File file = new File(path + "/" + newfilename);		
-		System.out.println(file);		// 파일경로
-//				System.out.println(item.toString());
-		try {
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-			bos.write(uploadFile.getBytes());
-			bos.close();	
-			
-			// db에 파일, item 넣어주기
-			boolean isUpdateWrite = service.updateStoreWrite(item);
-			
-			if(isUpdateWrite == true) {
-				return ResponseEntity.ok().build();		// 글쓰기 성공
-			}
-			return ResponseEntity.badRequest().build();		// 글쓰기 실패
-			
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		} 
-		
-		
-//		// id 추후 로그인에서 받아오기
-//		String id = "sss";
-//		item.setId(id);		
-//		
-//		boolean isUpdateWrite = service.updateStoreWrite(item);
-//		if(isUpdateWrite) {		// 글수정 성공
-//			return ResponseEntity.ok().build();
-//		}
-//		// 글 수정 실패
-//		return ResponseEntity.badRequest().build();
+
+	    // 업로드 파일이 있을 경우 파일 생성
+	    boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+
+	    if (isUploadImg == true) {
+	    	
+	    	// 파일이 생성되면 글수정
+	    	boolean isUpdateWrite = service.updateStoreWrite(item);
+	    	
+	    	if (isUpdateWrite == true) {
+				return ResponseEntity.ok().build(); // 글쓰기 성공
+			}else {
+				return ResponseEntity.badRequest().build(); // 글쓰기 실패
+			}		    
+	    }else {
+	        return ResponseEntity.badRequest().body("NO_IMAGE"); // 글쓰기 실패
+	    }
 	}
 	
+//	@PutMapping(value = "/writeStore")
+//	public ResponseEntity<String> updateStoreWrite(StoreItemDto item,
+//			@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
+//		System.out.println("StoreController writeStore() " + new Date());
+//		System.out.println(item);
+//		// 업로드 파일이 없을 경우
+//		if (uploadFile == null || uploadFile.isEmpty()) {
+//
+//			// db에 원래파일이름, item 넣어주기
+//			boolean isUpdateWrite = service.updateStoreWrite(item);
+//
+//			if (isUpdateWrite == true) {
+//				return ResponseEntity.ok().build(); // 글수정 성공
+//			}
+//			return ResponseEntity.badRequest().build(); // 글수정 실패
+//		}
+//
+//		// 업로드 파일이 있을 경우 파일 생성
+//
+//		// 경로
+//		String path = req.getServletContext().getRealPath("/storeImage");
+//
+//		// filename 취득
+//		String filename = uploadFile.getOriginalFilename(); // 원본 파일명
+//
+//		// 확장자 제한
+//		String filecheck = filename.substring(filename.lastIndexOf('.'));
+//
+//		// img 파일일때 파일생성
+//		if (filecheck.equals(".png") || filecheck.equals(".jpg") || filecheck.equals(".jpeg")) {
+//			item.setFilename(filename);
+////			System.out.println(filepath);
+//
+//			// 파일명을 충돌되지 않는 명칭(Date)으로 변경
+//			String newfilename = ItemUtil.getNewFileName(filename);
+//			item.setNewfilename(newfilename); // 변경된 파일명 db에 넣어줌
+//
+//			// 파일 생성
+//			File file = new File(path + "/" + newfilename);
+//			System.out.println(file); // 파일경로
+////			System.out.println(item.toString());
+//			try {
+//				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//				bos.write(uploadFile.getBytes());
+//				bos.close();
+//
+//				// db에 파일, item 넣어주기
+//				boolean isUpdateWrite = service.updateStoreWrite(item);
+//
+//				if (isUpdateWrite == true) {
+//					return ResponseEntity.ok().build(); // 글쓰기 성공
+//				}else {
+//					return ResponseEntity.badRequest().build(); // 글쓰기 실패
+//				}	
+//			} catch (Exception e) {
+//				return ResponseEntity.badRequest().build();
+//			}
+//		}
+//		return ResponseEntity.badRequest().body("NO_IMAGE");		// 이미지가 아님
+//
+//	}
+
+
 	// 중고거래 글 삭제
 	@DeleteMapping("/storeitem")
-	public ResponseEntity<Void> deleteStoreWrite(int seq){
+	public ResponseEntity<Void> deleteStoreWrite(int seq) {
 		System.out.println("StoreController deleteStoreWrite() " + new Date());
-		
+
 		System.out.println(seq);
 		boolean isDeleteItem = service.deleteStoreWrite(seq);
-		if(isDeleteItem) {
-			return ResponseEntity.ok().build();		// 글삭제 성공
+		if (isDeleteItem) {
+			return ResponseEntity.ok().build(); // 글삭제 성공
 		}
-		return ResponseEntity.badRequest().build();		// 글삭제 실패
+		return ResponseEntity.badRequest().build(); // 글삭제 실패
 	}
+	
+	// 중고거래 판매여부 변경
+	@PutMapping("/status")
+	public ResponseEntity<Void> updateStatus(@RequestBody StoreItemDto item){
+		System.out.println("StoreController updateStatus() " + new Date());
+		
+		System.out.println(item);		
+		
+		try {
+			service.updateStatus(item);
+			return ResponseEntity.ok().build();  
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}	
+	
+	
 
 }
-
-
-
-
-
-
-
-

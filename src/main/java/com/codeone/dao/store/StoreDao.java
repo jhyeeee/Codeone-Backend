@@ -47,5 +47,8 @@ public interface StoreDao {
 	
 	// 중고거래 글 삭제
 	int deleteStoreWrite(int seq);
+	
+	// 판매여부 변경
+	void updateStatus(StoreItemDto item);
 
 }

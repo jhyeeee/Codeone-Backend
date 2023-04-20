@@ -8,7 +8,7 @@
 <!-- 중고거래 글쓰기 -->
 <insert id="writeStore" parameterType="com.codeone.dto.store.StoreItemDto">
 	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg )
-	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},0, now(), 0, #{filename}, #{newfilename}, 0 )
+	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), 0, #{filename}, #{newfilename}, 0 )
 </insert>
 
 <!-- 중고거래 목록 정렬 최신순 -->
@@ -64,7 +64,7 @@
 	where seq=#{seq}
 </update>
 
-<!-- 좋아요 취소 카트 -->
+<!-- 좋아요 취소 카운트 -->
 <update id="countCancelLike" parameterType="Integer">
 	update item
 	set likecount=likecount-1
@@ -83,6 +83,13 @@
 <update id="deleteStoreWrite" parameterType="Integer">
 	update item
 	set delflg=1
+	where seq=#{seq}
+</update>
+
+<!-- 판매여부 변경 -->
+<update id="updateStatus" parameterType="com.codeone.dto.store.StoreItemDto">
+	update item
+	set status=#{status}
 	where seq=#{seq}
 </update>
 
