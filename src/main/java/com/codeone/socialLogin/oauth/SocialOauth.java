@@ -46,6 +46,8 @@ public interface SocialOauth {
         	return SocialLoginType.NAVER;
         } else if(this instanceof KakaoOauth){
         	return SocialLoginType.KAKAO;
+        }else if(this instanceof GithubOauth){
+        	return SocialLoginType.GITHUB;
         } else {
         	return null;
         }
