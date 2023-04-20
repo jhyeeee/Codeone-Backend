@@ -22,7 +22,7 @@ public class JobController {
 		
 		res.put("list", service.joblist(params)); 
 		return res;		
-	}	
+	}	  
 	
 	
 }
