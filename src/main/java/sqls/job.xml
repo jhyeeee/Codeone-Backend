@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.job.JobDao">
+	<select id="job_list" parameterType="Map" resultType="Map">
+		select *
+		from joblist
+		where comdel=0
+		<if test="title != null and title != ''">
+			and title like concat('%',#{title},'%')	<!-- %앞: 전위검색, %뒤: 후위검색, %앞뒤: 전체검색 -->				
+		</if>
+		
+		<if test="comtag != null and comtag != ''">
+			and comtag like concat('%',#{comtag}, '%')
+		</if>
+	</select>
+</mapper>

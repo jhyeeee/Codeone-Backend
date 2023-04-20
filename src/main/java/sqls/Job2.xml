@@ -4,12 +4,33 @@
 	
 <mapper namespace="com.codeone.dao.job.JobDao">
   
-<!-- 채용 메인페이지 목록 보기 검색 + 필터링 +  수정 예정 -->
+<!-- 채용 메인페이지 목록 보기
+	검색 + 필터링 +  전체 수정 필요함.
+	
+	회사이름 : comname / 직군 : comcate / 직무 : comjobname  / 경력 : comcareer  
+	지역 : comlocation  / 기술 : comskill / 태그 : comtag -->
  	<select id="joblist" parameterType="com.codeone.dto.job.JobFilterDto" resultType="com.codeone.dto.job.JobDto">
 	SELECT comname, comjobname, comcareer, comskill
 	FROM joblist
 	WHERE comdel = 0
- 
+		<if test="comname != null and comname != ''">
+			AND comname = #{comname}
+		</if>
+		<if test="comjobname != null and comjobname != ''">
+			AND comjobname = #{comjobname}
+		</if>
+		<if test="comcareer != null and comcareer != ''">
+			AND comcareer = #{comcareer}
+		</if>
+		<if test="comlocation != null and comlocation != ''">
+			AND comlocation = #{comlocation}
+		</if>
+		<if test="skillList != null and skillList.size() > 0">
+			AND comskill IN
+			<foreach collection="skillList" item="skill" separator=",">	
+				#{comskill}
+			</foreach>
+		</if> 
 	</select>
 	
 <!--게시글 상세보기(jobdetail) : 동일id값 가지는 joblist 테이블 레코드 조회 -->
@@ -40,10 +61,10 @@
 	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
 	insert into joblist(comid,title,content,startline,deadline,wdate,comdel,
 				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
-				comsalary,comfile,commapx,commapy)
-	values(#{comid}, #{title}, #{content}, 0, 0, now(), 0, 
+				comsalary, comfile, commapx,commapy)
+	values(#{comid}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
 		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
-		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy})
+		   #{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy})
 	</insert> 
 	
 	

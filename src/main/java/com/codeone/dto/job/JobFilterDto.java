@@ -6,6 +6,7 @@ public class JobFilterDto {
 	//직군, 직무
 	private String comcate;
 	private String comjobname;
+	
 	//경력
 	private String comcareer;
 	
