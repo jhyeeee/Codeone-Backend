@@ -3,20 +3,19 @@ package com.codeone.controller.user;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codeone.dto.user.userDto;
+import com.codeone.dto.user.UserDto;
 import com.codeone.etc.TempKey;
-import com.codeone.service.user.userService;
+import com.codeone.service.user.UserService;
 
 @RestController
-public class userController {
+public class UserController {
 
 	// userService 연결
 	@Autowired
-	userService service;
+	UserService service;
 
 	// 회원가입 이메일 중복체크, 이메일 전송
 	@PostMapping(value = "/checkEmail")
@@ -62,7 +61,7 @@ public class userController {
 	// 이메일 인증 넣어주기
 	// 회원가입
 	@PostMapping(value = "/addUser")
-	public String addUser(userDto dto) {
+	public String addUser(UserDto dto) {
 		System.out.println("userController addUser() " + new Date());
 		
 		// 넘어온 값 확인 
@@ -94,7 +93,7 @@ public class userController {
 		System.out.println("userController login() " + new Date());
 		
 		// 이메일넣고 회원정보 불러오기
-		userDto dto = service.getMember(email);
+		UserDto dto = service.getMember(email);
 		System.out.println(dto);
 		
 		if(dto == null) {		// 가입정보가 없을 때

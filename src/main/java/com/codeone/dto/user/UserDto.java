@@ -2,6 +2,8 @@ package com.codeone.dto.user;
 
 import java.io.Serializable;
 
+import com.codeone.dto.studygroup.StudygroupDetailUserDto;
+
 // DB user table
 /*create table user (
 		seq int auto_increment primary key,
@@ -19,7 +21,7 @@ import java.io.Serializable;
 	);*/
 
 // Serializable 꼭 써주기
-public class userDto implements Serializable {
+public class UserDto implements Serializable {
 
 	int seq;					
 	String email;				// 이메일 중복불가
@@ -35,12 +37,12 @@ public class userDto implements Serializable {
 	int auth;					// 0:관리자, 1:일반회원, 2:기업회원
 	
 	
-	public userDto() {
+	public UserDto() {
 		
 	}
 
 
-	public userDto(int seq, String email, String emailKey, int emailAuth, String name, String id, String phoneNumber,
+	public UserDto(int seq, String email, String emailKey, int emailAuth, String name, String id, String phoneNumber,
 			String regdate, String filename, String newfilename, int delflg, int auth) {
 		super();
 		this.seq = seq;
@@ -186,7 +188,12 @@ public class userDto implements Serializable {
 				+ "]";
 	}
 	
-	
-	
+	public StudygroupDetailUserDto toStudygroupDetailUserDto() {
+		StudygroupDetailUserDto studygroupDetailUser = new StudygroupDetailUserDto();
+		studygroupDetailUser.setId(id);
+		studygroupDetailUser.setFilename(filename);
+		
+		return studygroupDetailUser;
+	}
 	
 }

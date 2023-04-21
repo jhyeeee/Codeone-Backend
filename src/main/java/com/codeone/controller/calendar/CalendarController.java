@@ -23,18 +23,25 @@ public class CalendarController {
 	@Autowired
 	CalendarService service;
 	
-	@GetMapping(value = "/getCalendarList")
-	public List<CalendarDto> getCalendarList(){
-		System.out.println("CalendarController getCalendarList() " + new Date());
-		String id = "aaa";
-		
-		List<CalendarDto> list = service.getCalendarList(id);
-		System.out.println("////////확인 " + list);
-		return list;
+	@GetMapping(value = "/getCalendarList")	
+	//	일정추가
+
+	public Map<String, Object> getCalendarList() {
+	    System.out.println("CalendarController getCalendarList() " + new Date());
+	    
+	    String id = "aaa";
+	    Map<String, Object> map = new HashMap<>();
+	    List<CalendarDto> list = service.getCalendarList(id);
+	    map.put("list", list);
+	    
+	    
+//	    System.out.println("////////확인 " + list);
+	    return map;
 	}
 	
 	
-//	일정추가
+	//	일정추가
+
 	@PostMapping(value="/writeCalendar")
     public String writeCalendar(CalendarDto dto) {
 		System.out.println("CalendarController writeCalendar() " + new Date());
@@ -46,4 +53,15 @@ public class CalendarController {
         return "NO";
         
     }
+
+	// 일정조회
+	@GetMapping(value = "/detailCalendar")
+	public CalendarDto detailCalendar(int seq) {
+		System.out.println("CalendarController detailCalendar() " + new Date());
+		
+		return service.detailCalendar(seq);
+	}
+	
+	
+
 }

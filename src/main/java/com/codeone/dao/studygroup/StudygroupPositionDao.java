@@ -11,4 +11,6 @@ import com.codeone.dto.studygroup.StudygroupPositionDto;
 @Repository
 public interface StudygroupPositionDao {
 	void insert(List<StudygroupPositionDto> studygroupPositionList);
+	void delete(int studygroupManagementSeq);
+	List<Integer> selectAll(int studygroupManagementSeq);
 }

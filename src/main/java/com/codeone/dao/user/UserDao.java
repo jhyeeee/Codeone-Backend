@@ -3,11 +3,11 @@ package com.codeone.dao.user;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.codeone.dto.user.userDto;
+import com.codeone.dto.user.UserDto;
 
 @Mapper
 @Repository
-public interface userDao {
+public interface UserDao {
 	
 	// 회원가입 전 이메일 중복체크
 	int checkEmail(String email);
@@ -15,9 +15,11 @@ public interface userDao {
 	// 이메일 중복체크
 	int checkId(String email);
 	
-	int addUser(userDto dto);
+	int addUser(UserDto dto);
 	
-	int updateEmailKey(userDto dto);
+	int updateEmailKey(UserDto dto);
 	
-	userDto getMember(String email);
+	UserDto getMember(String email);
+	
+	UserDto selectOneBySeq(int seq);
 }

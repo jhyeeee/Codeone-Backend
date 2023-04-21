@@ -19,7 +19,7 @@ CREATE TABLE item (
 		delflg int not null				
 	);
 */
-public class storeItemDto implements Serializable {
+public class StoreItemDto implements Serializable {
 
 	// 중고인지 새거인지 여부 추가 itemcondition 추가함
 	int seq;
@@ -36,11 +36,11 @@ public class storeItemDto implements Serializable {
 	String newfilename;	
 	int delflg;				// 삭제여부
 	
-	public storeItemDto() {
+	public StoreItemDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public storeItemDto(int seq, String id, String title, String content, int price, String location,
+	public StoreItemDto(int seq, String id, String title, String content, int price, String location,
 			String itemcondition, int status, String wdate, int likecount, String filename, String newfilename,
 			int delflg) {
 		super();
