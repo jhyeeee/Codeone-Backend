@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.job.JobDao">
+  
+<!-- 채용 메인페이지 목록 보기 검색 + 필터링 +  수정 예정 -->
+ 	<select id="joblist" parameterType="com.codeone.dto.job.JobFilterDto" resultType="com.codeone.dto.job.JobDto">
+	SELECT comname, comjobname, comcareer, comskill
+	FROM joblist
+	WHERE comdel = 0
+ 
+	</select>
+	
+<!--게시글 상세보기(jobdetail) : 동일id값 가지는 joblist 테이블 레코드 조회 -->
+	<select id="getJob" parameterType="Integer" resultType="com.codeone.dto.job.JobDto">
+	select *
+	from joblist
+	where seq=#{seq}
+	</select>
+	
+	
+<!-- 기업회원 전용 글목록 보기 : 완성-->
+	<select id="combbslist" parameterType="com.codeone.dto.job.ComPagingDto" 
+	resultType="com.codeone.dto.job.JobDto">
+	SELECT seq, title, content, wdate, comdel
+	FROM joblist
+	LIMIT #{limit}, #{viewCount}  <!-- 페이징처리 -->
+	</select>
+
+
+<!-- 기업회원 글의 총수(페이징 위해) -->
+	<select id="getAllComBbs" parameterType="com.codeone.dto.job.ComPagingDto" resultType="java.lang.Integer">
+	select ifnull(count(*), 0)		<!-- 기본 : 'COUNT(*)', null이면 0 -->
+	from joblist
+	</select>
+
+<!-- insert, update, delete는 resulttype없음 / 처리한 행 수만 반환됨(int) -->	
+<!-- 기업회원 글쓰기 -->
+	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
+	insert into joblist(comid,title,content,startline,deadline,wdate,comdel,
+				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
+				comsalary,comfile,commapx,commapy)
+	values(#{comid}, #{title}, #{content}, 0, 0, now(), 0, 
+		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
+		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy})
+	</insert> 
+	
+	
+<!-- 기업회원 글수정 -->
+	<update id="updateJob" parameterType="com.codeone.dto.job.JobDto">
+	update joblist
+	set title = #{title},content = #{content}, startline = #{startline}, deadline = #{deadline}, wdate = #{wdate},
+		comname = #{comname}, comimage = #{comimage}, comcate = #{comcate}, comjobname = #{comjobname}, 
+		comcareer = #{comcareer}, comlocation = #{comlocation}, comskill = #{comskill}, comtag = #{comtag},
+		comsalary = #{comsalary}, comfile = #{comfile}, commapx = #{commapx}, commapy = #{commapy}
+	where seq = #{seq}
+	</update>
+
+<!-- 기업회원 글삭제 --> 
+	<update id="deleteJob" parameterType="Integer">
+    update joblist
+    set comdel=1
+	where seq=#{seq}
+	</update>
+
+</mapper>

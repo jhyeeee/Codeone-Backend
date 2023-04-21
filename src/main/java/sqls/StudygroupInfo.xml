@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.studygroup.StudygroupInfoDao">
+
+<update id="updateStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	UPDATE studygroup_info SET title = #{title}, contents = #{contents}, recruitmentType = #{recruitmentType}, wayOfProceeding = #{wayOfProceeding}, numberOfRecruits = #{numberOfRecruits}, startDate = #{startDate}, endDate = #{endDate}, deadlineForRecruitment = #{deadlineForRecruitment}, isVisible = #{isVisible}
+	WHERE seq = #{seq}
+</update>
+
+<insert id="writeStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto" useGeneratedKeys="true" keyProperty="seq">
+	INSERT INTO studygroup_info(managementSeq, title, contents, recruitmentType, wayOfProceeding, numberOfRecruits, startDate, endDate, deadlineForRecruitment)
+	VALUES (#{managementSeq}, #{title}, #{contents}, #{recruitmentType}, #{wayOfProceeding}, #{numberOfRecruits}, #{startDate}, #{endDate}, #{deadlineForRecruitment})
+</insert>
+
+<select id="selectOneBySeq" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	SELECT * FROM studygroup_info WHERE seq = #{seq}
+</select>
+</mapper>
