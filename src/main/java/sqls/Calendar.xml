@@ -15,7 +15,7 @@
 		insert into calendar(id, title, content, start, end, backgroundColor, textColor, allDay)
 		values(#{id}, #{title}, #{content}, #{start}, #{end},#{backgroundColor},#{textColor},#{allDay})
 	</insert>
-	
+
 	<!-- 일정조회 -->
 	<select id="detailCalendar" parameterType="Integer" resultType="com.codeone.dto.calendar.CalendarDto">
 		select *
@@ -23,6 +23,7 @@
 		where seq=#{seq}
 	</select>
 	
+
 	<!-- 일정수정 -->
 	<update id="updateCalendar" parameterType="com.codeone.dto.calendar.CalendarDto">
 		update calendar set

@@ -25,4 +25,5 @@ public interface CalendarDao {
 	
 	//일정수정
 	boolean updateCalendar(CalendarDto dto);
+
 }

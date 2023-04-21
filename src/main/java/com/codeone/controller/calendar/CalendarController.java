@@ -24,7 +24,9 @@ public class CalendarController {
 	@Autowired
 	CalendarService service;
 	
-	@GetMapping(value = "/getCalendarList")
+	@GetMapping(value = "/getCalendarList")	
+	//	일정추가
+
 	public Map<String, Object> getCalendarList() {
 	    System.out.println("CalendarController getCalendarList() " + new Date());
 	    
@@ -40,6 +42,7 @@ public class CalendarController {
 	
 	
 	//	일정추가
+
 	@PostMapping(value="/writeCalendar")
     public String writeCalendar(CalendarDto dto) {
 		System.out.println("CalendarController writeCalendar() " + new Date());
@@ -51,7 +54,7 @@ public class CalendarController {
         return "NO";
         
     }
-	
+
 	// 일정조회
 	@GetMapping(value = "/detailCalendar")
 	public CalendarDto detailCalendar(int seq) {
@@ -74,4 +77,5 @@ public class CalendarController {
 	}
 	
 	
+
 }
