@@ -11,7 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -142,15 +144,37 @@ public class StoreController {
 	// 중고거래 리스트
 	// 좋아요 여부 같이보내주기
 	@GetMapping(value = "/getStoreList")
-	public List<StoreItemDto> getStoreList(StoreParam param) {
+	public Map<String, Object> getStoreList(StoreParam param) {
 		System.out.println("StoreController getStoreList() " + new Date());
 
+		// 글의 시작과 끝
+		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
+		int pn = param.getPageNumber();	// 0 1 2 3 4
+
+		int start = pn * 10;	// 페이지 숫자 넘어온것 10 20 30 40부터 시작
+//		int end = ( pn + 1 ) * 10;	// 10 20
+		
+		param.setStart(start);
+		param.setDataCount(10);		// 데이터 10개씩 보여주기 추후 25개로 바꾸기
+		
+		System.out.println(param);
+		
 		// search, choice 넣어주고 리스트 불러오기
 		List<StoreItemDto> list = service.getStoreList(param);
+		
+		// 댓글의 총갯수
+		int totalCount = service.getAllStoreCount(param);	// search, choice 들어오는값은 없음.
 
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		// map.put("pageBbs", pageBbs);
+		map.put("cnt", totalCount);	// 리액트 글의 총수 보내주기
+		
+		return map;
+		
 		// 로그인 id받아서 그사람이 좋아요중인지 여부 확인
 
-		return list;
+		
 	}
 
 	// 서버에 있는 이미지 불러와서 리액트에 반환해주기

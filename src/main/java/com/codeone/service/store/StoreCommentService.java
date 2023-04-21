@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codeone.dao.store.StoreCommentDao;
 import com.codeone.dto.store.StoreCommentDto;
+import com.codeone.dto.store.StoreCommentParam;
+import com.codeone.dto.store.StoreParam;
 
 @Service
 @Transactional
@@ -21,8 +23,14 @@ public class StoreCommentService {
 		return n>0?true:false;
 	}
 	
-	public List<StoreCommentDto> getStoreCommentList(int itemseq) {
-		return dao.getStoreCommentList(itemseq);
+	// 댓글목록
+	public List<StoreCommentDto> getStoreCommentList(StoreCommentParam param) {
+		return dao.getStoreCommentList(param);
+	}
+	
+	// 댓글의 총수
+	public int getStoreCommentCount(int itemseq) {
+		return dao.getStoreCommentCount(itemseq);
 	}
 	
 	// 댓글 수정

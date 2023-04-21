@@ -41,6 +41,11 @@ public class StoreService {
 		return dao.getStoreList(param);
 	}
 	
+	// 중고거래 글 총수
+	public int getAllStoreCount(StoreParam param) {
+		return dao.getAllStoreCount(param);
+	}
+	
 	public StoreItemDto getStoreItem(int seq) {
 		return dao.getStoreItem(seq);
 	}

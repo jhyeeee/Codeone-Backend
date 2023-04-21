@@ -29,6 +29,26 @@
 		</if>
 		and delflg=0
 	order by wdate desc	
+	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->
+</select>
+
+<!-- 글의 총 갯수 (페이징) -->
+<select id="getAllStoreCount" parameterType="com.codeone.dto.store.StoreParam" resultType="java.lang.Integer">
+	select ifnull(count(*), 0)
+	from item
+	where 1=1
+		<if test="choice != null and choice != ''  and search != null and search != ''">			
+			<if test="choice == 'title'">
+				and title like concat('%', #{search},'%')
+			</if>
+			<if test="choice == 'content'">
+				and content like concat('%', #{search},'%')
+			</if>
+			<if test="choice == 'writer'">
+				and id=#{search}
+			</if>			
+		</if>
+	and delflg = 0	
 </select>
 
 <!-- 중고거래 item -->
