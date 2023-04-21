@@ -29,10 +29,10 @@
 	SELECT
 		sm.seq, sm.viewAmount, sm.commentAmount,
 		si.recruitmentType, si.deadlineForRecruitment, si.title,
-	    GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
-	    GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
-	    user.id as `user.id`, user.filename as `user.filename`,
-	    sm.isClosed
+		GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
+		GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
+		user.id as `user.id`, user.filename as `user.filename`,
+		sm.isClosed, <if test="memberSeq != 0"> if((SELECT COUNT(*) FROM studygroup_like as sl WHERE sl.studygroupSeq = sm.seq AND sl.memberSeq = #{memberSeq}) != 0, true, false)</if> as isLike
 	FROM studygroup_management sm
 	JOIN studygroup_info si
 	ON sm.infoSeq = si.seq
@@ -52,6 +52,7 @@
 	<if test="isOpened == true">
 		AND sm.isClosed = false
 	</if>
+	GROUP BY sm.seq
 	ORDER BY sm.regdate DESC
 	<if test="technologyStack != null">
 	) a

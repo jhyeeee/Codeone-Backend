@@ -21,6 +21,7 @@ public class StudygroupListValidator implements Validator {
 		StudygroupListCommand studygroupListCommand = (StudygroupListCommand) target;
 		
 		int[] technologyStack = studygroupListCommand.getTechnologyStack();
+		int[] recruitmentPart = studygroupListCommand.getRecruitmentPart();
 		int recruitmentType = studygroupListCommand.getRecruitmentType();
 		String term = studygroupListCommand.getTerm();
 		
@@ -28,6 +29,8 @@ public class StudygroupListValidator implements Validator {
 		
 		if(isWrongTechnologyStack(technologyStack)) {
 			errors.rejectValue("technologyStack", "Illegal Argument");
+		} else if(isWrongRecruitmentPart(recruitmentPart)) {
+			errors.rejectValue("recruitmentPart", "Illegal Argument");
 		} else if(isWrongRecruitmentType(recruitmentType)) {
 			errors.rejectValue("recruitmentType", "Illegal Argument");
 		} else if(isWrongTerm(term)) {
@@ -54,6 +57,26 @@ public class StudygroupListValidator implements Validator {
 			}
 		}
 
+		
+		return false;
+	}
+	
+	private boolean isWrongRecruitmentPart(int[] recruitmentPart) {
+		if(recruitmentPart != null) {
+			for(int i=0; i<recruitmentPart.length; i++) {
+				// 모집 분야 값이 최소, 최대를 벗어났다면
+				int find = recruitmentPart[i];
+				if(find < StaticVariable.POSITION_MIN || find > StaticVariable.POSITION_MAX) {
+					return true;
+				}
+				
+				// 똑같은 모집 분야가 들어있다면
+				boolean isExist = SearchUtils.linearSearch(recruitmentPart, find, i+1);
+				if(isExist) {
+					return true;
+				}
+			}
+		}
 		
 		return false;
 	}

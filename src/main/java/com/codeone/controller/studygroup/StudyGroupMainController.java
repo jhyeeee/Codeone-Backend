@@ -174,6 +174,13 @@ public class StudyGroupMainController {
 			return ResponseEntity.badRequest().build();
 		}
 		
+		// 로그인 선택 사항
+		int memberSeq = 1;
+		
+		
+		// 좋아요 여부를 확인하기 위해 로그인한 사용자 번호 저장
+		studygroupListCommand.setMemberSeq(memberSeq);
+		
 		// 페이지 번호에 맞게 검색 범위 설정
 		studygroupListCommand.setStart(studygroupListCommand.getDepth() * StaticVariable.DEPTH_PER_CONTENTS_AMOUNT);
 		studygroupListCommand.setEnd((studygroupListCommand.getDepth() + 1) * StaticVariable.DEPTH_PER_CONTENTS_AMOUNT);
