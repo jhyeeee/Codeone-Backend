@@ -26,4 +26,7 @@ public interface CalendarDao {
 	//일정수정
 	boolean updateCalendar(CalendarDto dto);
 
+	//일정삭제
+	public boolean deleteCalendar(int seq);
+
 }
