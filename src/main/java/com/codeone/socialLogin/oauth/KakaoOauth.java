@@ -17,12 +17,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.codeone.dao.user.UserDao;
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
 import com.codeone.socialLogin.Token.KakaoOAuthToken;
 
 import com.codeone.socialLogin.Token.OAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
 import com.codeone.socialLogin.dto.GoogleUser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KakaoOauth implements SocialOauth {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	private final SocialDao dao;
+	private final UserDao dao;
     @Value("${sns.kakao.url}")
     private String KAKAO_SNS_BASE_URL;
     @Value("${sns.kakao.client.id}")
@@ -148,7 +148,7 @@ public class KakaoOauth implements SocialOauth {
 		
     	System.out.println(user.toString() + " kakao 신규");
     	// DB 확인
-    	if(checkUser(user.getEmail()) == 0) {
+    	if(checkEmail(user.getEmail()) == 0) {
     		//신규
     		System.out.println("신규 - kakaoOauth");
     	} else {
@@ -163,7 +163,7 @@ public class KakaoOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkUser(String email) {    	
-    	return dao.checkUser(email);
+    public int checkEmail(String email) {    	
+    	return dao.checkEmail(email);
     }
 }

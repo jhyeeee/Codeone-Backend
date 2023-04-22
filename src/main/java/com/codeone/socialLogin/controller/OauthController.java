@@ -1,6 +1,7 @@
 package com.codeone.socialLogin.controller;
 
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -64,16 +65,6 @@ public class OauthController {
             response.sendRedirect("http://localhost:3000/signUp");
     }
     
-    
-    @GetMapping(value="/getSessionUser")
-    public ResponseEntity<UserDto> getSessionUser(HttpServletRequest request, HttpServletResponse response) {
-    	HttpSession httpSession = request.getSession();
-    	UserDto user = (UserDto)httpSession.getAttribute("user");
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-    	return ResponseEntity.ok()
-    				.headers(header)
-    				.body(user);    	
-    }
+
     
 }

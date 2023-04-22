@@ -36,7 +36,7 @@ public interface SocialOauth {
      * 
      * Db체크로직
      */
-    int checkUser(String email);
+    int checkEmail(String email);
     
     // 소셜 타입을 여기서 정해준다
     default SocialLoginType type() {

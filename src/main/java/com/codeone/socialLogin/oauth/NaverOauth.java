@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.json.*;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,13 +17,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.codeone.dao.user.UserDao;
 import com.codeone.dto.user.UserDto;
-import com.codeone.socialLogin.Token.GoogleOAuthToken;
 import com.codeone.socialLogin.Token.NaverOAuthToken;
 import com.codeone.socialLogin.Token.OAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
-import com.codeone.socialLogin.dto.GoogleUser;
-import com.codeone.socialLogin.dto.NaverUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NaverOauth implements SocialOauth {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	private final SocialDao dao;
+	private final UserDao dao;
     @Value("${sns.naver.url}")
     private String NAVER_SNS_BASE_URL;
     @Value("${sns.naver.client.id}")
@@ -157,7 +154,7 @@ public class NaverOauth implements SocialOauth {
 		
     	System.out.println(user.toString() + " naver 신규");
     	// DB 확인
-    	if(checkUser(user.getEmail()) == 0) {
+    	if(checkEmail(user.getEmail()) == 0) {
     		//신규
     		System.out.println("신규 - NaverOauth");
     	} else {
@@ -172,7 +169,7 @@ public class NaverOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkUser(String email) {    	
-    	return dao.checkUser(email);
+    public int checkEmail(String email) {    	
+    	return dao.checkEmail(email);
     }
 }

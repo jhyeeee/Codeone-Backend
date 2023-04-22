@@ -17,7 +17,6 @@ import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
 import com.codeone.socialLogin.Token.OAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
 import com.codeone.socialLogin.oauth.SocialOauth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

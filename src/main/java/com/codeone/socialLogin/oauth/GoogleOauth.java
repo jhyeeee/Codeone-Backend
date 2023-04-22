@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.codeone.dao.user.UserDao;
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.Token.GoogleOAuthToken;
 import com.codeone.socialLogin.Token.OAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
 import com.codeone.socialLogin.dto.GoogleUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GoogleOauth implements SocialOauth {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	private final SocialDao dao;
+	private final UserDao dao;
     @Value("${sns.google.url}")
     private String GOOGLE_SNS_BASE_URL;
     @Value("${sns.google.client.id}")
@@ -131,9 +131,9 @@ public class GoogleOauth implements SocialOauth {
     	user.setEmail(googleUser.getEmail());
     	user.setFilename(googleUser.getPicture());
     	user.setId(googleUser.getId());
-    	
+    	System.out.println(user.getEmail());
     	// DB 확인
-    	if(checkUser(user.getEmail()) == 0) {
+    	if(checkEmail(user.getEmail()) == 0) {
     		//신규
     		System.out.println("신규 - GoogleOauth");
     	} else {
@@ -148,8 +148,8 @@ public class GoogleOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkUser(String email) {    	
-    	return dao.checkUser(email);
+    public int checkEmail(String email) {    	
+    	return dao.checkEmail(email);
     }
 
 

@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.codeone.dao.user.UserDao;
 import com.codeone.dto.user.UserDto;
 import com.codeone.socialLogin.Token.GitHubOAuthToken;
 import com.codeone.socialLogin.Token.OAuthToken;
-import com.codeone.socialLogin.dao.SocialDao;
 import com.codeone.socialLogin.dto.GitUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GithubOauth implements SocialOauth {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	private final SocialDao dao;
+	private final UserDao dao;
     @Value("${sns.github.url}")
     private String GITHUB_SNS_BASE_URL;
     @Value("${sns.github.client.id}")
@@ -135,7 +135,7 @@ public class GithubOauth implements SocialOauth {
 //    	user.setId(gitUser.getId());
     	
     	// DB 확인
-    	if(checkUser(user.getEmail()) == 0) {
+    	if(checkEmail(user.getEmail()) == 0) {
     		//신규
     		System.out.println("신규 - githubOauth");
     	} else {
@@ -152,8 +152,8 @@ public class GithubOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkUser(String email) {    	
-    	return dao.checkUser(email);
+    public int checkEmail(String email) {    	
+    	return dao.checkEmail(email);
     }
 
     
