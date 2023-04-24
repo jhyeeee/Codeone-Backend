@@ -85,7 +85,7 @@ public class StoreCommentController {
 	
 	// 댓글 수정
 	@PutMapping(value = "/storeComment")
-	public ResponseEntity<Void> updateStoreComment(StoreCommentDto dto){
+	public ResponseEntity<Void> updateStoreComment(@RequestBody StoreCommentDto dto){
 		System.out.println("StoreCommentController storeComment()" + new Date());
 		System.out.println(dto);
 		

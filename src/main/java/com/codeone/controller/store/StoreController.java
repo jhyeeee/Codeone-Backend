@@ -59,45 +59,52 @@ public class StoreController {
 
 	// 중고거래 글쓰기
 	@PostMapping(value = "/storewrite")
-	public String storewrite(StoreItemDto item, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile,
-			HttpServletRequest req) {
+	public String storewrite(StoreItemDto item,
+			@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
 		System.out.println("StoreController storewrite() " + new Date());
 
 		// System.out.println(item);
-		
-		 if (uploadFile == null || uploadFile.isEmpty()) {
 
-		        // db에 원래파일이름, item 넣어주기
-		        boolean isUpdateWrite = service.updateStoreWrite(item);
+		// 프론트에서 어떻게 처리할지 고민. 장소부분 비어있을때
+//		if (item.getLocation() == null || item.getLocation().equals("")) {
+//			item.setLocation("전국");
+//		}
+//		if(item.getLocation().equals("지역설정안함")) {
+//			item.setLocation("전국");
+//		}
 
-		        if (isUpdateWrite == true) {
-		        	return "WRITE_OK"; // 글쓰기 성공
-		        }
-		        return "WRITE_FAIL"; // 글쓰기 실패
-		    }
+		if (uploadFile == null || uploadFile.isEmpty()) {
 
-		    // 업로드 파일이 있을 경우 파일 생성
-		    boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+			// db에 원래파일이름, item 넣어주기
+			boolean isUpdateWrite = service.updateStoreWrite(item);
 
-		    if (isUploadImg == true) {
-		    	
-		    	// 파일이 생성되면 글작성
-		    	boolean isWriteStore = service.writeStore(item);
-		    	
-		    	if (isWriteStore == true) {
-					return "WRITE_OK"; // 글쓰기 성공
-				}else {
-					return "WRITE_FAIL"; // 글쓰기 실패
-				}		    
-		    }else {
-		    	return "NO_IMAGE"; // 글쓰기 실패
-		    }
-		    
+			if (isUpdateWrite == true) {
+				return "WRITE_OK"; // 글쓰기 성공
+			}
+			return "WRITE_FAIL"; // 글쓰기 실패
+		}
+
+		// 업로드 파일이 있을 경우 파일 생성
+		boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+
+		if (isUploadImg == true) {
+
+			// 파일이 생성되면 글작성
+			boolean isWriteStore = service.writeStore(item);
+
+			if (isWriteStore == true) {
+				return "WRITE_OK"; // 글쓰기 성공
+			} else {
+				return "WRITE_FAIL"; // 글쓰기 실패
+			}
+		} else {
+			return "NO_IMAGE"; // 글쓰기 실패
+		}
+
 	}
-		// 파일 만들어주기
+	// 파일 만들어주기
 
-		
-		// 파일 확장자, 사이즈 제한 추가하기
+	// 파일 확장자, 사이즈 제한 추가하기
 
 //		// 경로
 //		String path = req.getServletContext().getRealPath("/storeImage");
@@ -139,8 +146,6 @@ public class StoreController {
 //		}
 //		return "NO_IMAGE";
 
-	
-
 	// 중고거래 리스트
 	// 좋아요 여부 같이보내주기
 	@GetMapping(value = "/getStoreList")
@@ -149,32 +154,31 @@ public class StoreController {
 
 		// 글의 시작과 끝
 		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
-		int pn = param.getPageNumber();	// 0 1 2 3 4
+		int pn = param.getPageNumber(); // 0 1 2 3 4
 
-		int start = pn * 10;	// 페이지 숫자 넘어온것 10 20 30 40부터 시작
+		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
 //		int end = ( pn + 1 ) * 10;	// 10 20
-		
+
 		param.setStart(start);
-		param.setDataCount(10);		// 데이터 10개씩 보여주기 추후 25개로 바꾸기
-		
+		param.setDataCount(10); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
+
 		System.out.println(param);
-		
+
 		// search, choice 넣어주고 리스트 불러오기
 		List<StoreItemDto> list = service.getStoreList(param);
-		
+
 		// 댓글의 총갯수
-		int totalCount = service.getAllStoreCount(param);	// search, choice 들어오는값은 없음.
+		int totalCount = service.getAllStoreCount(param); // search, choice 들어오는값은 없음.
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		// map.put("pageBbs", pageBbs);
-		map.put("cnt", totalCount);	// 리액트 글의 총수 보내주기
-		
+		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
+
 		return map;
-		
+
 		// 로그인 id받아서 그사람이 좋아요중인지 여부 확인
 
-		
 	}
 
 	// 서버에 있는 이미지 불러와서 리액트에 반환해주기
@@ -302,43 +306,47 @@ public class StoreController {
 //		}
 //		return "NOT_LIKE";
 
-	
 	// 중고거래 글 수정 파일생성은 service로 뺌
 	@PutMapping(value = "/writeStore")
 	public ResponseEntity<String> updateStoreWrite(StoreItemDto item,
-	        @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
-	    System.out.println("StoreController writeStore() " + new Date());
-	    System.out.println(item);
-	    // 업로드 파일이 없을 경우
-	    if (uploadFile == null || uploadFile.isEmpty()) {
+			@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
+		System.out.println("StoreController writeStore() " + new Date());
+		System.out.println(item);
+		
+//		if(item.getLocation().equals("지역설정안함")) {
+//			item.setLocation("전국");
+//		}
 
-	        // db에 원래파일이름, item 넣어주기
-	        boolean isUpdateWrite = service.updateStoreWrite(item);
+		// 업로드 파일이 없을 경우
+		if (uploadFile == null || uploadFile.isEmpty()) {
 
-	        if (isUpdateWrite == true) {
-	            return ResponseEntity.ok().build(); // 글수정 성공
-	        }
-	        return ResponseEntity.badRequest().build(); // 글수정 실패
-	    }
+			// db에 원래파일이름, item 넣어주기
+			boolean isUpdateWrite = service.updateStoreWrite(item);
 
-	    // 업로드 파일이 있을 경우 파일 생성
-	    boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+			if (isUpdateWrite == true) {
+				return ResponseEntity.ok().build(); // 글수정 성공
+			}
+			return ResponseEntity.badRequest().build(); // 글수정 실패
+		}
 
-	    if (isUploadImg == true) {
-	    	
-	    	// 파일이 생성되면 글수정
-	    	boolean isUpdateWrite = service.updateStoreWrite(item);
-	    	
-	    	if (isUpdateWrite == true) {
+		// 업로드 파일이 있을 경우 파일 생성
+		boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+
+		if (isUploadImg == true) {
+
+			// 파일이 생성되면 글수정
+			boolean isUpdateWrite = service.updateStoreWrite(item);
+
+			if (isUpdateWrite == true) {
 				return ResponseEntity.ok().build(); // 글쓰기 성공
-			}else {
+			} else {
 				return ResponseEntity.badRequest().build(); // 글쓰기 실패
-			}		    
-	    }else {
-	        return ResponseEntity.badRequest().body("NO_IMAGE"); // 글쓰기 실패
-	    }
+			}
+		} else {
+			return ResponseEntity.badRequest().body("NO_IMAGE"); // 글쓰기 실패
+		}
 	}
-	
+
 //	@PutMapping(value = "/writeStore")
 //	public ResponseEntity<String> updateStoreWrite(StoreItemDto item,
 //			@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest req) {
@@ -401,7 +409,6 @@ public class StoreController {
 //
 //	}
 
-
 	// 중고거래 글 삭제
 	@DeleteMapping("/storeitem")
 	public ResponseEntity<Void> deleteStoreWrite(int seq) {
@@ -414,22 +421,20 @@ public class StoreController {
 		}
 		return ResponseEntity.badRequest().build(); // 글삭제 실패
 	}
-	
+
 	// 중고거래 판매여부 변경
 	@PutMapping("/status")
-	public ResponseEntity<Void> updateStatus(@RequestBody StoreItemDto item){
+	public ResponseEntity<Void> updateStatus(@RequestBody StoreItemDto item) {
 		System.out.println("StoreController updateStatus() " + new Date());
-		
-		System.out.println(item);		
-		
+
+		System.out.println(item);
+
 		try {
 			service.updateStatus(item);
-			return ResponseEntity.ok().build();  
+			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
-	}	
-	
-	
+	}
 
 }

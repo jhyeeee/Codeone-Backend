@@ -15,7 +15,7 @@
 	select *
 	from itemcomment	
 	where itemseq=#{itemseq} and delflg=0
-	order by wdate desc 
+	order by seq desc 						<!-- seq순으로 정렬 -->
 	limit #{start}, #{dataCount}			<!-- 앞이 데이터 몇번부터, 뒤가 몇개보여줄지 -->
 </select>
 

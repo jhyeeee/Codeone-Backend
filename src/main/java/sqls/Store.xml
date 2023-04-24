@@ -28,7 +28,7 @@
 			</if>
 		</if>
 		and delflg=0
-	order by wdate desc	
+	order by seq desc					<!-- seq순으로 정렬 -->
 	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->
 </select>
 
