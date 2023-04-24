@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class StudygroupListDto implements Serializable {
+	private int seq;							// 스터디 그룹 관리 정보 번호
+	
 	private int recruitmentType;				// 모집 분야
 	
 	private LocalDate deadlineForRecruitment;	// 모집 마감 날짜
@@ -18,6 +20,7 @@ public class StudygroupListDto implements Serializable {
 	private StudygroupDetailUserDto user;		// 스터디 그룹 팀장 정보
 	
 	private boolean isClosed;					// 모집 마감 여부
+	private boolean isLike;						// 좋아요 여부
 	private int viewAmount;						// 조회수
 	private int commentAmount;					// 댓글수
 	
@@ -42,20 +45,20 @@ public class StudygroupListDto implements Serializable {
 			this.technologyStack[i] = Integer.parseInt(technologyStack_stringArray[i]);
 		}
 	}
-	
-//	public void setId(String id) {
-//		studygroupDetailUserDto.setId(id);
-//	}
-//	
-//	public void setFilename(String filemane) {
-//		studygroupDetailUserDto.setFilename(filemane);
-//	}
-	
+
 	public void setIsClosed(boolean isClosed) {
 		this.isClosed = isClosed;
 	}
 	
 	public boolean getIsClosed() {
 		return isClosed;
+	}
+	
+	public void setIsLike(boolean isLike) {
+		this.isLike = isLike;
+	}
+	
+	public boolean getIsLike() {
+		return isLike;
 	}
 }
