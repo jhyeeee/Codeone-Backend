@@ -1,51 +1,65 @@
 package com.codeone.dto.job;
 
+import java.time.LocalDateTime;
+
 public class JobLikeDto {
-	private int like_id;
-	private int job_board_id;
-	private int user_id;
+	private int seq;				// joblist의 seq
+	
+	private int likeseq;			// 좋아요 번호
+	private int joblistseq;			// 채용글 번호
+	private int memberseq;			// 로그인 번호
+	private LocalDateTime regdate;	// 좋아요 등록시간
 
 	
     public JobLikeDto() {}
 
 
-	public JobLikeDto(int like_id, int job_board_id, int user_id) {
+	public JobLikeDto(int likeseq, int joblistseq, int memberseq, LocalDateTime regdate) {
 		super();
-		this.like_id = like_id;
-		this.job_board_id = job_board_id;
-		this.user_id = user_id;
+		this.likeseq = likeseq;
+		this.joblistseq = joblistseq;
+		this.memberseq = memberseq;
+		this.regdate = regdate;
 	}
 
 
-	public int getLike_id() {
-		return like_id;
+	public int getLikeseq() {
+		return likeseq;
 	}
 
 
-	public void setLike_id(int like_id) {
-		this.like_id = like_id;
+	public void setLikeseq(int likeseq) {
+		this.likeseq = likeseq;
 	}
 
 
-	public int getJob_board_id() {
-		return job_board_id;
+	public int getJoblistseq() {
+		return joblistseq;
 	}
 
 
-	public void setJob_board_id(int job_board_id) {
-		this.job_board_id = job_board_id;
+	public void setJoblistseq(int joblistseq) {
+		this.joblistseq = joblistseq;
 	}
 
 
-	public int getUser_id() {
-		return user_id;
+	public int getMemberseq() {
+		return memberseq;
 	}
 
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setMemberseq(int memberseq) {
+		this.memberseq = memberseq;
 	}
 
-    
+
+	public LocalDateTime getRegdate() {
+		return regdate;
+	}
+
+
+	public void setRegdate(LocalDateTime regdate) {
+		this.regdate = regdate;
+	}
 
 }

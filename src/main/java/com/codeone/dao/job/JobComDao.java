@@ -9,15 +9,9 @@ import com.codeone.dto.job.JobDto;
 import com.codeone.dto.job.JobFilterDto;
 
 @Mapper
-public interface JobDao2 {
+public interface JobComDao {
 	
-// ---------채용메인 -----------------//	
-	//채용 글목록
-	List<JobDto> joblist(JobFilterDto filter);
-	//채용 seq조회
-	JobDto getJob(int comseq);
 	
-// ---------기업회원 -----------------//	
 	//기업회원 글목록
 	List<JobDto> combbslist(ComPagingDto paging);
 	//기업회원 글 총수(페이징 위해)

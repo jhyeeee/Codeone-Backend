@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus.Series;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ public class TestController {
 		res.put("test", service.insert(params));
 		
 		return new ResponseEntity<Map<String,Object>>(res, HttpStatus.OK);
+		//OK(200, Series.SUCCESSFUL, "OK"),
 	} 
 	
 	 @GetMapping("/test2")
