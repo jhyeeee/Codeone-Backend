@@ -4,23 +4,9 @@
 	
 <mapper namespace="com.codeone.dao.job.JobDao">
   
-<!-- 채용 메인페이지 목록 보기 검색 + 필터링 +  수정 예정 -->
- 	<select id="joblist" parameterType="com.codeone.dto.job.JobFilterDto" resultType="com.codeone.dto.job.JobDto">
-	SELECT comname, comjobname, comcareer, comskill
-	FROM joblist
-	WHERE comdel = 0
- 
-	</select>
+
 	
-<!--게시글 상세보기(jobdetail) : 동일id값 가지는 joblist 테이블 레코드 조회 -->
-	<select id="getJob" parameterType="Integer" resultType="com.codeone.dto.job.JobDto">
-	select *
-	from joblist
-	where seq=#{seq}
-	</select>
-	
-	
-<!-- 기업회원 전용 글목록 보기 : 완성-->
+<!-- 기업회원 전용 글목록 보기 -->
 	<select id="combbslist" parameterType="com.codeone.dto.job.ComPagingDto" 
 	resultType="com.codeone.dto.job.JobDto">
 	SELECT seq, title, content, wdate, comdel
@@ -40,10 +26,10 @@
 	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
 	insert into joblist(comid,title,content,startline,deadline,wdate,comdel,
 				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
-				comsalary,comfile,commapx,commapy)
-	values(#{comid}, #{title}, #{content}, 0, 0, now(), 0, 
+				comsalary, comfile, commapx,commapy)
+	values(#{comid}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
 		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
-		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy})
+		   #{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy})
 	</insert> 
 	
 	

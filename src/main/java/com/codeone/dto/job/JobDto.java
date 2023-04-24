@@ -4,28 +4,27 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class JobDto implements Serializable {
+public class JobDto extends JobFilterDto implements Serializable{
 	
 	private int seq;
 	private String comid;
 	private String title;
 	private String content;
-	private Date startline;	
-	private Date deadline;
-	private Timestamp comcreated;
-	private Timestamp comupdated;
+	private String startline;	
+	private String deadline;
+	private String wdate;
 	private int comdel;
 	
 // company
-	private String comsalary;
 	private String comname;
+	private String comimage;
 	private String comcate;
 	private String comjobname;
 	private String comcareer;
 	private String comlocation;
 	private String comskill;
 	private String comtag;
-	private String comimage;
+	private String comsalary;
 	private String comfile;
 	private int commapx;
 	private int commapy;
@@ -35,10 +34,10 @@ public class JobDto implements Serializable {
 	}
 
 
-	public JobDto(int seq, String comid, String title, String content, Date startline, Date deadline,
-			Timestamp comcreated, Timestamp comupdated, int comdel, String comsalary, String comname, String comcate,
-			String comjobname, String comcareer, String comlocation, String comskill, String comtag, String comimage,
-			String comfile, int commapx, int commapy) {
+	public JobDto(int seq, String comid, String title, String content, String startline, String deadline, String wdate,
+			int comdel, String comname, String comimage, String comcate, String comjobname, String comcareer,
+			String comlocation, String comskill, String comtag, String comsalary, String comfile, int commapx,
+			int commapy) {
 		super();
 		this.seq = seq;
 		this.comid = comid;
@@ -46,18 +45,17 @@ public class JobDto implements Serializable {
 		this.content = content;
 		this.startline = startline;
 		this.deadline = deadline;
-		this.comcreated = comcreated;
-		this.comupdated = comupdated;
+		this.wdate = wdate;
 		this.comdel = comdel;
-		this.comsalary = comsalary;
 		this.comname = comname;
+		this.comimage = comimage;
 		this.comcate = comcate;
 		this.comjobname = comjobname;
 		this.comcareer = comcareer;
 		this.comlocation = comlocation;
 		this.comskill = comskill;
 		this.comtag = comtag;
-		this.comimage = comimage;
+		this.comsalary = comsalary;
 		this.comfile = comfile;
 		this.commapx = commapx;
 		this.commapy = commapy;
@@ -104,43 +102,33 @@ public class JobDto implements Serializable {
 	}
 
 
-	public Date getStartline() {
+	public String getStartline() {
 		return startline;
 	}
 
 
-	public void setStartline(Date startline) {
+	public void setStartline(String startline) {
 		this.startline = startline;
 	}
 
 
-	public Date getDeadline() {
+	public String getDeadline() {
 		return deadline;
 	}
 
 
-	public void setDeadline(Date deadline) {
+	public void setDeadline(String deadline) {
 		this.deadline = deadline;
 	}
 
 
-	public Timestamp getComcreated() {
-		return comcreated;
+	public String getWdate() {
+		return wdate;
 	}
 
 
-	public void setComcreated(Timestamp comcreated) {
-		this.comcreated = comcreated;
-	}
-
-
-	public Timestamp getComupdated() {
-		return comupdated;
-	}
-
-
-	public void setComupdated(Timestamp comupdated) {
-		this.comupdated = comupdated;
+	public void setWdate(String wdate) {
+		this.wdate = wdate;
 	}
 
 
@@ -154,16 +142,6 @@ public class JobDto implements Serializable {
 	}
 
 
-	public String getComsalary() {
-		return comsalary;
-	}
-
-
-	public void setComsalary(String comsalary) {
-		this.comsalary = comsalary;
-	}
-
-
 	public String getComname() {
 		return comname;
 	}
@@ -171,6 +149,16 @@ public class JobDto implements Serializable {
 
 	public void setComname(String comname) {
 		this.comname = comname;
+	}
+
+
+	public String getComimage() {
+		return comimage;
+	}
+
+
+	public void setComimage(String comimage) {
+		this.comimage = comimage;
 	}
 
 
@@ -234,13 +222,13 @@ public class JobDto implements Serializable {
 	}
 
 
-	public String getComimage() {
-		return comimage;
+	public String getComsalary() {
+		return comsalary;
 	}
 
 
-	public void setComimage(String comimage) {
-		this.comimage = comimage;
+	public void setComsalary(String comsalary) {
+		this.comsalary = comsalary;
 	}
 
 
@@ -272,9 +260,19 @@ public class JobDto implements Serializable {
 	public void setCommapy(int commapy) {
 		this.commapy = commapy;
 	}
+
+
+	@Override
+	public String toString() {
+		return "JobDto [seq=" + seq + ", comid=" + comid + ", title=" + title + ", content=" + content + ", startline="
+				+ startline + ", deadline=" + deadline + ", wdate=" + wdate + ", comdel=" + comdel + ", comname="
+				+ comname + ", comimage=" + comimage + ", comcate=" + comcate + ", comjobname=" + comjobname
+				+ ", comcareer=" + comcareer + ", comlocation=" + comlocation + ", comskill=" + comskill + ", comtag="
+				+ comtag + ", comsalary=" + comsalary + ", comfile=" + comfile + ", commapx=" + commapx + ", commapy="
+				+ commapy + "]";
+	}
+
 	
-	
-	
-	
+		
 	
 }

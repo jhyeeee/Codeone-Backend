@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.test.dao.TestDao">
+  
+  <insert id="insert" parameterType="Map">
+  	INSERT INTO TN_GROUP (GROUP_NAME) 
+  	VALUES (#{group_name})
+  </insert>
+  
+  <select id="list" parameterType="Map" resultType="Map">
+  	SELECT *
+  	FROM TN_GROUP
+  </select>
+  
+    
+  <insert id="insert2" parameterType="Map">
+  	INSERT INTO TN_CODE (CODE_NAME)
+  	VALUES (#{CODE_NAME}) 
+  </insert>
+
+
+	<select id="testList" parameterType="Map" resultType="Map">
+	SELECT *
+	FROM TN_CODE
+	</select>
+	
+	
+</mapper>
