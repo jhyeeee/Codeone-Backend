@@ -60,9 +60,10 @@ public class OauthController {
         	String code = request.getParameter("code"); 
         	// 하나의 메소드로 퉁쳐버리기
         	UserDto user = oauthService.requestUserInfo(socialLoginType,code);
-            HttpSession httpSession = request.getSession();
-            httpSession.setAttribute("user", user);
-            response.sendRedirect("http://localhost:3000/signUp");
+        	System.out.println(user.toString() + " social CALLBACK");
+//            HttpSession httpSession = request.getSession();
+//            httpSession.setAttribute("user", user);
+            response.sendRedirect("http://localhost:3000/signupinfo?email="+ user.getEmail());
     }
     
 

@@ -93,6 +93,9 @@ public class GoogleOauth implements SocialOauth {
     }
 
     
+    /*
+     * accessToken 값을 가지고 유저의 정보를 얻음
+     */
     @Override
     public ResponseEntity<String> requestUserInfo(OAuthToken oAuthToken) {
     	System.out.println("GoogleOauth RequestUserInfo");

@@ -54,9 +54,7 @@ public class UserController {
 	// 회원가입 이메일 중복체크
 	@PostMapping(value = "/checkingEmail")
 	public ResponseEntity<String> checkingEmail(String email) throws Exception {
-
-		boolean isEmailCheck = service.checkEmail(email);
-		if (isEmailCheck) { // 중복된 아이디가 있음
+		if (service.checkEmail(email)) { // 중복된 이메일이 있음
 			return ResponseEntity.status(HttpStatusCode.valueOf(204)).build();
 		}
 
@@ -101,10 +99,6 @@ public class UserController {
 	@PostMapping(value = "/sendSignUpEmail")
 	public ResponseEntity<String> sendSignUpEmail(UserDto dto) throws Exception {
 		System.out.println("userController sendSignUpEmail() " + new Date());
-		
-		// 넘어온 값 확인 
-
-		
 	
 		// 이메일 중복체크
 		boolean isEmailCheck = service.checkEmail(dto.getEmail());
@@ -114,10 +108,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatusCode.valueOf(204)).build();
 		}
 		
-		// 중복 이메일 없을 때
-		
-		// 없는 이메일이면 메일발송
-		service.sendSignUpEmail(dto.getEmail(), dto.getId(), dto.getName());
+		// 중복 이메일이 아닌 이메일이면 메일발송
+		service.sendSignUpEmail(dto.getEmail());
 		return ResponseEntity.ok().build(); 
 		
 		// 이메일인증여부 여기서 업데이트 해주기
@@ -133,6 +125,60 @@ public class UserController {
 		// 회원가입 성공
 	}
 
+
+	@GetMapping(value = "/signUpemailAf")
+	public void signUpemailAf(String email, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.sendRedirect("http://localhost:3000/signupinfo?email="+ email);
+	}
+	
+	
+	// signUpAf 만들어주기
+	@PostMapping(value = "/signUp")
+	public void signUpemail(String email,HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		// DB에 회원을
+		UserDto user = new UserDto();
+		user.setEmail(email);
+		String emailKey = new TempKey().getKey(10, false); // 랜덤키 길이 설정
+		System.out.println(emailKey);		
+		user.setEmailKey(emailKey);
+		if(service.addUser(user)) {
+			HttpSession httpSession = request.getSession();
+	        httpSession.setAttribute("user", user);
+			
+			response.sendRedirect("http://localhost:3000");
+		}else {
+			response.sendRedirect("http://localhost:3000/error");
+		}
+		
+		
+	}
+
+	// regi 만들어주기
+	@PostMapping(value = "/regi")
+	public ResponseEntity<String> regi(UserDto user, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println(user.toString());
+		System.out.println(user.getEmail() + " regi");
+		String emailKey = new TempKey().getKey(10, false); 
+		user.setEmailKey(emailKey);
+//		if (service.checkEmail(user.getEmail())) { // 중복된 이메일이 있음
+//			HttpHeaders header = new HttpHeaders();
+//	        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+//	        response.sendRedirect("http://localhost:3000");
+//			return ResponseEntity.status(HttpStatusCode.valueOf(204)).build();
+//		}
+		if(service.addUser(user)) {
+			HttpSession session = request.getSession();
+			session.setAttribute("user", user);
+			UserDto asdf = (UserDto)session.getAttribute("user");
+			System.out.println(asdf.toString() + " in session");
+	        return ResponseEntity.ok().build();
+		}else {
+			return ResponseEntity.status(500).build();
+		}
+		
+	}
+	
 	@PostMapping(value = "/login")
 	public String login(String email) throws Exception {
 		System.out.println("userController login() " + new Date());
@@ -149,9 +195,7 @@ public class UserController {
 		String emailKey = new TempKey().getKey(10, false); // 랜덤키 길이 설정
 		System.out.println(emailKey);
 		
-		// 메일키 회원정보에 업데이트 시켜주기	
-		dto.setEmailKey(emailKey);
-		service.updateEmailKey(dto);
+
 		
 		// 이메일로 로그인 메일 전송
 		service.sendLoginEmail(email, emailKey);
@@ -160,39 +204,20 @@ public class UserController {
 
 		return "SUCCESS";
 	}
-	// signUpAf 만들어주기
-	@GetMapping(value = "/signUpemail")
-	public void signUpemail(String email, String id, String name, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		// DB에 회원을
-		UserDto user = new UserDto();
-		user.setEmail(email);
-		user.setId(id);
-		user.setName(name);
-		String emailKey = new TempKey().getKey(10, false); // 랜덤키 길이 설정
-		System.out.println(emailKey);		
-		user.setEmailKey(emailKey);
-		if(service.addUser(user)) {
-			HttpSession httpSession = request.getSession();
-	        httpSession.setAttribute("user", user);
-			
-			response.sendRedirect("http://localhost:3000");
-		}else {
-			response.sendRedirect("http://localhost:3000/error");
-		}
-		
-		
-	}
-
+	
 	// loginAf 만들어주기
-	@GetMapping(value = "/codeone/regi")
+	@GetMapping(value = "/loginAf")
 	public void loginAf(String email, String emailKey, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println(email);
 		System.out.println(emailKey);
-		UserDto user = service.checkEmailKey(emailKey);
-		HttpSession httpSession = request.getSession();
-        httpSession.setAttribute("user", user);
-		
+		UserDto user = service.getMember(email);
+		// 메일키 회원정보에 업데이트 시켜주기	
+		user.setEmailKey(emailKey);
+		service.updateEmailKey(user);
+		HttpSession session = request.getSession();
+		System.out.println(session.getAttribute("user"));
+		session.setAttribute("user", user);
+//		return ResponseEntity.ok().build();
 		response.sendRedirect("http://localhost:3000");
 		
 	}
@@ -211,19 +236,32 @@ public class UserController {
 //		return "OK";
 //	}
 	
+	@GetMapping(value="/logout")
+	public ResponseEntity<UserDto> logout(HttpServletRequest request) {
+		HttpSession session =  request.getSession();
+		if(session != null) {
+			System.out.println("logout");
+			session.removeAttribute("user");
+			session.invalidate();			
+		}
+		return ResponseEntity.ok().build();
+	}
 	
     
     @GetMapping(value="/getSessionUser")
     public ResponseEntity<UserDto> getSessionUser(HttpServletRequest request, HttpServletResponse response) {
-    	HttpSession httpSession = request.getSession();
-    	UserDto user = (UserDto)httpSession.getAttribute("user");
-    	if(Objects.isNull(user)) {
-    		return ResponseEntity.noContent().build();    				
-    	}
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-    	return ResponseEntity.ok()
+    	System.out.println("getSessionUser()" + new Date());
+    	HttpSession session = request.getSession();
+    	if(session != null) {    		
+    		UserDto user = (UserDto)session.getAttribute("user");
+    		System.out.println(user + " getSesssionUser");
+            HttpHeaders header = new HttpHeaders();
+            header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        	return ResponseEntity.ok()
     				.headers(header)
-    				.body(user);    	
+    				.body(user); 
+    	} else {
+    		return ResponseEntity.noContent().build();
+    	}    	
     }
 }

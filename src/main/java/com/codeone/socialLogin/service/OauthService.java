@@ -32,7 +32,7 @@ public class OauthService {
     private final HttpServletResponse response;
     
     /**
-     * 어떤 소셜 로그인인지 확인하고 해당 소셜의 로그인 페이지로 이동 CORS처리 문제가 있음
+     * 어떤 소셜 로그인인지 확인하고 해당 소셜의 로그인 페이지로 이동 
      * @param socialLoginType (GOOGLE, NAVER, KAKAO)
      */
     public void request(SocialLoginType socialLoginType) {
@@ -47,6 +47,10 @@ public class OauthService {
     }
 
     
+    /*
+     *  각 소셜서비스에서 받은 코드를 가지고 user의 정보를 얻음
+     * 
+     */
     public UserDto requestUserInfo(SocialLoginType socialLoginType, String code) {
     	SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
     	UserDto user = null;
@@ -61,6 +65,12 @@ public class OauthService {
     	return user;
     }
     
+    
+    
+    /*
+     * 소셜에서 받은 코드로 억세스 코드를 요청
+     * 
+     */
     public OAuthToken requestAccessTokenAndParsing(SocialLoginType socialLoginType, String code) throws JsonProcessingException {
         SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
         return socialOauth.requestAccessTokenAndParsing(code);
@@ -68,7 +78,12 @@ public class OauthService {
     
     
 
-    
+    /**
+     * 소셜 로그인 타입을 설정함
+     * 
+     * @param socialLoginType
+     * @return
+     */
     private SocialOauth findSocialOauthByType(SocialLoginType socialLoginType) {
         return socialOauthList.stream()
                 .filter(x -> x.type() == socialLoginType)
