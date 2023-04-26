@@ -95,7 +95,7 @@
 <update id="updateStoreWrite" parameterType="com.codeone.dto.store.StoreItemDto">
 	update item
 	set title=#{title}, content=#{content}, location=#{location}, price=#{price}, itemcondition=#{itemcondition}, 
-	filename=#{filename}, newfilename=#{newfilename}
+	filename=#{filename}, newfilename=#{newfilename}, wdate=now()
 	where seq=#{seq}
 </update>
 

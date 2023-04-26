@@ -36,7 +36,7 @@ public class StoreService {
 		return n>0?true:false;
 	}
 
-	
+	// 중고거래 글목록
 	public List<StoreItemDto> getStoreList(StoreParam param) {
 		return dao.getStoreList(param);
 	}
@@ -97,7 +97,7 @@ public class StoreService {
 	
 	
 	// 파일생성 service
-	public boolean uploadImgFile(StoreItemDto item, MultipartFile uploadFile, HttpServletRequest req) {
+	public String uploadImgFile(StoreItemDto item, MultipartFile uploadFile, HttpServletRequest req) {
         // 경로
         String path = req.getServletContext().getRealPath("/storeImage");
 
@@ -108,7 +108,8 @@ public class StoreService {
         String filecheck = filename.substring(filename.lastIndexOf('.'));
 
         // img 파일일때 파일생성
-        if (filecheck.equals(".png") || filecheck.equals(".jpg") || filecheck.equals(".jpeg")) {
+        if (filecheck.equals(".png") || filecheck.equals(".jpg") || filecheck.equals(".jpeg")
+        		|| filecheck.equals(".PNG") || filecheck.equals(".JPG") || filecheck.equals(".JPEG")) {
             item.setFilename(filename);
 
             // 파일명을 충돌되지 않는 명칭(Date)으로 변경
@@ -122,13 +123,13 @@ public class StoreService {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
                 bos.write(uploadFile.getBytes());
                 bos.close();
-                return true;
+                return "UPLOAD_OK";
 
             } catch (Exception e) {
-                return false;
+                return "UPLOAD_FAIL";
             }
         }
-        return false; // 이미지가 아님
+        return "NO_IMAGE"; // 이미지가 아님
     }
 }
 

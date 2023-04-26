@@ -72,22 +72,24 @@ public class StoreController {
 //		if(item.getLocation().equals("지역설정안함")) {
 //			item.setLocation("전국");
 //		}
-
+		
+		// 업로드파일이 없을경우
 		if (uploadFile == null || uploadFile.isEmpty()) {
 
 			// db에 원래파일이름, item 넣어주기
-			boolean isUpdateWrite = service.updateStoreWrite(item);
+			boolean isWriteStore = service.writeStore(item);
 
-			if (isUpdateWrite == true) {
+			if (isWriteStore == true) {
 				return "WRITE_OK"; // 글쓰기 성공
 			}
 			return "WRITE_FAIL"; // 글쓰기 실패
 		}
 
 		// 업로드 파일이 있을 경우 파일 생성
-		boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+		String msg = service.uploadImgFile(item, uploadFile, req);
+		// boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
 
-		if (isUploadImg == true) {
+		if (msg == "UPLOAD_OK") {	// 파일 업로드 완료
 
 			// 파일이 생성되면 글작성
 			boolean isWriteStore = service.writeStore(item);
@@ -97,9 +99,13 @@ public class StoreController {
 			} else {
 				return "WRITE_FAIL"; // 글쓰기 실패
 			}
-		} else {
-			return "NO_IMAGE"; // 글쓰기 실패
 		}
+		
+		else if(msg == "NO_IMAGE"){
+			return "NO_IMAGE";
+		}
+		
+		return "UPLOAD_FAIL";
 
 	}
 	// 파일 만들어주기
@@ -166,7 +172,7 @@ public class StoreController {
 
 		// search, choice 넣어주고 리스트 불러오기
 		List<StoreItemDto> list = service.getStoreList(param);
-
+		
 		// 댓글의 총갯수
 		int totalCount = service.getAllStoreCount(param); // search, choice 들어오는값은 없음.
 
@@ -174,9 +180,9 @@ public class StoreController {
 		map.put("list", list);
 		// map.put("pageBbs", pageBbs);
 		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
-
+		System.out.println(totalCount);
 		return map;
-
+		
 		// 로그인 id받아서 그사람이 좋아요중인지 여부 확인
 
 	}
@@ -184,7 +190,7 @@ public class StoreController {
 	// 서버에 있는 이미지 불러와서 리액트에 반환해주기
 	@GetMapping(value = "image/{imagename}", produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> searchImage(@PathVariable("imagename") String imagename) throws IOException {
-		System.out.println("StoreController searchImage() " + new Date());
+		//System.out.println("StoreController searchImage() " + new Date());
 		// System.out.println("이미지: " + imagename);
 
 		// 이미지 경로 설정
@@ -330,9 +336,9 @@ public class StoreController {
 		}
 
 		// 업로드 파일이 있을 경우 파일 생성
-		boolean isUploadImg = service.uploadImgFile(item, uploadFile, req);
+		String msg = service.uploadImgFile(item, uploadFile, req);
 
-		if (isUploadImg == true) {
+		if (msg == "UPLOAD_OK") {
 
 			// 파일이 생성되면 글수정
 			boolean isUpdateWrite = service.updateStoreWrite(item);
@@ -342,8 +348,10 @@ public class StoreController {
 			} else {
 				return ResponseEntity.badRequest().build(); // 글쓰기 실패
 			}
+		} else if (msg == "UPLOAD_FAIL") {
+			return ResponseEntity.badRequest().body("UPLOAD_FAIL"); // 파일업로드 실패
 		} else {
-			return ResponseEntity.badRequest().body("NO_IMAGE"); // 글쓰기 실패
+			return ResponseEntity.badRequest().body("NO_IMAGE"); // 이미지 아님
 		}
 	}
 
