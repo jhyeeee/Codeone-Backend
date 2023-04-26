@@ -82,9 +82,39 @@
 			<optional>true</optional>
 		</dependency>
 
-		
-		
-		<!-- 이메일 -->
+<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-apis -->
+   <dependency>
+              <groupId>com.github.scribejava</groupId>
+              <artifactId>scribejava-apis</artifactId>
+              <version>5.6.0</version>
+        </dependency>
+
+<!-- https://mvnrepository.com/artifact/com.github.scribejava/scribejava-core -->
+       <dependency>
+              <groupId>com.github.scribejava</groupId>
+              <artifactId>scribejava-core</artifactId>
+              <version>5.6.0</version>
+        </dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-google -->
+<dependency>
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-google</artifactId>
+    <version>1.0.0.RELEASE</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.12.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.json/json -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20180813</version>
+</dependency>
+	<!-- 이메일 -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
