@@ -22,7 +22,7 @@
 <!-- 회원가입 -->
 <insert id="addUser" parameterType="com.codeone.dto.user.UserDto">
 	insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth)
-	values(#{email}, #{emailKey}, #{emailAuth}, #{name}, #{id}, null, now(), null, null, 0, 1  )
+	values(#{email}, #{emailKey}, #{emailAuth}, #{name}, #{id}, #{phoneNumber}, now(), #{filename}, null, 0, 1  )
 </insert>
 
 <!-- 메일키 회원정보에 업데이트 -->
@@ -33,7 +33,7 @@
 </update> 
 
 <!-- 로그인 -->
-<select id="getMember" parameterType="com.codeone.dto.user.UserDto" resultType="com.codeone.dto.user.UserDto">
+<select id="getMember" parameterType="String" resultType="com.codeone.dto.user.UserDto">
 	select *
 	from user
 	where email=#{email}
@@ -45,4 +45,11 @@
 	WHERE seq = #{seq}
 </select>
 
+
+<select id="checkEmailKey" parameterType="String" resultType="com.codeone.dto.user.UserDto">
+	SELECT *
+	FROM user
+	WHERE emailKey = #{emailKey}
+</select>
+   	
 </mapper>
