@@ -22,4 +22,11 @@ public interface CalendarDao {
 	
 	//일정조회
 	public CalendarDto detailCalendar (int seq);
+	
+	//일정수정
+	boolean updateCalendar(CalendarDto dto);
+
+	//일정삭제
+	public boolean deleteCalendar(int seq);
+
 }

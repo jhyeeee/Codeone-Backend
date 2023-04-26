@@ -6,13 +6,16 @@ import org.springframework.stereotype.Repository;
 import com.codeone.dto.user.UserDto;
 
 @Mapper
-@Repository
 public interface UserDao {
 	
 	// 회원가입 전 이메일 중복체크
 	int checkEmail(String email);
 	
+
 	// 이메일 중복체크
+
+	// 아이디 중복체크
+
 	int checkId(String id);
 	
 	int addUser(UserDto dto);
@@ -26,5 +29,8 @@ public interface UserDao {
 	
 	
 	UserDto selectOneBySeq(int seq);
+
+	
+	UserDto checkEmailKey(String emailKey);
 
 }
