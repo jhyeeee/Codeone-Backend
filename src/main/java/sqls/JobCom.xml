@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.codeone.dao.job.JobDao">
+<mapper namespace="com.codeone.dao.job.JobComDao">
   
 
 	
@@ -26,10 +26,10 @@
 	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
 	insert into joblist(comid,title,content,startline,deadline,wdate,comdel,
 				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
-				comsalary, comfile, commapx,commapy)
+				comsalary, comfile, commapx,commapy, liked)
 	values(#{comid}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
 		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
-		   #{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy})
+		   #{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy}, 0)
 	</insert> 
 	
 	

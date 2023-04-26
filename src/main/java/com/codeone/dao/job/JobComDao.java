@@ -21,6 +21,6 @@ public interface JobComDao {
 	//기업회원 글수정
 	int updateJob(JobDto job);
 	//기업회원 글삭제
-	int deleteJob(int comseq);
+	int deleteJob(int seq);
 
 }

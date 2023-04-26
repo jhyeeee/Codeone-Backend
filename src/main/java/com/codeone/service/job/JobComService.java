@@ -38,8 +38,8 @@ import com.codeone.dto.job.JobFilterDto;
 			return n>0?true:false;			
 		}
 		//기업회원 글삭제
-		public boolean deleteJob(int comseq) {
-			int n = dao.deleteJob(comseq);
+		public boolean deleteJob(int seq) {
+			int n = dao.deleteJob(seq);
 			return n>0?true:false;
 		}
 		
