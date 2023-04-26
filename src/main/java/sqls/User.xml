@@ -6,8 +6,8 @@
 <mapper namespace="com.codeone.dao.user.UserDao">
 
 <!-- 이메일 중복체크 -->
-<select id="checkEmail" parameterType="String" resultType="Integer">
-	select count(*)
+<select id="checkEmail" parameterType="String" resultType="com.codeone.dto.user.UserDto">
+	select *
 	from user
 	where email=#{email}
 </select>

@@ -2,6 +2,7 @@ package com.codeone.socialLogin.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -125,26 +126,27 @@ public class GithubOauth implements SocialOauth {
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
      */
     @Override
-    public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
+    public HashMap<Integer, UserDto> getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
     	GitUser gitUser = objectMapper.readValue(userInfoRes.getBody(), GitUser.class);
-    	UserDto user = new UserDto();    	
-    	user.setName(gitUser.getName());
-    	//user.setEmailKey(githubUser.getVerifiedEmail());
-    	user.setEmail(gitUser.getEmail());
-    	user.setFilename(gitUser.getAvatar_url());
-//    	user.setId(gitUser.getId());
     	
-    	// DB 확인
-    	if(checkEmail(user.getEmail()) == 0) {
-    		//신규
-    		System.out.println("신규 - githubOauth");
-    	} else {
-    		// 기존
-    		System.out.println("기존 - githubOauth");
-    	};   	
-        return user;
-//    	System.out.println(userInfoRes.getBody());
-//    	return new UserDto();
+    	int flg = 0; // 0은 기존, 1은 신구
+    	UserDto user = checkEmail(gitUser.getEmail());
+    	HashMap<Integer,UserDto> map = new HashMap<>();
+    	System.out.println(user + " getUserInfo");
+    	//DB확인해서 신규가입인경우 내용 세팅 아니면      	
+    	if(Objects.isNull(user)) {
+    		UserDto newUser = new UserDto();
+    		flg = 1;
+    		newUser.setEmail(gitUser.getEmail());
+    		newUser.setName(gitUser.getName());
+    		newUser.setFilename(gitUser.getAvatar_url());     	
+        	System.out.println(user.getEmail());
+        	map.put(flg, newUser);
+    	}else {
+    		map.put(flg, user);    		
+    	}
+    	
+        return map;
     }
     
     /*
@@ -152,7 +154,7 @@ public class GithubOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkEmail(String email) {    	
+    public UserDto checkEmail(String email) {    	
     	return dao.checkEmail(email);
     }
 

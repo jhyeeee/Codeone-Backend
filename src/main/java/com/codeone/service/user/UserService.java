@@ -1,5 +1,7 @@
 package com.codeone.service.user;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,8 +26,13 @@ public class UserService {
     private JavaMailSender mailSender;
 	
 	public boolean checkEmail(String email) {
-		int n = dao.checkEmail(email);
-		return n>0?true:false;
+		UserDto user = dao.checkEmail(email);
+		boolean result = false;
+		// 중복인경우
+		if(!Objects.isNull(user)) {
+			result = true;
+		}
+		return result;
 	}
 
 	public boolean checkId(String id) {

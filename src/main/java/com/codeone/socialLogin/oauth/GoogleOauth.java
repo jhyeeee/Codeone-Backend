@@ -2,6 +2,7 @@ package com.codeone.socialLogin.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -126,24 +127,27 @@ public class GoogleOauth implements SocialOauth {
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
      */
     @Override
-    public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
+    public HashMap<Integer, UserDto> getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
     	GoogleUser googleUser = objectMapper.readValue(userInfoRes.getBody(), GoogleUser.class);
-    	UserDto user = new UserDto();    	
-    	user.setName(googleUser.getName());
-    	//user.setEmailKey(googleUser.getVerifiedEmail());
-    	user.setEmail(googleUser.getEmail());
-    	user.setFilename(googleUser.getPicture());
-    	user.setId(googleUser.getId());
-    	System.out.println(user.getEmail());
-    	// DB 확인
-    	if(checkEmail(user.getEmail()) == 0) {
-    		//신규
-    		System.out.println("신규 - GoogleOauth");
-    	} else {
-    		// 기존
-    		System.out.println("기존 - GoogleOauth");
-    	};   	
-        return user;
+    	int flg = 0; // 0은 기존, 1은 신구
+    	UserDto user = checkEmail(googleUser.getEmail());
+    	HashMap<Integer,UserDto> map = new HashMap<>();
+    	System.out.println(user + " getUserInfo");
+    	//DB확인해서 신규가입인경우 내용 세팅 아니면      	
+    	if(Objects.isNull(user)) {
+    		UserDto newUser = new UserDto();
+    		flg = 1;
+    		newUser.setEmail(googleUser.getEmail());
+    		newUser.setName(googleUser.getName());
+        	//user.setEmailKey(googleUser.getVerifiedEmail());
+    		newUser.setFilename(googleUser.getPicture());
+    		newUser.setId(googleUser.getId());        	
+        	System.out.println(newUser.getEmail());
+        	map.put(flg, newUser);
+    	}else {
+    		map.put(flg, user);
+    	}
+    	return map;
     }
     
     /*
@@ -151,7 +155,7 @@ public class GoogleOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkEmail(String email) {    	
+    public UserDto checkEmail(String email) {    	
     	return dao.checkEmail(email);
     }
 

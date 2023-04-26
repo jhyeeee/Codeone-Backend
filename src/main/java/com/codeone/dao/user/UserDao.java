@@ -9,7 +9,7 @@ import com.codeone.dto.user.UserDto;
 public interface UserDao {
 	
 	// 회원가입 전 이메일 중복체크
-	int checkEmail(String email);
+	UserDto checkEmail(String email);
 
 
 	// 이메일 중복체크
