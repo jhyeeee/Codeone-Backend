@@ -4,7 +4,10 @@ import lombok.Data;
 
 @Data
 public class StudygroupListCommand {
+	private int memberSeq;			// 로그인한 사용자 번호
+	
 	private int[] technologyStack;	// 필터 : 기술 스택
+	private int[] recruitmentPart;	// 필터 : 모집 분야
 	private int recruitmentType;	// 필터 : 모집 구분
 	private String term;			// 필터 : 검색어
 	private boolean isOpened;		// 필터 : 모집 중만 보기(true=>모집중인 스터디 그룹, false=>모든 스터디 그룹)

@@ -28,6 +28,10 @@ public class UserService {
 		return n>0?true:false;
 	}
 	
+<<<<<<< HEAD
+=======
+
+>>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
 	public boolean checkId(String id) {
 		int n = dao.checkId(id);
 		return n>0?true:false;
@@ -40,14 +44,14 @@ public class UserService {
 	}
 	
 	// 회원가입 이메일 발송
-    public void sendEmail(String email, String emailKey) throws Exception {
+    public void sendSignUpEmail(String email) throws Exception {
     	
     	// 메일 회원가입 이동 링크 수정
     	String mailContent = "<div style='text-align:center;'>" +
                 "<h1 style='color:black;'>CodeOne 회원가입</h1>" +
                 "<p style='font-size:18px; color:#333; margin-top:30px; margin-bottom:20px;'>안녕하세요</p>" +
-                "<p style='font-size:16px; color:#555; margin-top:20px; margin-bottom:30px;'>회원가입을 진행하려면 아래 링크를 클릭해주세요</p>" +
-                "<a href='http://localhost:3000/signup?email=" + email + "&emailKey=" + emailKey + "' style='display:inline-block; background-color:#FF4136; color:#fff; font-size:16px; text-align:center; padding:12px 20px; border-radius:5px; text-decoration:none; margin-bottom:30px;'>계속하기</a>" +
+                "<p style='font-size:16px; color:#555; margin-top:20px; margin-bottom:30px;'>회원가입을 진행하려면 아래 링크를 클릭해주세요</p>" +           
+                "<a href='http://localhost/user/signUpemailAf?email="+email +" ' style='display:inline-block; background-color:#FF4136; color:#fff; font-size:16px; text-align:center; padding:12px 20px; border-radius:5px; text-decoration:none; margin-bottom:30px;'>계속하기</a>" +
                 "<p style='font-size:14px; color:#999; margin-top:30px;'>본 이메일은 발신 전용입니다. 문의 사항은 고객센터를 이용해주세요.</p>" +
                 "<p style='font-size:14px; color:#999;'>CodeOne | 서울특별시 강남구 테헤란로 1234</p>" +
                 "</div>";
@@ -69,7 +73,11 @@ public class UserService {
                 "<h1 style='color:black;'>CodeOne 로그인</h1>" +
                 "<p style='font-size:18px; color:#333; margin-top:30px; margin-bottom:20px;'>안녕하세요</p>" +
                 "<p style='font-size:16px; color:#555; margin-top:20px; margin-bottom:30px;'>로그인을 계속하시려면 하단의 링크를 클릭하세요</p>" +
+<<<<<<< HEAD
                 "<a href='http://localhost:3000/codeone/loginAf?email=" + email + "&emailKey=" + emailKey + "' style='display:inline-block; background-color:#FF4136; color:#fff; font-size:16px; text-align:center; padding:12px 20px; border-radius:5px; text-decoration:none; margin-bottom:30px;'>계속하기</a>" +
+=======
+                "<a href='http://localhost/user/loginAf?email=" + email + "&emailKey=" + emailKey + "' style='display:inline-block; background-color:#FF4136; color:#fff; font-size:16px; text-align:center; padding:12px 20px; border-radius:5px; text-decoration:none; margin-bottom:30px;'>계속하기</a>" +
+>>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
                 "<p style='font-size:14px; color:#999; margin-top:30px;'>본 이메일은 발신 전용입니다. 문의 사항은 고객센터를 이용해주세요.</p>" +
                 "<p style='font-size:14px; color:#999;'>CodeOne | 서울특별시 강남구 테헤란로 1234</p>" +
                 "</div>";
@@ -92,10 +100,16 @@ public class UserService {
 		return dao.updateEmailKey(dto);
 	}
     
+<<<<<<< HEAD
     // 회원정보에 메일인증여부 업데이트
     public int updateEmailAuth(UserDto dto) {
 		return dao.updateEmailAuth(dto);
 	}
+=======
+    public UserDto checkEmailKey(String emailKey) {
+    	return dao.checkEmailKey(emailKey);
+    }
+>>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
 }
 
 

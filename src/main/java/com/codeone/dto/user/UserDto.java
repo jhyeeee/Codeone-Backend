@@ -195,5 +195,6 @@ public class UserDto implements Serializable {
 		
 		return studygroupDetailUser;
 	}
-	
+
 }
+

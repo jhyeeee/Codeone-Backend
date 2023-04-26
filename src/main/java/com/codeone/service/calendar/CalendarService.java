@@ -17,7 +17,9 @@ public class CalendarService {
 	@Autowired
 	CalendarDao dao;
 	
+
 	//일정 달력에 불러오기
+
 	public List<CalendarDto> getCalendarList(String id) {
 		return dao.getCalendarList(id);
 	}
@@ -31,4 +33,16 @@ public class CalendarService {
 	public CalendarDto detailCalendar(int seq) {
 		return dao.detailCalendar(seq);
 	}
+
+	
+	//일정수정
+	public boolean updateCalendar(CalendarDto dto) {
+		return dao.updateCalendar(dto);
+	}
+	
+	//일정삭제
+	public boolean deleteCalendar(int seq) {
+		return dao.deleteCalendar(seq);
+	}
+
 }
