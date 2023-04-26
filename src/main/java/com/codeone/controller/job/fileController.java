@@ -23,8 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-@CrossOrigin("*")
+//
+//@CrossOrigin("*")
 @RestController
 public class fileController {
 	private String UPLOAD_PATH = "src/main/webapp/upload"; // 업로드 할 위치
@@ -99,7 +99,7 @@ public class fileController {
 			//uploadimage 경로변경
 			//return new ResponseEntity<Object>("http://localhost:80/getImage/" + fileId + "/" + fileExtension, HttpStatus.OK);
 			
-			return path;
+			return "upload"+"/"+fileId + "." + fileExtension;
 		} catch(IOException e) {
 			//return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
 			return "FAIL";

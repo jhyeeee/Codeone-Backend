@@ -4,9 +4,7 @@ package com.codeone.service.store;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dao.store.StoreDao;
 import com.codeone.dto.store.StoreItemDto;
-
 import com.codeone.dto.store.StoreLikeDto;
 import com.codeone.dto.store.StoreParam;
 import com.codeone.etc.ItemUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+ 
 
 @Service
 @Transactional

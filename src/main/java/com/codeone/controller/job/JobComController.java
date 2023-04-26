@@ -1,27 +1,21 @@
 package com.codeone.controller.job;
 
-import com.codeone.controller.job.fileController;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dto.job.ComPagingDto;
 import com.codeone.dto.job.JobDto;
 import com.codeone.service.job.JobComService;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-
+ 
 @RestController
 public class JobComController {
 
@@ -57,37 +51,17 @@ public class JobComController {
     }
 
     //기업회원 글작성 
-    @PostMapping("/writeJob")
-    public String writeJob(JobDto job, MultipartFile file, HttpServletRequest request) {
-        System.out.println("JobController writeJob() " + new Date());
-        System.out.println(job.toString());
-        
-        fileController fileController = new fileController();
-        
-        String filePath = fileController.uploadImageTest(file, request); // 파일 업로드 수행 후 파일 경로 반환
-        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1); // 파일명만 추출
-        String fileUrl = "upload/" + fileName; // 상대경로 생성
-        
-        job.setComimage(fileUrl); // DB에 저장할 파일 URL 설정
-        
-        boolean b = service.writeJob(job);
-        if(b) {
-            return "YES";
-        } else {
-            return "NO";
-        } 
-    }
-
-    
 //    @PostMapping("/writeJob")
 //    public String writeJob(JobDto job, MultipartFile file, HttpServletRequest request) {
 //        System.out.println("JobController writeJob() " + new Date());
 //        System.out.println(job.toString());
 //        
 //        fileController fileController = new fileController();
-//        
+//         
 //        String filePath = fileController.uploadImageTest(file, request); // 파일 업로드 수행 후 파일 경로 반환
-//        String fileUrl = "upload/" + filePath.substring(filePath.lastIndexOf("\\") + 1); // 파일명만 추출하여 상대경로 생성
+//        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1); // 파일명만 추출
+//        String fileUrl = "upload/" + fileName; // 상대경로 생성
+//        
 //        job.setComimage(fileUrl); // DB에 저장할 파일 URL 설정
 //        
 //        boolean b = service.writeJob(job);
@@ -98,18 +72,18 @@ public class JobComController {
 //        } 
 //    }
 
-//  	@PostMapping("/writeJob")
-//  	public String writeJob(JobDto job) {
-//  		System.out.println("JobController writeJob() " + new Date());
-//  		System.out.println(job.toString());
-//  		
-//  		boolean b = service.writeJob(job);
-//  		if(b) {
-//  			return "YES";
-//  		} else {
-//  			return "NO";
-//  		}
-//  	} 
+  	@PostMapping("/writeJob")
+  	public String writeJob(JobDto job) {
+  		System.out.println("JobController writeJob() " + new Date());
+  		System.out.println(job.toString());
+  		
+  		boolean b = service.writeJob(job);
+  		if(b) {
+  			return "YES";
+  		} else {
+  			return "NO";
+  		}
+  	} 
   //기업회원 글수정
   	@PostMapping(value = "/updateJob")
   	public String updateJob(JobDto job) {
