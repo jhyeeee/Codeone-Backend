@@ -24,6 +24,9 @@ public interface StoreDao {
 	// 중고거래 글 목록
 	List<StoreItemDto> getStoreList(StoreParam param);
 	
+	// 중고거래 글의 총수
+	int getAllStoreCount(StoreParam param);
+	
 	// 중고거래 글 1개
 	StoreItemDto getStoreItem(int seq);
 	
@@ -47,5 +50,8 @@ public interface StoreDao {
 	
 	// 중고거래 글 삭제
 	int deleteStoreWrite(int seq);
+	
+	// 판매여부 변경
+	void updateStatus(StoreItemDto item);
 
 }

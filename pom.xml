@@ -118,14 +118,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-<<<<<<< HEAD
-		</dependency>			
+		</dependency>		
 	
 
-=======
-		</dependency>	
+
+		
 	
->>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
+
 	</dependencies>
 
 	<build>

@@ -41,26 +41,14 @@ public class UserController {
 		// 중복된 아이디 없음
 		return ResponseEntity.ok().build();
 	}
-	
-<<<<<<< HEAD
-	@PostMapping(value = "/checkId")
-	public String checkId(String id) {
-		System.out.println("userController checkId() " + new Date());
-		
-		// 아이디 유효성 검사
-		
-		// 아이디 중복 검사
-		boolean isIdCheck = service.checkId(id);
-		if (isIdCheck == true) {	// 중복된 아이디 있음
-			return "DUPLICATED_ID";
-=======
+
+
 	// Id 체크 로직
 	@PostMapping(value = "/checkingId")
 	public ResponseEntity<String> checkingId(String id) throws Exception {
 		boolean isEmailCheck = service.checkEmail(id);
 		if (isEmailCheck) { // 중복된 아이디가 있음
 			return ResponseEntity.status(HttpStatusCode.valueOf(204)).build();
->>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
 		}
 		// 아이디가 없으면
 		return ResponseEntity.ok().build();

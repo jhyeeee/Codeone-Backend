@@ -8,7 +8,7 @@
 <!-- 중고거래 글쓰기 -->
 <insert id="writeStore" parameterType="com.codeone.dto.store.StoreItemDto">
 	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg )
-	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},0, now(), 0, #{filename}, #{newfilename}, 0 )
+	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), 0, #{filename}, #{newfilename}, 0 )
 </insert>
 
 <!-- 중고거래 목록 정렬 최신순 -->
@@ -28,7 +28,27 @@
 			</if>
 		</if>
 		and delflg=0
-	order by wdate desc	
+	order by seq desc					<!-- seq순으로 정렬 -->
+	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->
+</select>
+
+<!-- 글의 총 갯수 (페이징) -->
+<select id="getAllStoreCount" parameterType="com.codeone.dto.store.StoreParam" resultType="java.lang.Integer">
+	select ifnull(count(*), 0)
+	from item
+	where 1=1
+		<if test="choice != null and choice != ''  and search != null and search != ''">			
+			<if test="choice == 'title'">
+				and title like concat('%', #{search},'%')
+			</if>
+			<if test="choice == 'content'">
+				and content like concat('%', #{search},'%')
+			</if>
+			<if test="choice == 'writer'">
+				and id=#{search}
+			</if>			
+		</if>
+	and delflg = 0	
 </select>
 
 <!-- 중고거래 item -->
@@ -64,7 +84,7 @@
 	where seq=#{seq}
 </update>
 
-<!-- 좋아요 취소 카트 -->
+<!-- 좋아요 취소 카운트 -->
 <update id="countCancelLike" parameterType="Integer">
 	update item
 	set likecount=likecount-1
@@ -75,7 +95,7 @@
 <update id="updateStoreWrite" parameterType="com.codeone.dto.store.StoreItemDto">
 	update item
 	set title=#{title}, content=#{content}, location=#{location}, price=#{price}, itemcondition=#{itemcondition}, 
-	filename=#{filename}, newfilename=#{newfilename}
+	filename=#{filename}, newfilename=#{newfilename}, wdate=now()
 	where seq=#{seq}
 </update>
 
@@ -83,6 +103,13 @@
 <update id="deleteStoreWrite" parameterType="Integer">
 	update item
 	set delflg=1
+	where seq=#{seq}
+</update>
+
+<!-- 판매여부 변경 -->
+<update id="updateStatus" parameterType="com.codeone.dto.store.StoreItemDto">
+	update item
+	set status=#{status}
 	where seq=#{seq}
 </update>
 

@@ -22,11 +22,8 @@
 <!-- 회원가입 -->
 <insert id="addUser" parameterType="com.codeone.dto.user.UserDto">
 	insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth)
-<<<<<<< HEAD
-	values(#{email}, #{emailKey}, 0, #{name}, #{id}, null, now(), null, null, 0, 1  )
-=======
-	values(#{email}, #{emailKey}, #{emailAuth}, #{name}, #{id}, #{phoneNumber}, now(), #{filename}, null, 0, 1  )
->>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
+	values(#{email}, #{emailKey}, 0, #{name}, #{id}, #{phoneNumber}, now(), #{filename}, null, 0, 1)
+
 </insert>
 
 <!-- 메일키 회원정보에 업데이트 -->

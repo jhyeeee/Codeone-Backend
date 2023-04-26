@@ -10,12 +10,13 @@ public interface UserDao {
 	
 	// 회원가입 전 이메일 중복체크
 	int checkEmail(String email);
-	
-<<<<<<< HEAD
+
+
 	// 이메일 중복체크
-=======
+
 	// 아이디 중복체크
->>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
+
+
 	int checkId(String id);
 	
 	int addUser(UserDto dto);
@@ -29,10 +30,8 @@ public interface UserDao {
 	
 	
 	UserDto selectOneBySeq(int seq);
-<<<<<<< HEAD
 
-=======
-	
 	UserDto checkEmailKey(String emailKey);
->>>>>>> 28a478e5eab8bbdf80b7923e47285d2fa1a6f0a0
+
+
 }
