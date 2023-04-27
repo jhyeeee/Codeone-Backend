@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.codeone.dao.job.JobDao;
-import com.codeone.dto.job.JobLikeDto;
 
 @Service
 public class JobService {
@@ -84,14 +83,16 @@ public class JobService {
 	
 	
 	//좋아요
-	public Map<String,Object> update_Like(JobLikeDto params) throws Exception {
+	public Map<String,Object> update_Like(Map<String, Object> params) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String err = "100";
 		String msg = "데이터 추가 오류가 발생하였습니다.";
 		
 		if(dao.update_Like(params) > 0) {
-			err = "500";	
-			 msg = "데이터 수정이 완료되였습니다.";
+			if(dao.insert_Like(params) > 0) {
+				err = "500";	
+				msg = "데이터 수정이 완료되였습니다.";
+			}
 		}
 		
 		map.put("err", err);
@@ -101,14 +102,16 @@ public class JobService {
 
 	
 	
-	public Map<String, Object> insert_Like(JobLikeDto params) throws Exception{
+	public Map<String,Object> update_UnLike(Map<String, Object> params) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String err = "100";
-		String msg = "데이터 등록중 오류가 발생하였습니다.";
+		String msg = "데이터 추가 오류가 발생하였습니다.";
 		
-		if(dao.insert_Like(params) > 0) {
-			err = "500";
-			 msg = "데이터 등록이 완료되였습니다.";
+		if(dao.update_UnLike(params) > 0) {
+			if(dao.delete_Like(params) > 0) {
+				err = "500";	
+				msg = "데이터 수정이 완료되였습니다.";
+			}
 		}
 		
 		map.put("err", err);

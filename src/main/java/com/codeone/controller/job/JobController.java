@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codeone.dto.job.JobLikeDto;
 import com.codeone.service.job.JobService;
 
 @RequestMapping("job/")
@@ -71,22 +70,24 @@ public class JobController {
 		return res;
 	}
 	
-//
+
 	//좋아요
 	@PostMapping("doLike")
-	public Map<String, Object> doLike(@RequestBody JobLikeDto params) throws Exception{
+	public Map<String, Object> doLike(@RequestBody Map<String, Object> params) throws Exception{
 		Map<String, Object> res = new HashMap<String, Object>();
-		System.out.println("params do like ==> " + params);
 		res.put("doLike", service.update_Like(params));
 		return res;
 	}
 	
-	@PostMapping("insertLike")
-	public Map<String, Object> insertLike(@RequestBody JobLikeDto params) throws Exception{
+	@PostMapping("doUnLike")
+	public Map<String, Object> insertLike(@RequestBody Map<String, Object> params) throws Exception{
 		Map<String, Object> res = new HashMap<String, Object>();
-		res.put("insertLike", service.insert_Like(params));
+		res.put("insertLike", service.update_UnLike(params));
 		return res;
 	}
 	
 	
+	
 }
+
+    

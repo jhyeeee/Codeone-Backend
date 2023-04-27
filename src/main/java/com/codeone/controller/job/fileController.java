@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+//
+//@CrossOrigin("*")
 @RestController
 public class fileController {
 	private String UPLOAD_PATH = "src/main/webapp/upload"; // 업로드 할 위치
@@ -61,17 +63,20 @@ public class fileController {
 		}
 	}
 	
-	// 이미지 업로드
-	@PostMapping("/uploadImage")
-	public ResponseEntity<Object> uploadImage(MultipartFile multipartFiles[],
+	// 이미지 파일 업로드
+	// DB 저장 안함
+	@PostMapping("/uploadImageTest")
+	public String uploadImageTest(MultipartFile multipartFiles,
 			HttpServletRequest req) {
-		String UPLOAD_PATH = req.getSession().getServletContext().getRealPath("/upload");
+		//String UPLOAD_PATH = req.getSession().getServletContext().getRealPath("/upload");
+		String UPLOAD_PATH = "C:\\finalfront\\codeonereact\\public\\upload";	//파일이 올라가는 경로
+		
 		System.out.println("UPLOAD_PATH : " + UPLOAD_PATH);
 		//String UPLOAD_PATH = "C:\\Upload"; // 업로드 할 위치
 		try {
-			System.out.println("fileController uploadImage " + new Date());
+			System.out.println("fileController uploadImageTest " + new Date());
 //			System.out.println("1>> " + multipartFiles[0]);
-			MultipartFile file = multipartFiles[0];
+			MultipartFile file = multipartFiles;
             
 			String fileId = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt()); // 현재 날짜와 랜덤 정수값으로 새로운 파일명 만들기
 			String originName = file.getOriginalFilename(); // ex) 파일.jpg
@@ -81,15 +86,6 @@ public class fileController {
 			System.out.println("originName : " + originName);
 			System.out.println("fileExtension : " + fileExtension);
 
-//			long fileSize = file.getSize(); // 파일 사이즈
-//			System.out.println("fileSize :  " + fileSize);
-			
-//			File fileSave = new File(UPLOAD_PATH, fileId + "." + fileExtension); // ex) fileId.jpg
-//			if(!fileSave.exists()) { // 폴더가 없을 경우 폴더 만들기
-//				fileSave.mkdirs();
-//			}
-//            
-//			file.transferTo(fileSave); // fileSave의 형태로 파일 저장
 			
 			String path= UPLOAD_PATH+"\\"+fileId + "." + fileExtension;
 			File file2 = new File(path);
@@ -99,15 +95,23 @@ public class fileController {
 			bos.write(file.getBytes());			
 			bos.close();
 				
-//			System.out.println("fileId= " + fileId);
-//			System.out.println("originName= " + originName);
-//			System.out.println("fileExtension= " + fileExtension);
-//			System.out.println("fileSize= " + fileSize);
-			
+		
 			//uploadimage 경로변경
-			return new ResponseEntity<Object>("http://localhost:80/getImage/" + fileId + "/" + fileExtension, HttpStatus.OK);
+			//return new ResponseEntity<Object>("http://localhost:80/getImage/" + fileId + "/" + fileExtension, HttpStatus.OK);
+			
+			return "upload"+"/"+fileId + "." + fileExtension;
 		} catch(IOException e) {
-			return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
+			//return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
+			return "FAIL";
 		}
 	}
+	
+	
+//	app.post("/getImgURL", upload.single('image'), (req, res) => {
+//	    let url = '/api/getImg/' + req.file.filename;
+//	    res.json({
+//	        url: url
+//	    });
+//	})
+	
 }

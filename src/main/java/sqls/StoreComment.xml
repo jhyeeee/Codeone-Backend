@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codeone.dao.store.StoreCommentDao">
+
+<!-- 댓글 작성 -->
+<insert id="writeCommentStore" parameterType="com.codeone.dto.store.StoreCommentDto">
+	insert into itemcomment(itemseq, id, content, wdate, delflg)
+	values(#{itemseq}, #{id}, #{content}, now(), 0)
+</insert>
+
+<!-- 댓글 목록 추후 페이징 추가-->
+<select id="getStoreCommentList" parameterType="com.codeone.dto.store.StoreCommentParam" resultType="com.codeone.dto.store.StoreCommentDto">
+	select *
+	from itemcomment	
+	where itemseq=#{itemseq} and delflg=0
+	order by seq desc 						<!-- seq순으로 정렬 -->
+	limit #{start}, #{dataCount}			<!-- 앞이 데이터 몇번부터, 뒤가 몇개보여줄지 -->
+</select>
+
+<!-- 댓글의 총 갯수 (페이징) 글의 seq넣어주고 갯수가져오기 -->
+<select id="getStoreCommentCount" parameterType="Integer" resultType="java.lang.Integer">
+	select ifnull(count(*), 0)	<!-- null이 아닐땐 count체크, null이면 0 -->
+	from itemcomment
+	where itemseq=#{itemseq} and delflg=0	
+</select>
+
+<!-- 댓글 수정 -->
+<update id="updateStoreComment" parameterType="com.codeone.dto.store.StoreCommentDto">
+	update itemcomment
+	set content=#{content}, wdate=now()	
+	where seq=#{seq}
+</update>
+
+<!-- 댓글 삭제 -->
+<update id="deleteStoreComment" parameterType="Integer">
+	update itemcomment
+	set delflg=1	
+	where seq=#{seq}
+</update>
+
+
+
+</mapper>
+
+
+
+
+
+
+

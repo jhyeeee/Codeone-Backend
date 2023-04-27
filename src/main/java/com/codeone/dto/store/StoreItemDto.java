@@ -22,26 +22,26 @@ CREATE TABLE item (
 public class StoreItemDto implements Serializable {
 
 	// 중고인지 새거인지 여부 추가 itemcondition 추가함
-	int seq;
-	String id;				// 작성자 id
-	String title;			// 제목
-	String content;			// 내용
-	int price;				// 가격
-	String location;		// 판매위치
-	String itemcondition;	// 중고 "old", 새제품 "new"
-	int status;				// 판매중:0, 판매완료:1
-	String wdate;			// 작성
-	int likecount;			// 좋아요 수
-	String filename;		// 사진
-	String newfilename;	
-	int delflg;				// 삭제여부
+	private int seq;
+	private String id;				// 작성자 id
+	private String title;			// 제목
+	private String content;			// 내용
+	private int price;				// 가격
+	private String location;		// 판매위치
+	private String itemcondition;	// 중고 "old", 새제품 "new"
+	private String status;			// 판매여부
+	private String wdate;			// 작성
+	private int likecount;			// 좋아요 수
+	private String filename;		// 사진
+	private String newfilename;	
+	private int delflg;				// 삭제여부 삭제된글:1
 	
 	public StoreItemDto() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public StoreItemDto(int seq, String id, String title, String content, int price, String location,
-			String itemcondition, int status, String wdate, int likecount, String filename, String newfilename,
+			String itemcondition, String status, String wdate, int likecount, String filename, String newfilename,
 			int delflg) {
 		super();
 		this.seq = seq;
@@ -115,11 +115,11 @@ public class StoreItemDto implements Serializable {
 		this.itemcondition = itemcondition;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -165,12 +165,12 @@ public class StoreItemDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "storeItemDto [seq=" + seq + ", id=" + id + ", title=" + title + ", content=" + content + ", price="
+		return "StoreItemDto [seq=" + seq + ", id=" + id + ", title=" + title + ", content=" + content + ", price="
 				+ price + ", location=" + location + ", itemcondition=" + itemcondition + ", status=" + status
 				+ ", wdate=" + wdate + ", likecount=" + likecount + ", filename=" + filename + ", newfilename="
 				+ newfilename + ", delflg=" + delflg + "]";
 	}
-	
+
 	
 	
 	

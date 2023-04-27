@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.dto.job.ComPagingDto;
 import com.codeone.dto.job.JobDto;
-import com.codeone.dto.job.JobFilterDto;
 import com.codeone.service.job.JobComService;
 
+ 
 @RestController
 public class JobComController {
 
@@ -50,7 +50,28 @@ public class JobComController {
         return map;
     }
 
-    //기업회원 글작성
+    //기업회원 글작성 
+//    @PostMapping("/writeJob")
+//    public String writeJob(JobDto job, MultipartFile file, HttpServletRequest request) {
+//        System.out.println("JobController writeJob() " + new Date());
+//        System.out.println(job.toString());
+//        
+//        fileController fileController = new fileController();
+//         
+//        String filePath = fileController.uploadImageTest(file, request); // 파일 업로드 수행 후 파일 경로 반환
+//        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1); // 파일명만 추출
+//        String fileUrl = "upload/" + fileName; // 상대경로 생성
+//        
+//        job.setComimage(fileUrl); // DB에 저장할 파일 URL 설정
+//        
+//        boolean b = service.writeJob(job);
+//        if(b) {
+//            return "YES";
+//        } else {
+//            return "NO";
+//        } 
+//    }
+
   	@PostMapping("/writeJob")
   	public String writeJob(JobDto job) {
   		System.out.println("JobController writeJob() " + new Date());
@@ -64,7 +85,7 @@ public class JobComController {
   		}
   	} 
   //기업회원 글수정
-  	@PostMapping(value = "updateJob")
+  	@PostMapping(value = "/updateJob")
   	public String updateJob(JobDto job) {
   		System.out.println("JobController updateJob " + new Date());
   			    
@@ -75,16 +96,24 @@ public class JobComController {
   		return "YES";		
   	}
   //기업회원 글삭제
-  	@PostMapping(value = "deleteJob")
-  	public String deleteJob(int comseq) {
+  	@PostMapping(value = "/deleteJob")
+  	public String deleteJob(int seq) {
   		System.out.println("JobController deleteJob " + new Date());
   		
-  		boolean b = service.deleteJob(comseq);
+  		boolean b = service.deleteJob(seq);
   		if(b == false) {
   			return "NO";
   		}
-  		return "YES";
+  		return "YES"; 
   	}
+  	
+  	
+  	
+  	
+
+
   
+  	
+
   	
 }

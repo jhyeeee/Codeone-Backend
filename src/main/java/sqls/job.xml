@@ -91,19 +91,31 @@
 		</if>
 	</select>
 	
-	<!-- 좋아요 --> 
-	<update id="update_Like" parameterType="com.codeone.dto.job.JobLikeDto">
+		<!-- 좋아요 --> 
+	<update id="update_Like" parameterType="Map">
 		update joblist set
 			liked = (IFNULL(liked, 0) + 1)
 		where seq = #{seq}
 	</update>	
 	
 	
-	<insert id="insert_like" parameterType="com.codeone.dto.job.JobLikeDto">
+	<insert id="insert_like" parameterType="Map">
 		insert into joblike
 		(joblistseq, memberseq, regdate)
 		values
 		(#{joblistseq}, #{memberseq}, now())
 	</insert>
+	
+	<update id="update_UnLike" parameterType="Map">
+		update joblist set
+			liked = (IFNULL(liked, 0) - 1)
+		where seq = #{seq}
+	</update>
+	
+	<insert id="delete_Like" parameterType="Map">
+		DELETE FROM joblike
+		WHERE joblistseq = #{joblistseq}
+	</insert>
+	
 	
 </mapper>
