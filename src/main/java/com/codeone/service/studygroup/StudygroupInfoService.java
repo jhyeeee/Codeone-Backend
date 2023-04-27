@@ -147,15 +147,24 @@ public class StudygroupInfoService extends StudygroupService {
 		
 		// 수정을 요청한 스터디 그룹을 수정할 수 있는지 여부 확인
 		if(isModifiableStudygroup(studygroupManagement.getInfoSeq(), VotingType.UPDATE)) {
-			StudygroupInfoDto newStudygroupInfo = studygroup.toStudygroupInfoDto();
-			
 			// 수정을 요청한 스터디 그룹을 수정할 수 있다면
+			
+			// 공개, 비공개 여부를 수정하기 위한 스터디 그룹 관리 정보 생성
+			StudygroupManagementDto newStudygroupManagement = studygroup.toStudygroupManagementDto();
+			
+			// 기타 상세 정보를 수정하기 위한 스터디 그룹 정보 생성
+			StudygroupInfoDto newStudygroupInfo = studygroup.toStudygroupInfoDto();
+			newStudygroupInfo.setSeq(studygroupManagement.getInfoSeq());
+			
+			// 공개, 비공개 여부 수정
+			studygroupManagementDao.updateIsVisible(newStudygroupManagement);
+			// 기타 상세 정보 수정
 			studygroupInfoDao.updateStudygroupRecruitment(newStudygroupInfo);
 			
-			// 스터디 그룹의 모집 분야 초기화
+			// 스터디 그룹의 모집 분야 재설정
 			resetStudygroupPosition(newStudygroupInfo, true);
 			
-			// 스터디 그룹의 기술 스택 초기화
+			// 스터디 그룹의 기술 스택 재설정
 			resetStudygroupStack(newStudygroupInfo, true);
 			
 			return true;

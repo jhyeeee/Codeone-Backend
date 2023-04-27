@@ -26,6 +26,10 @@
 		SELECT *
 		FROM (
 	</if>
+	<if test="recruitmentPart != null and technologyStack == null">
+		SELECT *
+		FROM (
+	</if>
 	SELECT
 		sm.seq, sm.viewAmount, sm.commentAmount,
 		si.recruitmentType, si.deadlineForRecruitment, si.title,
@@ -61,6 +65,19 @@
 			technologyStack LIKE CONCAT('%', #{stack}, '%')
 		</foreach>
 	</if>
+	<if test="recruitmentPart != null">
+		<if test="technologyStack == null">
+			) a
+			WHERE
+		</if>
+		<if test="technologyStack != null">
+			AND
+		</if>
+		
+		<foreach collection="recruitmentPart" item="part" separator=" OR ">
+			recruitmentPart LIKE CONCAT('%', #{part}, '%')
+		</foreach>
+	</if>
 	LIMIT #{start}, #{end}
 </select>
 
@@ -82,6 +99,10 @@
 
 <update id="decreaseCommentAmount" parameterType="int">
 	UPDATE studygroup_management SET commentAmount = commentAmount - 1 WHERE seq = #{seq}
+</update>
+
+<update id="updateIsVisible" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	UPDATE studygroup_management SET isVisible = #{isVisible} WHERE seq = #{seq}
 </update>
 
 </mapper>
