@@ -1,26 +1,29 @@
 package com.codeone.controller.calendar;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.codeone.dto.calendar.CalendarDto;
+import com.codeone.dto.user.UserDto;
 import com.codeone.service.calendar.CalendarService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -30,82 +33,83 @@ public class CalendarController {
 	@Autowired
 	CalendarService service;
 	
-	@GetMapping(value = "/getCalendarList")	
-	//	일정추가
-
-	public Map<String, Object> getCalendarList() {
+	// 달력에 일정 불러오기
+	@GetMapping(value = "/getCalendarList")
+	public ResponseEntity<Map<String, Object>> getCalendarList(HttpServletRequest req, HttpServletResponse response) throws Exception {
 	    System.out.println("CalendarController getCalendarList() " + new Date());
 	    
-	    String id = "aaa";
-	    Map<String, Object> map = new HashMap<>();
-	    List<CalendarDto> list = service.getCalendarList(id);
-	    map.put("list", list);
+	    String id= "aaa";
+	    // session에서 아이디 가져오기
+//	    HttpSession session = req.getSession();
+//	    UserDto user = (UserDto)session.getAttribute("user");
+//	    String id = user.getId();
+//	    System.out.println("//////// id확인 "+id);
+//	    // 아이디가 없으면 로그인 페이지로 이동
+//	    if(user == null) {
+//	    	response.sendRedirect("http://localhost:3000");
+//	    }
+	    
+	    // Map으로 dto 전달
+	    Map<String, Object> map = new HashMap<>();        
+	    try {
+	        List<CalendarDto> list = service.getCalendarList(id);
+	        map.put("list", list);
+	        return ResponseEntity.ok(map);                  // 성공
+	        
+	    } catch (Exception e) {
+	        return ResponseEntity.badRequest().build();      // 정보 가져오기 실패
+	    }
 	    
 	    
-	    System.out.println("////////확인 " + list);
-	    return map;
 	}
-	
+
 	
 	//	일정추가
-
-	@PostMapping(value="/writeCalendar")
-    public String writeCalendar(CalendarDto dto) {
-		System.out.println("CalendarController writeCalendar() " + new Date());
-		System.out.println("/////////////" + dto);
-		boolean result = service.writeCalendar(dto);
-        if(result == true) {
-        	return "YES";        
-        }
-        return "NO";
+	@PostMapping(value = "/writeCalendar")
+    public ResponseEntity<String> writeCalendar(CalendarDto dto) {
+        System.out.println("CalendarController writeCalendar() " + new Date());
+        //System.out.println("/////////////확인" + dto); ->일정이 잘들어가는지 확인
         
+        boolean result = service.writeCalendar(dto);
+        if (result == true) {
+        	return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
+	
 
 	// 일정조회
-	@GetMapping(value = "/detailCalendar")
-	public CalendarDto detailCalendar(int seq) {
-		System.out.println("CalendarController detailCalendar() " + new Date());
-		
-		return service.detailCalendar(seq);
-	}
+    @GetMapping(value = "/detailCalendar")
+    public ResponseEntity<CalendarDto> detailCalendar(@RequestParam int seq) {
+        System.out.println("CalendarController detailCalendar() " + new Date());
+        return new ResponseEntity<>(service.detailCalendar(seq), HttpStatus.OK);
+    }
+    
 	
 	// 일정수정
-	@PostMapping(value="/updateCalendar")
-	public String updateCalendar(CalendarDto dto) {
-		System.out.println("CalendarController updateCalendar() " + new Date());
-		System.out.println("/////////////" + dto);
-		
-		boolean result = service.updateCalendar(dto);
-		if(result == true) {
-			return "YES";
-		} 
-		return "NO";		
-	}
+	@PostMapping(value = "/updateCalendar")
+    public ResponseEntity<String> updateCalendar(CalendarDto dto) {
+        System.out.println("CalendarController updateCalendar() " + new Date());
+        //System.out.println("/////////////확인" + dto); ->일정이 잘들어가는지 확인
+        
+        boolean result = service.updateCalendar(dto);
+        if (result == true) {
+        	return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 	
 	// 일정삭제
-	@GetMapping(value = "/deleteCalendar")
-	public String deleteCalendar(int seq) {
-		System.out.println("CalendarController deleteCalendar() " + new Date());
-	    //System.out.println("////////확인 " + seq);  -> seq가 잘 넘어오는지 확인
-	    
-	    boolean result = service.deleteCalendar(seq);
-	    if(result == true) {
-	    	return "YES";
-	    }
-	    return "NO";
-	}
+    @DeleteMapping(value = "/deleteCalendar")
+    public ResponseEntity<String> deleteCalendar(@RequestParam int seq) {
+        System.out.println("CalendarController deleteCalendar() " + new Date());
+        boolean result = service.deleteCalendar(seq);
+        if (result == true) {
+        	return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 	
-//	@DeleteMapping(value = "/deleteCalendar")
-//	public ResponseEntity<String> deleteCalendar(@RequestParam int seq) {
-//	    System.out.println("CalendarController deleteCalendar() " + new Date());
-//	    System.out.println("////////확인" + seq);
-//	    boolean result = service.deleteCalendar(seq);
-//	    
-//	    if(result == true) {
-//			return ResponseEntity.ok("YES");
-//		}
-//		return ResponseEntity.ok("NO");
-//	}
 	
 	
 
