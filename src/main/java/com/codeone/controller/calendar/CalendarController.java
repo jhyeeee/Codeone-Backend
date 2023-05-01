@@ -35,19 +35,10 @@ public class CalendarController {
 	
 	// 달력에 일정 불러오기
 	@GetMapping(value = "/getCalendarList")
-	public ResponseEntity<Map<String, Object>> getCalendarList(HttpServletRequest req, HttpServletResponse response) throws Exception {
+	public ResponseEntity<Map<String, Object>> getCalendarList(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    System.out.println("CalendarController getCalendarList() " + new Date());
-	    
-	    String id= "aaa";
-	    // session에서 아이디 가져오기
-//	    HttpSession session = req.getSession();
-//	    UserDto user = (UserDto)session.getAttribute("user");
-//	    String id = user.getId();
-//	    System.out.println("//////// id확인 "+id);
-//	    // 아이디가 없으면 로그인 페이지로 이동
-//	    if(user == null) {
-//	    	response.sendRedirect("http://localhost:3000");
-//	    }
+	    System.out.println("//////// id확인 "+id);
+	   
 	    
 	    // Map으로 dto 전달
 	    Map<String, Object> map = new HashMap<>();        
