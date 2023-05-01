@@ -1,6 +1,9 @@
 package com.codeone.socialLogin.oauth;
 
 import org.springframework.http.ResponseEntity;
+
+import java.util.HashMap;
+
 import org.springframework.http.*;
 
 import com.codeone.dto.user.UserDto;
@@ -30,13 +33,13 @@ public interface SocialOauth {
      * 
      * 받은 유저 정보를 DB에서체크
      */
-    UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException;
+    HashMap<Integer,UserDto> getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException;
    
     /*
      * 
      * Db체크로직
      */
-    int checkEmail(String email);
+    UserDto checkEmail(String email);
     
     // 소셜 타입을 여기서 정해준다
     default SocialLoginType type() {
