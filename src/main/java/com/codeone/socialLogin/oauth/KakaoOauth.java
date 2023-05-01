@@ -2,6 +2,7 @@ package com.codeone.socialLogin.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.json.*;
@@ -126,7 +127,7 @@ public class KakaoOauth implements SocialOauth {
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
      */
     @Override
-    public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
+    public HashMap<Integer, UserDto> getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
     	System.out.println(userInfoRes.getBody() + " getUserInfo");
     	JSONObject jObject = new JSONObject(userInfoRes.getBody());
 
@@ -137,25 +138,25 @@ public class KakaoOauth implements SocialOauth {
 		String kemail = (String) kakao_account.get("email");
 //		String nid = (String) response.get("id");
 		
+    	int flg = 0; // 0은 기존, 1은 신구
+    	UserDto user = checkEmail(kemail);
+    	HashMap<Integer,UserDto> map = new HashMap<>();
+    	System.out.println(user + " getUserInfo");
+    	//DB확인해서 신규가입인경우 내용 세팅 아니면      	
+    	if(Objects.isNull(user)) {
+    		UserDto newUser = new UserDto();
+    		flg = 1;
+    		newUser.setEmail(kemail);
+    		newUser.setName(knickname);
+        	//user.setEmailKey(googleUser.getVerifiedEmail());
+    		newUser.setFilename(kimage);
+        	System.out.println(newUser.getEmail());
+        	map.put(flg, newUser);
+    	}else {
+    		map.put(flg, user);    		
+    	}
 		
-		
-		UserDto user = new UserDto();
-		user.setName(knickname);
-		user.setFilename(kimage);
-		user.setEmail(kemail);
-//		user.setPhoneNumber(nmobile);
-
-		
-    	System.out.println(user.toString() + " kakao 신규");
-    	// DB 확인
-    	if(checkEmail(user.getEmail()) == 0) {
-    		//신규
-    		System.out.println("신규 - kakaoOauth");
-    	} else {
-    		// 기존
-    		System.out.println("기존 - kakaoOauth");
-    	};
-        return user;
+        return map;
     }
     
     /*
@@ -163,7 +164,7 @@ public class KakaoOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkEmail(String email) {    	
+    public UserDto checkEmail(String email) {    	
     	return dao.checkEmail(email);
     }
 }

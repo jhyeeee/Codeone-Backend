@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.codeone.dto.job.JobDto;
 
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping(value="/job")
 public class ImageController {

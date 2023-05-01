@@ -2,6 +2,7 @@ package com.codeone.socialLogin.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -131,7 +132,7 @@ public class NaverOauth implements SocialOauth {
      * 토큰을 가지고 받능 정보를 통해 DB에서 확인해보기
      */
     @Override
-    public UserDto getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
+    public HashMap<Integer, UserDto> getUserInfo(ResponseEntity<String> userInfoRes) throws JsonProcessingException {
     	System.out.println(userInfoRes.getBody() + " getUserInfo");
     	JSONObject jObject = new JSONObject(userInfoRes.getBody());
 
@@ -143,25 +144,25 @@ public class NaverOauth implements SocialOauth {
 		String nmobile = (String) response.get("mobile");
 		String image = (String) response.get("profile_image");
 		
-		
-		
-		UserDto user = new UserDto();
-		user.setName(nname);
-		user.setFilename(image);
-		user.setEmail(namail);
-		user.setPhoneNumber(nmobile);
+    	int flg = 0; // 0은 기존, 1은 신구
+    	UserDto user = checkEmail(namail);
+    	HashMap<Integer,UserDto> map = new HashMap<>();
+    	System.out.println(user + " getUserInfo");
+    	//DB확인해서 신규가입인경우 내용 세팅 아니면      	
+    	if(Objects.isNull(user)) {
+    		UserDto newUser = new UserDto();
+    		flg = 1;
+    		newUser.setEmail(namail);
+    		newUser.setName(nname);
+        	//user.setEmailKey(googleUser.getVerifiedEmail());
+    		newUser.setFilename(image);
+    		newUser.setPhoneNumber(nmobile);
+    		map.put(flg, newUser);
+    	}else {
+    		map.put(flg, user);    		
+    	}
 
-		
-    	System.out.println(user.toString() + " naver 신규");
-    	// DB 확인
-    	if(checkEmail(user.getEmail()) == 0) {
-    		//신규
-    		System.out.println("신규 - NaverOauth");
-    	} else {
-    		// 기존
-    		System.out.println("기존 - NaverOauth");
-    	};
-        return user;
+        return map;
     }
     
     /*
@@ -169,7 +170,7 @@ public class NaverOauth implements SocialOauth {
      * 
      */
     @Override
-    public int checkEmail(String email) {    	
+    public UserDto checkEmail(String email) {    	
     	return dao.checkEmail(email);
     }
 }
