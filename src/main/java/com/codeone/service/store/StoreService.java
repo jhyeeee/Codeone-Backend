@@ -78,6 +78,11 @@ public class StoreService {
 		return dao.countCancelLike(seq);
 	}
 	
+	// 좋아요 seq 리스트
+	public List<Integer> getlikeList(String id) {
+		return dao.getlikeList(id);
+	}
+	
 	// 중고거래 글 수정
 	public boolean updateStoreWrite(StoreItemDto item) {
 		int n = dao.updateStoreWrite(item);

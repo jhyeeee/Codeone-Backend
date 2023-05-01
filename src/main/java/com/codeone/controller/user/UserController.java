@@ -214,8 +214,8 @@ public class UserController {
     public ResponseEntity<UserDto> getSessionUser(HttpServletRequest request, HttpServletResponse response) {
     	System.out.println("getSessionUser()" + new Date());
     	HttpSession session = request.getSession();
-    	if(session != null) {    		
-    		UserDto user = (UserDto)session.getAttribute("user");
+    	UserDto user = (UserDto)session.getAttribute("user");
+    	if(user != null) {    		
     		System.out.println(user + " getSesssionUser");
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -224,6 +224,6 @@ public class UserController {
     				.body(user); 
     	} else {
     		return ResponseEntity.noContent().build();
-    	}    	
+    	}	
     }
 }
