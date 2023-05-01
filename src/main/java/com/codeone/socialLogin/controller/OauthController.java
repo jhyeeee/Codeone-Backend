@@ -1,6 +1,7 @@
 package com.codeone.socialLogin.controller;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Objects;
 
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.dto.user.UserDto;
+import com.codeone.etc.TempKey;
+import com.codeone.service.user.UserService;
 import com.codeone.socialLogin.SocialLoginType;
 import com.codeone.socialLogin.oauth.GoogleOauth;
 import com.codeone.socialLogin.service.OauthService;
@@ -32,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OauthController {
     private final OauthService oauthService;
+    private final UserService userService;
 
 
     /**
@@ -59,13 +63,19 @@ public class OauthController {
             HttpServletRequest request) throws Exception {
         	String code = request.getParameter("code"); 
         	// 하나의 메소드로 퉁쳐버리기
-        	UserDto user = oauthService.requestUserInfo(socialLoginType,code);
-        	System.out.println(user.toString() + " social CALLBACK");
-//            HttpSession httpSession = request.getSession();
-//            httpSession.setAttribute("user", user);
-            response.sendRedirect("http://localhost:3000/signupinfo?email="+ user.getEmail()+ "&filename="+ user.getFilename() );
+        	HashMap<Integer, UserDto> result = oauthService.requestUserInfo(socialLoginType,code);
+        	 for(Integer key : result.keySet()){
+        		 UserDto user = result.get(key);
+        		 // 기존인 경우
+                 if(key == 0) {                	 
+                	 String emailKey = new TempKey().getKey(10, false); // 랜덤키 길이 설정
+                	 userService.sendLoginEmail(user.getEmail(), emailKey);
+                	 response.sendRedirect("http://localhost:3000/loginAf");
+                 } else {
+                	 // 신규인경우
+                	 response.sendRedirect("http://localhost:3000/signupinfo?email="+ user.getEmail()+ "&filename="+ user.getFilename() );
+                 }
+             }
     }
-    
-
     
 }

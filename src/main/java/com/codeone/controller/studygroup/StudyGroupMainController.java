@@ -19,12 +19,14 @@ import com.codeone.command.studygroup.StudygroupDeleteCommand;
 import com.codeone.command.studygroup.StudygroupInfoCommand;
 import com.codeone.command.studygroup.StudygroupListCommand;
 import com.codeone.command.studygroup.StudygroupUpdateCommand;
+import com.codeone.dto.studygroup.NumberOfRecruitsDto;
 import com.codeone.dto.studygroup.PositionDto;
 import com.codeone.dto.studygroup.RecruitmentTypeDto;
 import com.codeone.dto.studygroup.StudygroupDetailDto;
 import com.codeone.dto.studygroup.StudygroupLikeDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.TechnologyStackDto;
+import com.codeone.dto.studygroup.WayOfProceedingDto;
 import com.codeone.etc.StaticVariable;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.NotPermissionToModifyException;
@@ -71,7 +73,7 @@ public class StudyGroupMainController {
 		// 모집글 작성
 		studygroupInfoService.writeStudygroupRecruitment(studygroupCommand);
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().header("Location", "/studygroup").build();
 	}
 	
 	@DeleteMapping()
@@ -124,7 +126,7 @@ public class StudyGroupMainController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 커맨드 객체를 DTO로 변환
+		// 수정할 모집 글 번호
 		studygroupUpdateCommand.setMemberSeq(memberSeq);
 		
 		try {
@@ -218,6 +220,7 @@ public class StudyGroupMainController {
 		}
 	}
 	
+	
 	@GetMapping("/filter/position")
 	public ResponseEntity<List<PositionDto>> getPositionList() {
 		List<PositionDto> positionList = studygroupFilterService.getPositionList();
@@ -237,5 +240,19 @@ public class StudyGroupMainController {
 		List<RecruitmentTypeDto> recruitmentTypeList = studygroupFilterService.getRecruitmentTypeList();
 		
 		return ResponseEntity.ok(recruitmentTypeList);
+	}
+	
+	@GetMapping("/filter/way_of_proceeding")
+	public ResponseEntity<List<WayOfProceedingDto>> getWayOfProceedingList() {
+		List<WayOfProceedingDto> wayOfProceedingList = studygroupFilterService.getWayOfProceedingList();
+		
+		return ResponseEntity.ok(wayOfProceedingList);
+	}
+	
+	@GetMapping("/filter/number_of_recruits")
+	public ResponseEntity<List<NumberOfRecruitsDto>> getNumberOfRecruits() {
+		List<NumberOfRecruitsDto> numberOfRecruitsList = studygroupFilterService.getNumberOfRecruitsList();
+		
+		return ResponseEntity.ok(numberOfRecruitsList);
 	}
 }
