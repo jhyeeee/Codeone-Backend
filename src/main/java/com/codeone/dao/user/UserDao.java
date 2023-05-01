@@ -32,6 +32,8 @@ public interface UserDao {
 	UserDto selectOneBySeq(int seq);
 
 	UserDto checkEmailKey(String emailKey);
+	
+	int updateProfile(UserDto user);
 
 
 }

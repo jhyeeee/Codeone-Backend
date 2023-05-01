@@ -23,7 +23,6 @@
 <insert id="addUser" parameterType="com.codeone.dto.user.UserDto">
 	insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth)
 	values(#{email}, #{emailKey}, 0, #{name}, #{id}, #{phoneNumber}, now(), #{filename}, null, 0, 1)
-
 </insert>
 
 <!-- 메일키 회원정보에 업데이트 -->
@@ -59,5 +58,12 @@
 	FROM user
 	WHERE emailKey = #{emailKey}
 </select>
+   	
+<!-- 유저 업데이트 프로필 -->
+ <update id="updateProfile" parameterType="com.codeone.dto.user.UserDto">
+    update user 
+    set  id=#{id}, filename=#{filename}
+    where email=#{email} and emailKey=#{emailKey}
+</update>
    	
 </mapper>

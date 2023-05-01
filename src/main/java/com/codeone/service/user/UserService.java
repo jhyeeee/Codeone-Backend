@@ -109,6 +109,11 @@ public class UserService {
     	return dao.checkEmailKey(emailKey);
     }
 
+    
+    // 회원 프로필 업데이트
+    public int profileUpdate(UserDto user) {
+    	return dao.updateProfile(user);
+    }
 
 
 }
