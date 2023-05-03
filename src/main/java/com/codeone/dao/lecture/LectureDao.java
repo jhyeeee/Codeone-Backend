@@ -39,5 +39,8 @@ public interface LectureDao {
 
 	// 좋아요 취소카운트
 	int countCancelLike(int seq);
+	
+	// 좋아요한 seq 리스트
+	List<Integer> getlikeList(String id);
 
 }

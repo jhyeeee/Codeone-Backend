@@ -80,6 +80,13 @@
 	where seq=#{seq}
 </update>
 
+<!-- 좋아요seq리스트 -->
+<select id="getlikeList" parameterType="String" resultType="Integer">
+	select seq
+	from lecturelike
+	where id=#{id}
+</select>
+
 </mapper>
 
 
