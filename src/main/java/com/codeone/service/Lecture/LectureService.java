@@ -119,4 +119,9 @@ public class LectureService {
 		return dao.countCancelLike(seq);
 	}
 
+	// 좋아요 seq 리스트
+	public List<Integer> getlikeList(String id) {
+		return dao.getlikeList(id);
+	}
+
 }

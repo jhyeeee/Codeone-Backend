@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -143,7 +145,7 @@ public class LectureController {
 
 	// 강의글 목록
 	@GetMapping()
-	public ResponseEntity<List<LectureDto>> getLectureList(LectureParam param) {
+	public ResponseEntity<Map<String, Object>> getLectureList(LectureParam param, String id) {
 		System.out.println("LectureController getLectureList() " + new Date());
 
 		System.out.println(param);
@@ -158,13 +160,34 @@ public class LectureController {
 		param.setDataCount(10);
 		System.out.println(param);
 		
+		// map으로 좋아요리스트 보내주기
+		// 좋아요한 seq 리스트
 		try {
+			// 강의글 리스트
 			List<LectureDto> lectureList = service.getLectureList(param);
-			return ResponseEntity.ok(lectureList);
-
+			
+			// id당 좋아요한 seq 리스트
+			List<Integer> likelist = service.getlikeList(id);
+			Map<String, Object> map = new HashMap<>();
+			map.put("list", lectureList);
+			map.put("likelist", likelist);
+			
+			return ResponseEntity.ok(map);
+			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
+		
+		
+		
+//		try {
+//			List<LectureDto> lectureList = service.getLectureList(param);
+//			
+//			return ResponseEntity.ok(lectureList);
+//
+//		} catch (Exception e) {
+//			return ResponseEntity.badRequest().build();
+//		}
 
 	}
 

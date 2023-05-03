@@ -1,6 +1,7 @@
 package com.codeone.controller.Lecture;
 
 import java.util.Date;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,13 +20,16 @@ import com.codeone.dto.lecture.LectureDto;
 import com.codeone.dto.lecture.LectureOrderDto;
 import com.codeone.service.Lecture.LectureOrderService;
 
+
+
 @RestController
 @RequestMapping(value = "/lecture")
 public class LectureOrderController {
 
 	@Autowired
 	LectureOrderService service;
-
+	
+	// db에 결제정보 넣어주기
 	@PostMapping(value = "/order")
 	public ResponseEntity<Void> orderLecture(@RequestBody LectureOrderDto dto) {
 
@@ -91,8 +95,13 @@ public class LectureOrderController {
 		return ResponseEntity.ok("NO_PAID");		// 결제 안함
 	}
 	
-	
+	 
+   
+
 }
+	
+	
+
 
 
 
