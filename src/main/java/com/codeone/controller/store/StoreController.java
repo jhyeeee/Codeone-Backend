@@ -224,6 +224,9 @@ public class StoreController {
 		System.out.println("StoreController getStoreItem() " + new Date());
 
 		StoreItemDto item = service.getStoreItem(seq);
+		
+		// readcount 늘려주기
+		service.itemReadCount(seq);
 		return item;
 
 	}

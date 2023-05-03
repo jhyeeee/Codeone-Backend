@@ -97,6 +97,11 @@ public class StoreService {
 		dao.updateStatus(item);		
 	}
 	
+	// 조회수
+	public void itemReadCount(int seq) {
+		dao.itemReadCount(seq);
+	}
+	
 	
 	// 파일생성 service
 	public String uploadImgFile(StoreItemDto item, MultipartFile uploadFile, HttpServletRequest req) {
