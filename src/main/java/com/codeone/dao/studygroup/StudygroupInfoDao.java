@@ -1,5 +1,7 @@
 package com.codeone.dao.studygroup;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,5 @@ public interface StudygroupInfoDao {
 	int writeStudygroupRecruitment(StudygroupInfoDto studygroup);
 	StudygroupInfoDto selectOneBySeq(int seq);
 	int updateStudygroupRecruitment(StudygroupInfoDto studygroup);
+	List<StudygroupInfoDto> selectAllClosed();
 }

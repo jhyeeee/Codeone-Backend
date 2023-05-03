@@ -105,4 +105,10 @@
 	UPDATE studygroup_management SET isVisible = #{isVisible} WHERE seq = #{seq}
 </update>
 
+<update id="updateAllClose" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	<foreach collection="list" item="studygroupInfo" separator=";">
+		UPDATE studygroup_management SET isClosed = true WHERE seq = #{studygroupInfo.managementSeq}
+	</foreach>
+</update>
+
 </mapper>

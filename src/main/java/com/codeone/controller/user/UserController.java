@@ -50,6 +50,8 @@ import java.util.Base64.Encoder;
 @RequestMapping(value="/user")
 public class UserController {
 
+	final String defaultAccount = "http://localhost/user/getProfileImage/defaultAccount/png";
+	
 	// userService 연결
 	@Autowired
 	UserService service;
@@ -159,17 +161,25 @@ public class UserController {
 
 	// regi 만들어주기
 	@PostMapping(value = "/regi")
-	public ResponseEntity<String> regi(String id, String name, String email, String phoneNumber, String profileUrl, MultipartFile multipartFile,HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ResponseEntity<String> regi(String id, String name, String email, String phoneNumber,String profileUrl, Boolean isDefaultPicture, MultipartFile multipartFile,HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("/regi");
 		UserDto user = new UserDto();
 		user.setId(id);
 		user.setName(name);
 		user.setEmail(email);
+		// 기본
+//		= "http://localhost/user/getImage/defaultAccount/png";
 		
 		//파일이 null일경우(회원가입시 프로필 사진을 변경 안했을 경우)
 		if(Objects.isNull(multipartFile)) {
+			// 기본사진일경우
+			if(Objects.isNull(profileUrl)) {
+				profileUrl = defaultAccount;
+			}
+			// 소셜
 			user.setFilename(profileUrl);
 		} else {
+			// 사진 지정
 			String filename = saveProfilePicture(request, multipartFile);
 			user.setFilename(filename);
 		}		
@@ -297,20 +307,25 @@ public class UserController {
     
     // 프로필 체인지
     @PostMapping(value = "/profileChange")
-    public ResponseEntity<UserDto> profileChange(String id, String email, MultipartFile multipartFiles, HttpServletRequest req) throws Exception {
-    	String filename = "";
+    public ResponseEntity<UserDto> profileChange(String id, String email,String filename, MultipartFile multipartFiles, HttpServletRequest req) throws Exception {
+    	System.out.println(filename);
     	boolean noPicture = Objects.isNull(multipartFiles);
-    	System.out.println(noPicture + " ???????????????????");
-    	// 이미지 프로필 수정한경우
-		if(!noPicture) {
-			filename = saveProfilePicture(req, multipartFiles);
-		}
+    	boolean nofilename = filename.isEmpty();
+    	System.out.println(noPicture + " noPicture???????????????????");
+    	System.out.println(nofilename + " nofilename???????????????????");
+    	
+    	// 기본 프로필인경우
+    	if(noPicture&&nofilename) {
+    		filename = defaultAccount;
+    	} else if(!noPicture) {
+    		filename = saveProfilePicture(req, multipartFiles);
+    	} 
+		System.out.println(email);
 		// 예전 프로필		
 		UserDto user = service.getMember(email);
-		// 새프로필
-		if(!noPicture) {
-			user.setFilename(filename);
-		}
+		System.out.println(filename + " filename");
+		user.setFilename(filename);
+
 		user.setId(id);
 		
 		// 업데이트 하고 결과 확인
