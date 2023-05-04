@@ -14,7 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,17 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-//
+// 채용 메인페이지 썸네일 이미지 업로드 컨트롤러
+
 //@CrossOrigin("*")
 @RestController
-public class fileController {
+public class thumbController {
 	private String UPLOAD_PATH = "src/main/webapp/upload"; // 업로드 할 위치
 	//String UPLOAD_PATH = "C:\\Upload"; // 업로드 할 위치
 	//String UPLOAD_PATH = "./Upload"; 오류남
 	//FileInputStream fis = new FileInputStream(UPLOAD_PATH + "\\" + fileId + "." + fileType);
 	
-	private Logger log = LoggerFactory.getLogger(fileController.class);
+	private Logger log = LoggerFactory.getLogger(thumbController.class);
 	
 	// 이미지 불러오기
 	@GetMapping("/getImage/{imagename}/{fileType}")
@@ -63,8 +62,9 @@ public class fileController {
 		}
 	}
 	
+
 	// 이미지 파일 업로드
-	// DB 저장 안함
+	// 이곳에서는 DB에 저장 안함. 리액트 upload폴더에 업로드만 함.
 	@PostMapping("/uploadImageTest")
 	public String uploadImageTest(MultipartFile multipartFiles,
 			HttpServletRequest req) {
@@ -106,12 +106,13 @@ public class fileController {
 		}
 	}
 	
-	
-//	app.post("/getImgURL", upload.single('image'), (req, res) => {
-//	    let url = '/api/getImg/' + req.file.filename;
-//	    res.json({
-//	        url: url
-//	    });
-//	})
-	
 }
+
+//private String UPLOAD_PATH = "src/main/webapp/upload"; // 업로드 할 위치
+////String UPLOAD_PATH = "C:\\Upload"; // 업로드 할 위치
+////String UPLOAD_PATH = "./Upload"; 오류남
+////FileInputStream fis = new FileInputStream(UPLOAD_PATH + "\\" + fileId + "." + fileType);
+//
+//private Logger log = LoggerFactory.getLogger(thumbController.class);
+//
+// 이미지 불러오기

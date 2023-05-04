@@ -1,23 +1,34 @@
 package com.codeone.service.job;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.codeone.dao.job.JobDao;
+import com.codeone.dto.job.JobDto;
+import com.codeone.dto.store.StoreItemDto;
+import com.codeone.dto.store.StoreParam;
 
 @Service
 public class JobService {
 	@Autowired
 	private JobDao dao;
 	//채용 글목록
+	
+//	public List<JobDto> joblist(JobDto jobdto) {
+//		return dao.job_list(jobdto);
+//	}
+	
 	public Map<String, Object> joblist(Map<String, Object>params) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", dao.job_list(params));
 		return map;
 	}
+	
+	
 	//채용 상세보기
 	public Map<String, Object> view(Map<String, Object> params) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -81,6 +92,11 @@ public class JobService {
 		return map;
 	}
 	
+	//whoLiked 수정
+	public boolean whoLiked(JobDto job) { 
+		int n = dao.update_whoLiked(job);
+		return n>0?true:false;			
+	}
 	
 	//좋아요
 	public Map<String,Object> update_Like(Map<String, Object> params) throws Exception {

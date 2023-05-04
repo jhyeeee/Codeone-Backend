@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.codeone.dao.job.JobComDao;
 import com.codeone.dto.job.ComPagingDto;
 import com.codeone.dto.job.JobDto;
-import com.codeone.dto.job.JobFilterDto;
 	
 	@Service
 	@Transactional

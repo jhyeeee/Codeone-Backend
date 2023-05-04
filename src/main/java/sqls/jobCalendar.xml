@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.job.JobCalendarDao">
+
+	<!-- 모든 일정 보기 -->
+	<select id="getJobCalendarList" parameterType="Map" resultType="com.codeone.dto.job.JobCalendarDto">
+		select * 
+		from Jobcalendar
+	</select>
+	
+	<!-- 일정 작성 -->
+	<insert id="writeJobCalendar" parameterType="com.codeone.dto.job.JobCalendarDto">
+		insert into Jobcalendar(id, title, content, start, end, backgroundColor, textColor, allDay)
+		values(#{id}, #{title}, #{content}, #{start}, #{end},#{backgroundColor},#{textColor},#{allDay})
+	</insert>
+
+	<!-- 일정 상세 -->
+	<select id="detailJobCalendar" parameterType="Integer" resultType="com.codeone.dto.job.JobCalendarDto">
+		select *
+		from Jobcalendar
+		where seq=#{seq}
+	</select>
+	
+
+	<!-- 일정수정 -->
+	<update id="updateJobCalendar" parameterType="com.codeone.dto.job.JobCalendarDto">
+		update Jobcalendar set
+		title = #{title}, content=#{content}, start=#{start}, end=#{end}, 
+		backgroundColor=#{backgroundColor}, textColor=#{textColor}, allDay=#{allDay}
+		where seq=#{seq}		
+	</update>
+	
+	<!-- 일정삭제 -->
+	<delete id="deleteJobCalendar" parameterType="Integer">
+		delete from Jobcalendar
+		where seq=#{seq}
+	</delete>
+	
+	
+</mapper>

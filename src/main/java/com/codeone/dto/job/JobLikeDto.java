@@ -14,12 +14,23 @@ public class JobLikeDto {
     public JobLikeDto() {}
 
 
-	public JobLikeDto(int likeseq, int joblistseq, int memberseq, LocalDateTime regdate) {
+	public JobLikeDto(int seq, int likeseq, int joblistseq, int memberseq, LocalDateTime regdate) {
 		super();
+		this.seq = seq;
 		this.likeseq = likeseq;
 		this.joblistseq = joblistseq;
 		this.memberseq = memberseq;
 		this.regdate = regdate;
+	}
+
+
+	public int getSeq() {
+		return seq;
+	}
+
+
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
 
@@ -61,5 +72,7 @@ public class JobLikeDto {
 	public void setRegdate(LocalDateTime regdate) {
 		this.regdate = regdate;
 	}
+
+	
 
 }

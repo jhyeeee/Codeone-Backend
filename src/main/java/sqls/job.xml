@@ -3,13 +3,15 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 	<!--  채용 글목록 -->
-<mapper namespace="com.codeone.dao.job.JobDao">
+	<mapper namespace="com.codeone.dao.job.JobDao">
+	
+	<!-- %앞: 전위검색, %뒤: 후위검색, %앞뒤: 전체검색		 -->		
 	<select id="job_list" parameterType="Map" resultType="Map">
 		select *
 		from joblist
 		where comdel=0
 		<if test="comname != null and comname != ''">
-			and comname like concat('%',#{comname},'%')	<!-- %앞: 전위검색, %뒤: 후위검색, %앞뒤: 전체검색 -->				
+			and comname like concat('%',#{comname},'%')	
 		</if>
 		
 		<if test="comcate != null and comcate != ''">
@@ -29,11 +31,11 @@
 		</if>		
 						
 		<if test="comskill != null and comskill != ''">
-			and comskill like concat('%',#{comskill}, '%')
+			and comskill = #{comskill}
 		</if>
 				
 		<if test="comtag != null and comtag != ''">
-			and comtag like concat('%',#{comtag}, '%')
+			and comtag = #{comtag}
 		</if>
 		order by seq desc
 	</select>
@@ -44,40 +46,13 @@
 			from joblist
 		where seq = #{seq}
 	</select>
-	
-	<!--  JobCom 으로 옮김 -->
-	<!-- <insert id="insert" parameterType="Map">
-		insert into joblist
-		(comid,title,content,startline,deadline,wdate,comname,comimage,comcate,
-		comjobname,comcareer,comlocation,comskill,comtag,comsalary,comfile,commapx,commapy
-		)
-		values
-		(#{comid},#{title},#{content},#{startline},#{deadline},now(),#{comname},#{comimage},
-		#{comcate},#{comjobname},#{comcareer},#{comlocation},#{comskill},#{comtag},#{comsalary},
-		#{comfile},#{commapx},#{commapy})
-	</insert>
-	
 
-	<update id="update" parameterType="Map">
-		update joblist set
-			comid = #{comid},title = #{title},content = #{content},startline = #{startline},deadline = #{deadline},comname = #{comname},
-			comimage = #{comimage},comcate = #{comcate},comjobname = #{comjobname},comcareer = #{comcareer},comlocation = #{comlocation},
-			comskill = #{comskill},comtag = #{comtag},comsalary = #{comsalary},comfile = #{comfile},commapx = #{commapx},commapy = #{commapy}
-		where seq = #{seq}
-	</update>
-	
-	<update id="delete" parameterType="Map">
-		update joblist set
-			comdel = 1
-		where seq = #{seq}
-	</update> -->
-	  
 	  
 	<!--  필터 -->
 	<select id="code_list" parameterType="Map" resultType="Map">
 		select 
-			CODE_SEQ AS value
-			, CODE_NAME AS label
+		 CODE_NAME AS label,	<!-- 필터링 이름 ex) 백엔드/서버 개발자, 신입(1년 이하) 등  -->
+		 CODE_SEQ AS value	<!--  전체 코드 seq 번호 -->
 			from tn_code
 		where GROUP_SEQ = #{group_seq}
 	<!-- parent_code_seq가 null이 아니면 parent_code_seq과 일치하는 조건 추가 -->
@@ -91,6 +66,14 @@
 		</if>
 	</select>
 	
+	
+	<!-- whoLiked 업데이트  -->
+	<update id = "update_whoLiked" parameterType="com.codeone.dto.job.JobDto">
+		update joblist 
+		set whoLiked = #{whoLiked}
+		where seq = #{seq}
+	</update>
+	
 		<!-- 좋아요 --> 
 	<update id="update_Like" parameterType="Map">
 		update joblist set
@@ -98,7 +81,7 @@
 		where seq = #{seq}
 	</update>	
 	
-	
+		<!-- 좋아요 추가 -->
 	<insert id="insert_like" parameterType="Map">
 		insert into joblike
 		(joblistseq, memberseq, regdate)
@@ -106,12 +89,14 @@
 		(#{joblistseq}, #{memberseq}, now())
 	</insert>
 	
-	<update id="update_UnLike" parameterType="Map">
+		<!-- 좋아요 취소 -->
+<!-- 	<update id="update_UnLike" parameterType="Map">
 		update joblist set
 			liked = (IFNULL(liked, 0) - 1)
 		where seq = #{seq}
 	</update>
-	
+	 -->
+		<!-- 좋아요 삭제 -->
 	<insert id="delete_Like" parameterType="Map">
 		DELETE FROM joblike
 		WHERE joblistseq = #{joblistseq}

@@ -110,7 +110,7 @@ public class WriteStudygroupValidator implements Validator {
 				return true;
 			}
 			
-			// 똑같은 모집 분야가 들어있다면
+		 	// 똑같은 모집 분야가 들어있다면
 			boolean isExist = SearchUtils.linearSearch(recruitmentPart, find, i+1);
 			if(isExist) {
 				return true;
