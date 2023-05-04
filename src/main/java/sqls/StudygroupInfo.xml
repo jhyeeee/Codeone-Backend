@@ -6,7 +6,7 @@
 <mapper namespace="com.codeone.dao.studygroup.StudygroupInfoDao">
 
 <update id="updateStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto">
-	UPDATE studygroup_info SET title = #{title}, contents = #{contents}, recruitmentType = #{recruitmentType}, wayOfProceeding = #{wayOfProceeding}, numberOfRecruits = #{numberOfRecruits}, startDate = #{startDate}, endDate = #{endDate}, deadlineForRecruitment = #{deadlineForRecruitment}, isVisible = #{isVisible}
+	UPDATE studygroup_info SET title = #{title}, contents = #{contents}, recruitmentType = #{recruitmentType}, wayOfProceeding = #{wayOfProceeding}, numberOfRecruits = #{numberOfRecruits}, startDate = #{startDate}, endDate = #{endDate}, deadlineForRecruitment = #{deadlineForRecruitment}
 	WHERE seq = #{seq}
 </update>
 
@@ -17,5 +17,13 @@
 
 <select id="selectOneBySeq" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
 	SELECT * FROM studygroup_info WHERE seq = #{seq}
+</select>
+
+<select id="selectAllClosed" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	SELECT managementSeq
+	FROM studygroup_info si
+	JOIN studygroup_management sm
+	ON si.managementSeq = sm.seq
+	WHERE sm.isClosed = false AND si.deadlineForRecruitment &lt; CURRENT_TIMESTAMP();
 </select>
 </mapper>

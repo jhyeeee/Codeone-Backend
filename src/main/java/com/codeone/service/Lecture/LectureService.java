@@ -12,7 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dao.lecture.LectureDao;
 import com.codeone.dto.lecture.LectureDto;
+import com.codeone.dto.lecture.LectureLikeDto;
+import com.codeone.dto.lecture.LectureParam;
 import com.codeone.dto.store.StoreItemDto;
+import com.codeone.dto.store.StoreLikeDto;
 import com.codeone.etc.ItemUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,28 +68,60 @@ public class LectureService {
 		}
 		return "NO_IMAGE"; // 이미지가 아님
 	}
-	
+
 	// 강의글 수정
 	public boolean updateLecture(LectureDto dto) {
 		int n = dao.updateLecture(dto);
-		return n>0?true:false;
+		return n > 0 ? true : false;
 	}
-	
+
 	// 강의글 삭제
 	public boolean deleteLecture(int seq) {
 		int n = dao.deleteLecture(seq);
-		return n>0?true:false;
+		return n > 0 ? true : false;
 	}
-	
+
 	// 강의 글 목록
-	public List<LectureDto> getLectureList() {
-		return dao.getLectureList();
+	public List<LectureDto> getLectureList(LectureParam param) {
+		return dao.getLectureList(param);
 	}
-	
+
 	// 강의 글 한개
 	public LectureDto getLectureOne(int seq) {
 		return dao.getLectureOne(seq);
 	}
-	
+
+	// 좋아요
+	public boolean likeLecture(LectureLikeDto dto) {
+		int n = dao.likeLecture(dto);
+		return n > 0 ? true : false;
+	}
+
+	// 좋아요중인지 확인
+	public boolean checkLike(LectureLikeDto dto) {
+		int n = dao.checkLike(dto);
+		return n > 0 ? true : false;
+	}
+
+	// 좋아요취소
+	public boolean cancelLike(LectureLikeDto dto) {
+		int n = dao.cancelLike(dto);
+		return n > 0 ? true : false;
+	}
+
+	// 좋아요카운트
+	public int countLike(int seq) {
+		return dao.countLike(seq);
+	}
+
+	// 좋아요취소 카운트
+	public int countCancelLike(int seq) {
+		return dao.countCancelLike(seq);
+	}
+
+	// 좋아요 seq 리스트
+	public List<Integer> getlikeList(String id) {
+		return dao.getlikeList(id);
+	}
 
 }

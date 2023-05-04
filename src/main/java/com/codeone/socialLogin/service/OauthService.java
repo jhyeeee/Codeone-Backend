@@ -3,6 +3,7 @@ package com.codeone.socialLogin.service;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
@@ -51,18 +52,18 @@ public class OauthService {
      *  각 소셜서비스에서 받은 코드를 가지고 user의 정보를 얻음
      * 
      */
-    public UserDto requestUserInfo(SocialLoginType socialLoginType, String code) {
+    public HashMap<Integer, UserDto> requestUserInfo(SocialLoginType socialLoginType, String code) {
     	SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
-    	UserDto user = null;
+    	HashMap<Integer, UserDto> result = null;
     	try {
     		OAuthToken token =  socialOauth.requestAccessTokenAndParsing(code);
     		ResponseEntity<String> userInfores = socialOauth.requestUserInfo(token);
-    		user = socialOauth.getUserInfo(userInfores);
+    		result = socialOauth.getUserInfo(userInfores);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return user;
+    	return result;
     }
     
     

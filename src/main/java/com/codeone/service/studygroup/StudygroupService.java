@@ -66,7 +66,10 @@ public class StudygroupService {
 		boolean modifiable = false;
 		
 		// 스터디그룹 시작 여부 확인
-		if(startDate.isBefore(now)) {
+		if(!startDate.isBefore(now)) {
+			// 시작 전이라면 수정 가능
+			modifiable = true;
+		} else {
 			// 이미 시작된 스터디 그룹이라면
 			int studygroupAmount = studygroupMemberDao.getStudygroupMemberAmountByStudygroupSeq(requestStudygroupSeq);
 			if(studygroupAmount == 1) {

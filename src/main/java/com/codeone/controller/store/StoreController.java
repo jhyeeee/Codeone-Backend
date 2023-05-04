@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.crypto.Data;
+
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +157,7 @@ public class StoreController {
 	// 중고거래 리스트
 	// 좋아요 여부 같이보내주기
 	@GetMapping(value = "/getStoreList")
-	public Map<String, Object> getStoreList(StoreParam param) {
+	public Map<String, Object> getStoreList(StoreParam param, String id) {
 		System.out.println("StoreController getStoreList() " + new Date());
 
 		// 글의 시작과 끝
@@ -175,11 +177,18 @@ public class StoreController {
 		
 		// 댓글의 총갯수
 		int totalCount = service.getAllStoreCount(param); // search, choice 들어오는값은 없음.
+		
+		// 좋아요한 seq 리스트
+		List<Integer> likelist = service.getlikeList(id);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);
 		// map.put("pageBbs", pageBbs);
 		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
+		
+		map.put("likelist", likelist);
+		
+		
 		System.out.println(totalCount);
 		return map;
 		
@@ -262,9 +271,7 @@ public class StoreController {
 		System.out.println("StoreController checkLike() " + new Date());
 
 		System.out.println(dto.getSeq());
-		// 리액트에서 id도 같이 넘겨주기
-		String id = "sss";
-		dto.setId(id);
+		// 리액트에서 id도 같이 넘겨주기		
 
 		System.out.println(dto);
 		boolean isLiking = service.checkLike(dto);
@@ -274,6 +281,29 @@ public class StoreController {
 		}
 		return "NOT_LIKE";
 	}
+	
+	// 목록에서 좋아요중인지 체크
+//	@PostMapping(value = "/checkLikeList")
+//	public String checkLikeList(@RequestBody String data) {
+//		System.out.println("StoreController checkLikeList() " + new Date());
+//
+//		System.out.println(data);
+//		StoreLikeDto dto = new StoreLikeDto();
+//		
+//		
+//		
+//		
+//		
+//		// 리액트에서 id도 같이 넘겨주기		
+//
+//		System.out.println(dto);
+//		boolean isLiking = service.checkLike(dto);
+//
+//		if (isLiking == true) {
+//			return "LIKING";
+//		}
+//		return "NOT_LIKE";
+//	}
 
 	// 글 목록에서 좋아요중인지 확인 추가하기
 

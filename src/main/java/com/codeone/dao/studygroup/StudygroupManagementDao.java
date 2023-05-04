@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.codeone.command.studygroup.StudygroupListCommand;
+import com.codeone.dto.studygroup.StudygroupInfoDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 
@@ -22,4 +23,6 @@ public interface StudygroupManagementDao {
 	void decreaseLikeAmount(int seq);
 	void increaseCommentAmount(int seq);
 	void decreaseCommentAmount(int seq);
+	void updateIsVisible(StudygroupManagementDto studygroupManagement);
+	void updateAllClose(List<StudygroupInfoDto> list);
 }

@@ -30,8 +30,9 @@ public class StoreCommentController {
 	public ResponseEntity<Void> writeCommentStore(@RequestBody StoreCommentDto dto){
 		System.out.println("StoreCommentController writeCommentStore()" + new Date());
 		
-		String id = "mi538";
-		dto.setId(id);
+//		String id = "mi538";
+//		dto.setId(id);
+		System.out.println(dto);
 		
 		boolean isStoreComment = service.writeCommentStore(dto);
 		

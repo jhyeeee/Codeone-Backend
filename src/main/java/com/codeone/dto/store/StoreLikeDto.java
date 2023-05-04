@@ -31,8 +31,8 @@ public class StoreLikeDto implements Serializable{
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String setId(String id) {
+		return this.id = id;
 	}
 
 	public String getLiketime() {
