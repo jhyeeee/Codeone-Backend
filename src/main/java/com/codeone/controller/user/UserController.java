@@ -269,7 +269,7 @@ public class UserController {
     	HttpSession session = request.getSession();
     	UserDto user = (UserDto)session.getAttribute("user");
     	if(user != null) {    		
-    		System.out.println(user + " getSesssionUser");
+    		System.out.println(user.toString() + " getSesssionUser");
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         	return ResponseEntity.ok()

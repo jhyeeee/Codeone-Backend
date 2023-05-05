@@ -14,6 +14,7 @@ public class BlogDto implements Serializable {
 	private int likes;
 	private String tag;
 	private int delf;
+	private String thumbnail;
 	
 	
 	
@@ -23,8 +24,10 @@ public class BlogDto implements Serializable {
 
 
 
+
+
 	public BlogDto(int seq, String writer, String title, String content, int category1, int category2,
-			LocalDateTime regdate, int likes, String tag, int delf) {
+			LocalDateTime regdate, int likes, String tag, int delf, String thumbnail) {
 		super();
 		this.seq = seq;
 		this.writer = writer;
@@ -36,7 +39,10 @@ public class BlogDto implements Serializable {
 		this.likes = likes;
 		this.tag = tag;
 		this.delf = delf;
+		this.thumbnail = thumbnail;
 	}
+
+
 
 
 
@@ -148,6 +154,22 @@ public class BlogDto implements Serializable {
 
 
 
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+
+
+
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+
+
+
+
 	public int getDelf() {
 		return delf;
 	}
@@ -160,11 +182,15 @@ public class BlogDto implements Serializable {
 
 
 
+
+
 	@Override
 	public String toString() {
 		return "BlogDto [seq=" + seq + ", writer=" + writer + ", title=" + title + ", content=" + content
 				+ ", category1=" + category1 + ", category2=" + category2 + ", regdate=" + regdate + ", likes=" + likes
-				+ ", tag=" + tag + ", delf=" + delf + "]";
+				+ ", tag=" + tag + ", delf=" + delf + ", thumbnail=" + thumbnail + "]";
 	}
-	
+
+
+
 }
