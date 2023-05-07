@@ -11,9 +11,11 @@ public class BlogDto implements Serializable {
 	private int category1;
 	private int category2;
 	private LocalDateTime regdate;	
+	private LocalDateTime renewdate;	
 	private int likes;
 	private String tag;
 	private int delf;
+	private String thumbnail;
 	
 	
 	
@@ -24,7 +26,7 @@ public class BlogDto implements Serializable {
 
 
 	public BlogDto(int seq, String writer, String title, String content, int category1, int category2,
-			LocalDateTime regdate, int likes, String tag, int delf) {
+			LocalDateTime regdate, LocalDateTime renewdate, int likes, String tag, int delf, String thumbnail) {
 		super();
 		this.seq = seq;
 		this.writer = writer;
@@ -33,9 +35,11 @@ public class BlogDto implements Serializable {
 		this.category1 = category1;
 		this.category2 = category2;
 		this.regdate = regdate;
+		this.renewdate = renewdate;
 		this.likes = likes;
 		this.tag = tag;
 		this.delf = delf;
+		this.thumbnail = thumbnail;
 	}
 
 
@@ -124,6 +128,18 @@ public class BlogDto implements Serializable {
 
 
 
+	public LocalDateTime getRenewdate() {
+		return renewdate;
+	}
+
+
+
+	public void setRenewdate(LocalDateTime renewdate) {
+		this.renewdate = renewdate;
+	}
+
+
+
 	public int getLikes() {
 		return likes;
 	}
@@ -148,6 +164,22 @@ public class BlogDto implements Serializable {
 
 
 
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+
+
+
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+
+
+
+
 	public int getDelf() {
 		return delf;
 	}
@@ -163,8 +195,8 @@ public class BlogDto implements Serializable {
 	@Override
 	public String toString() {
 		return "BlogDto [seq=" + seq + ", writer=" + writer + ", title=" + title + ", content=" + content
-				+ ", category1=" + category1 + ", category2=" + category2 + ", regdate=" + regdate + ", likes=" + likes
-				+ ", tag=" + tag + ", delf=" + delf + "]";
+				+ ", category1=" + category1 + ", category2=" + category2 + ", regdate=" + regdate + ", renewdate="
+				+ renewdate + ", likes=" + likes + ", tag=" + tag + ", delf=" + delf + ", thumbnail=" + thumbnail + "]";
 	}
-	
+
 }
