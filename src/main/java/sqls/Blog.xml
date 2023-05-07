@@ -7,8 +7,8 @@
 
 <!-- 블로그 작성 -->
 	<insert id="writeBlog" parameterType="com.codeone.dto.blog.BlogDto">
-		insert into blog( writer, title, content, category1, category2, regdate, likes, tag, delf)
-		values( #{writer}, #{title}, #{content}, 1, 1,now(),#{likes},#{tag}, 0)
+		insert into blog( writer, title, content, category1, category2, regdate, likes, tag, delf, thumbnail)
+		values( #{writer}, #{title}, #{content}, 1, 1,now(),#{likes},#{tag}, 0, #{thumbnail})
 	</insert>
 	
 <!-- 모든 블로그 검색  -->	
@@ -35,7 +35,7 @@
 <!-- 블로그 업데이트  -->
 	<update id="updateBlog" parameterType="com.codeone.dto.blog.BlogDto">
 		update blog
-		set title=#{title}, content=#{content}, writer=#{writer}
+		set title=#{title}, content=#{content}, writer=#{writer}, thumbnail=#{thumbnail} , renewdate= now()
 		where seq=#{seq}
 		
 	</update>
