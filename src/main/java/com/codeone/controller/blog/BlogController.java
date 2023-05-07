@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dto.blog.BlogDto;
+import com.codeone.dto.user.UserDto;
 import com.codeone.service.blog.BlogService;
+import com.codeone.service.user.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,9 +36,16 @@ public class BlogController {
 	final String defaultImage = "http://localhost/user/blogThumbnailImages/imageDefault/png";
 	@Autowired
 	private BlogService service;
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping("/write")
-	public ResponseEntity<Void> blogWrite(String writer, String title, String content, MultipartFile multipartFiles, HttpServletRequest req) throws Exception {
+	public ResponseEntity<Void> blogWrite(
+			String writer, 
+			String title, 
+			String content, 
+			MultipartFile multipartFiles, 
+			HttpServletRequest req) throws Exception {
 		System.out.println("blogWrite");
 		BlogDto dto = new BlogDto();
 		dto.setWriter(writer);
@@ -77,14 +87,18 @@ public class BlogController {
 	}
 	
 	@GetMapping("/getBlog")
-	public ResponseEntity<BlogDto> getBlog (int seq) {
+	public ResponseEntity<HashMap<String, Object>> getBlog (int seq) {
 		System.out.println("getBlog");
 		System.out.println(seq);
-		BlogDto result = service.getBlog(seq);
+		BlogDto blog = service.getBlog(seq);
+		UserDto user = userService.getMember(blog.getWriter());
+		
+		HashMap<String, Object> result = new HashMap<>();
+		result.put("blog", blog);
+		result.put("user", user);
 		
 		HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		System.out.println(result);
      	return ResponseEntity.ok()
  				.headers(header)
  				.body(result);
@@ -101,8 +115,32 @@ public class BlogController {
 	}
 	
 	@PostMapping("/updateBlog")
-	public ResponseEntity<Void> updateBlog(BlogDto dto) {
+	public ResponseEntity<Void> updateBlog(
+			int seq,
+			String writer, 
+			String title, 
+			String content, 
+			MultipartFile multipartFiles,
+			HttpServletRequest req
+			
+			) throws Exception {
 		System.out.println("updateBlog");
+		BlogDto dto = service.getBlog(seq);
+		
+		dto.setWriter(writer);
+		dto.setTitle(title);
+		dto.setContent(content);
+		
+				
+		// 파일이 바뀌어있을 경우
+		String thumbnail = "";
+		if(!Objects.isNull(multipartFiles)) {
+			System.out.println("여기 나와 제발");
+			thumbnail =  saveThumbnailPicture(req, multipartFiles);
+			dto.setThumbnail(thumbnail);
+		}
+		
+
 		if(service.updateBlog(dto)) {
 			return ResponseEntity.ok().build();			
 		} else {

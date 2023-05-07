@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 인터페이스 위치 -->
+<mapper namespace="com.codeone.dao.blog.BlogReplyDao">
+
+<!-- 블로그 댓글 작성 -->
+	<insert id="writeReplyBlog" parameterType="com.codeone.dto.blog.BlogReplyDto">
+		insert into blogreply(blogSeq, content, writer, regdate)
+		values( #{blogseq}, #{content}, #{writer}, now())
+	</insert>
+<!-- 해당 블로그댓글 전부 가져오기  -->	
+	<select id="getAllBlogReply" parameterType="Integer" resultType="com.codeone.dto.blog.BlogReplyDto">	
+		select * from blogReply		
+		where blogseq = #{blogseq}
+	</select>
+	
+
+
+
+</mapper>

@@ -35,7 +35,7 @@
 <!-- 블로그 업데이트  -->
 	<update id="updateBlog" parameterType="com.codeone.dto.blog.BlogDto">
 		update blog
-		set title=#{title}, content=#{content}, writer=#{writer}
+		set title=#{title}, content=#{content}, writer=#{writer}, thumbnail=#{thumbnail} , renewdate= now()
 		where seq=#{seq}
 		
 	</update>
