@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dto.job.JobDto;
-
 //리액트 퀼 안의 content 이미지 업로드 컨트롤러
 
 //@CrossOrigin("*")

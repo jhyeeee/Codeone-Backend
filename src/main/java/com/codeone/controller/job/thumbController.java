@@ -33,14 +33,15 @@ public class thumbController {
 	
 	private Logger log = LoggerFactory.getLogger(thumbController.class);
 	
-	// 이미지 불러오기
-	@GetMapping("/getImage/{imagename}/{fileType}")
-	public ResponseEntity<byte[]> getImageFile(@PathVariable String imagename, @PathVariable String fileType
+	// 이미지 불러오기 
+	@GetMapping("/getImage/{imagename}")
+	public ResponseEntity<byte[]> getImageFile(@PathVariable String imagename
 			) {
-		log.info("getImagefile call. {}.{}", imagename, fileType);
+		String UPLOAD_PATH = "C:\\finalfront\\codeonereact\\public";
+		log.info("getImagefile call.{}", imagename);
 		
 		try {
-			FileInputStream fis = new FileInputStream(UPLOAD_PATH + "\\" + imagename + "." + fileType);
+			FileInputStream fis = new FileInputStream(UPLOAD_PATH + "\\" + imagename);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			
 			byte buffer[] = new byte[1024];

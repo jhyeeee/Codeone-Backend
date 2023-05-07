@@ -1,31 +1,28 @@
 package com.codeone.controller.job;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.dto.job.JobDto;
+import com.codeone.dto.job.JobParam;
+import com.codeone.dto.job.JobResponse;
 import com.codeone.service.job.JobService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+//채용 메인페이지 글목록, 상세보기, 필터링, 좋아요 컨트롤러
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-//회원 전용 컨트롤러
-
+@CrossOrigin
 @RequestMapping("job/")
 @RestController
 public class JobController {
@@ -35,21 +32,59 @@ public class JobController {
 	//디버깅용도 LoggerFactory 추가
 	private Logger log = LoggerFactory.getLogger(JobController.class);
  
-	// 원래 버전	
-		//채용 글목록
+	//채용 글목록 페이징 후
+//	@GetMapping(value = "/list")
+//	public Map<String, Object> joblist(JobParam param) {
+//		System.out.println("JobController joblist() " + new Date());
+//
+//		// 글의 시작과 끝
+//		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
+//		int pn = param.getPageNumber(); // 0 1 2 3 4
+//
+//		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+////		int end = ( pn + 1 ) * 10;	// 10 20
+//
+//		param.setStart(start);
+//		param.setDataCount(10); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
+//
+//	 	System.out.println(param);
+//
+//		// search, choice 넣어주고 리스트 불러오기
+//		List<JobDto> list = service.joblist(param);
+//		
+//		// 글의 총갯수
+//		int totalCount = service.getAllJobCount(param); // search, choice 들어오는값은 없음.
+//
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("list", list);
+//		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
+//		
+//		
+//		System.out.println(totalCount);
+//		return map;
+//
+//	}
+	
+	
+	
+		//채용 글목록 페이징전
 		@GetMapping("list")
 		public Map<String, Object> list(@RequestParam Map<String, Object> params) throws Exception {
 			Map<String, Object> res = new HashMap<String, Object>();
 			
 			System.out.println("params title == > " + params.get("title"));
-//			params.forEach((key, value) -> {
-//				log.info("{}: {}", key, value);
-//			});
-			
+
 			res.put("list", service.joblist(params)); 
 			return res;		
 		}	  
 
+		
+		
+	//채용 update페이지 상세보기
+	@GetMapping("{id}")
+	public JobResponse job(@PathVariable("id") int id) {
+		return service.job(id);
+	}
 	
 	//채용 상세보기
 	@GetMapping("view")

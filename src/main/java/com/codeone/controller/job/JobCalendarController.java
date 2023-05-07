@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.dto.job.JobCalendarDto;
 import com.codeone.service.job.JobCalendarService;
-
-// 채용 일정 컨트롤러
+//채용 일정 컨트롤러
 
 @RestController
 public class JobCalendarController {

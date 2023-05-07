@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codeone.dto.job.ComPagingDto;
 import com.codeone.dto.job.JobDto;
 import com.codeone.service.job.JobComService;
-
-//기업회원 전용 컨트롤러
+//기업회원 전용 글목록, CRUD 컨트롤러
  
 @RestController
 public class JobComController {
@@ -23,7 +22,7 @@ public class JobComController {
       @Autowired
       private JobComService service;
     
-      
+      //기업회원 글목록
       @GetMapping("/combbslist")
       public Map<String, Object> bbslist(ComPagingDto param){
   		System.out.println("ComBbsController Combbslist() " + new Date());
@@ -48,32 +47,6 @@ public class JobComController {
   		return map;
   	}
 
- 
-    //기업회원 글목록(페이징)
-//    @GetMapping("/combbslist")
-//    public Map<String, Object> combbslist(@RequestParam(name = "page", defaultValue = "1") int page) {
-//        // 페이징 관련 데이터 생성
-//        ComPagingDto pagingDto = new ComPagingDto();
-//        pagingDto.setPageNo(page);
-//        pagingDto.setViewCount(10);
-//        pagingDto.setLimit((page - 1) * pagingDto.getViewCount());
-//
-//        // 페이지 데이터 조회
-//        List<JobDto> list = service.combbslist(pagingDto);
-//
-//        // 페이징 관련 데이터 조회
-//        int totalCount = service.getAllComBbs(pagingDto);
-//        int totalPages = (int) Math.ceil((double) totalCount / pagingDto.getViewCount());
-//
-//        // 데이터 저장
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("combbslist", list);
-//        map.put("currentPage", page);
-//        map.put("totalPages", totalPages);
-//        map.put("totalCount", totalCount);
-//
-//        return map;
-//    }
 
     //기업회원 글작성
   	@PostMapping("/writeJob")
@@ -92,13 +65,15 @@ public class JobComController {
   	@PostMapping(value = "/updateJob")
   	public String updateJob(JobDto job) {
   		System.out.println("JobController updateJob " + new Date());
-  			    
+  		System.out.println("글수정 됐나요?");
+  		System.out.println(job.toString());
   		boolean b = service.updateJob(job);
-  		if(b == false) {
+  		if(b) {
+  			return "YES";
+  		} else {
   			return "NO";
   		}
-  		return "YES";		
-  	}
+  	} 
   	
   //기업회원 글삭제
   	@PostMapping(value = "/deleteJob")

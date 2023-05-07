@@ -2,11 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-	<!--  채용 글목록 -->
+	<!--  채용 글목록 : 페이징 후 -->
 	<mapper namespace="com.codeone.dao.job.JobDao">
-	
-	<!-- %앞: 전위검색, %뒤: 후위검색, %앞뒤: 전체검색		 -->		
-	<select id="job_list" parameterType="Map" resultType="Map">
+<!-- 	 <select id="job_list" parameterType="com.codeone.dto.job.JobParam" resultType="com.codeone.dto.job.JobDto">
+		select *
+		from joblist
+		where comdel=0
+		<if test="comname != null and comname != ''">
+			and comname like concat('%',#{comname},'%')	
+		</if>
+		
+		<if test="comcate != null and comcate != ''">
+			and comcate like concat('%',#{comcate}, '%')
+		</if>
+		
+		<if test="comjobname != null and comjobname != ''">
+			and comjobname like concat('%',#{comjobname}, '%')
+		</if>
+		
+		<if test="comcareer != null and comcareer != ''">
+			and comcareer like concat('%',#{comcareer}, '%')
+		</if>
+		
+		<if test="comlocation != null and comlocation != ''">
+			and comlocation like concat('%',#{comlocation}, '%')
+		</if>		
+						
+		<if test="comskill != null and comskill != ''">
+			and comskill = #{comskill}
+		</if>
+				
+		<if test="comtag != null and comtag != ''">
+			and comtag = #{comtag}
+		</if>
+		order by seq desc
+		limit #{start}, #{dataCount}	
+	</select>
+	 -->
+	<!-- 채용글목록 페이징전	 -->		
+	 <select id="job_list" parameterType="Map" resultType="Map">
 		select *
 		from joblist
 		where comdel=0
@@ -40,6 +74,51 @@
 		order by seq desc
 	</select>
 	
+	 
+	 <!-- 글의 총 갯수(페이징) -->
+	 
+	 <select id="getAllJobCount" parameterType="com.codeone.dto.job.JobParam" resultType="java.lang.Integer">
+		select ifnull(count(*), 0)
+		from joblist
+		where comdel=0
+		<if test="comname != null and comname != ''">
+			and comname like concat('%',#{comname},'%')	
+		</if>
+		
+		<if test="comcate != null and comcate != ''">
+			and comcate like concat('%',#{comcate}, '%')
+		</if>
+		
+		<if test="comjobname != null and comjobname != ''">
+			and comjobname like concat('%',#{comjobname}, '%')
+		</if>
+		
+		<if test="comcareer != null and comcareer != ''">
+			and comcareer like concat('%',#{comcareer}, '%')
+		</if>
+		
+		<if test="comlocation != null and comlocation != ''">
+			and comlocation like concat('%',#{comlocation}, '%')
+		</if>		
+						
+		<if test="comskill != null and comskill != ''">
+			and comskill = #{comskill}
+		</if>
+				
+		<if test="comtag != null and comtag != ''">
+			and comtag = #{comtag}
+		</if>
+		order by seq desc
+	</select>
+	
+	<!-- 채용 update 페이지의 상세보기 -->
+	<select id="job" parameterType="int" resultType="com.codeone.dto.job.JobDto">
+		select *
+			from joblist
+		where seq = #{seq}
+	</select>
+	
+	
 	<!--  채용 상세보기 -->
 	<select id="view" parameterType="Map" resultType="Map">
 		select *
@@ -47,23 +126,70 @@
 		where seq = #{seq}
 	</select>
 
-	  
+	
 	<!--  필터 -->
-	<select id="code_list" parameterType="Map" resultType="Map">
+<!-- 	<select id="code_list" parameterType="Map" resultType="Map">
 		select 
+		 CODE_NAME AS label,	필터링 이름 ex) 백엔드/서버 개발자, 신입(1년 이하) 등 
+		 CODE_SEQ AS value	 전체 코드 seq 번호
+			from tn_code
+		<where>
+			<if test="group_seq != null">
+				and GROUP_SEQ = #{group_seq}
+			</if>
+			parent_code_seq가 null이 아니면 parent_code_seq과 일치하는 조건 추가
+			<if test="parent_code_seq != null and parent_code_seq != ''">
+				and PARENT_CODE_SEQ = #{parent_code_seq}
+			
+			</if>
+			<if test="codeName != null">
+				and CODE_NAME = #{codeName}
+			</if>
+		
+		parent_code_seq가 null이면 CODE_DEPTH가 1인 조건 추가
+			<if test="parent_code_seq == null or parent_code_seq == ''">
+				and CODE_DEPTH = 1			
+			</if>
+		</where>
+	
+	</select> -->
+		<select id="code_list" parameterType="Map" resultType="Map">
+		select 
+		<!--  CODE_SEQ as id,  -->
 		 CODE_NAME AS label,	<!-- 필터링 이름 ex) 백엔드/서버 개발자, 신입(1년 이하) 등  -->
 		 CODE_SEQ AS value	<!--  전체 코드 seq 번호 -->
 			from tn_code
-		where GROUP_SEQ = #{group_seq}
-	<!-- parent_code_seq가 null이 아니면 parent_code_seq과 일치하는 조건 추가 -->
-		<if test="parent_code_seq != null and parent_code_seq != ''">
-			and PARENT_CODE_SEQ = #{parent_code_seq}
+		<where>
+			<if test="group_seq != null">
+				and GROUP_SEQ = #{group_seq}
+			</if>
+			<!-- parent_code_seq가 null이 아니면 parent_code_seq과 일치하는 조건 추가 -->
+			<if test="parent_code_seq != null and parent_code_seq != ''">
+				and PARENT_CODE_SEQ = #{parent_code_seq}
+			
+			</if>
+			<if test="codeName != null">
+				and CODE_NAME = #{codeName}
+			</if>
+			<if test="career != null">
+				and CODE_NAME = #{career}
+			</if>
+			<if test="comLocation != null">
+				and CODE_NAME = #{comLocation}
+			</if>
+			<if test="comSkill != null">
+				and CODE_NAME = #{comSkill}
+			</if>
+			<if test="comTag != null">
+				and CODE_NAME = #{comTag}
+			</if>
 		
-		</if>
-	<!-- parent_code_seq가 null이면 CODE_DEPTH가 1인 조건 추가 -->
-		<if test="parent_code_seq == null or parent_code_seq == ''">
-			and CODE_DEPTH = 1			
-		</if>
+		<!-- parent_code_seq가 null이면 CODE_DEPTH가 1인 조건 추가 -->
+			<if test="parent_code_seq == null or parent_code_seq == ''">
+				and CODE_DEPTH = 1			
+			</if>
+		</where>
+	
 	</select>
 	
 	

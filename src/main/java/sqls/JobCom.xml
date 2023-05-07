@@ -13,7 +13,7 @@
 			SELECT ROW_NUMBER() OVER (ORDER BY seq DESC) AS rnum, 
 				seq, id, title, content, comname, wdate, comdel
 			FROM joblist
-			WHERE comdel = 0
+			<!-- WHERE comdel = 0 -->
 			) tmp
 		WHERE rnum BETWEEN #{start} AND #{end}
 		ORDER BY seq DESC
@@ -32,22 +32,32 @@
 	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
 	insert into joblist(id,title,content,startline,deadline,wdate,comdel,
 				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
-				comsalary, comfile, commapx,commapy)
+				comsalary, comfile, commapx,commapy, comEmail)
 	values(#{id}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
 		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
-		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy})
+		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy},#{comEmail} )
 	</insert> 
 	
 <!-- 	#{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy}) -->
-<!-- 기업회원 글수정 -->
+<!-- 기업회원 글수정 스킬, 태그, 콘텐츠 빼놨음 (실험)-->
 	<update id="updateJob" parameterType="com.codeone.dto.job.JobDto">
 	update joblist
-	set title = #{title},content = #{content}, startline = #{startline}, deadline = #{deadline}, wdate = #{wdate},
-		comname = #{comname}, comimage = #{comimage}, comcate = #{comcate}, comjobname = #{comjobname}, 
-		comcareer = #{comcareer}, comlocation = #{comlocation}, comskill = #{comskill}, comtag = #{comtag},
-		comsalary = #{comsalary}, comfile = #{comfile}, commapx = #{commapx}, commapy = #{commapy}
+	set title = #{title}, comname = #{comname}, comEmail = #{comEmail}, comsalary = #{comsalary},
+		comjobname = #{comjobname}, comcareer = #{comcareer}, comlocation = #{comlocation},
+		startline = #{startline}, deadline = #{deadline},  commapx = #{commapx}, commapy = #{commapy},
+		comimage = #{comimage},  comfile = #{comfile}		 
 	where seq = #{seq}
 	</update>
+
+<!-- 	<update id="updateJob" parameterType="com.codeone.dto.job.JobDto">
+	update joblist
+	set title = #{title},content = #{content}, startline = #{startline}, deadline = #{deadline}, 
+		comname = #{comname}, comimage = #{comimage}, comjobname = #{comjobname}, 
+		comcareer = #{comcareer}, comlocation = #{comlocation}, comskill = #{comskill}, comtag = #{comtag},
+		comsalary = #{comsalary}, comfile = #{comfile}, commapx = #{commapx}, commapy = #{commapy},
+		 comEmail = #{comEmail}
+	where seq = #{seq}
+	</update> -->
 
 <!-- 기업회원 글삭제 --> 
 	<update id="deleteJob" parameterType="Integer">

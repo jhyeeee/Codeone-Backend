@@ -1,8 +1,11 @@
 package com.codeone.dto.job;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-public class JobDto implements Serializable{
+//수정시 Select에 값 넣기 위한 Dto
+public class JobResponse implements Serializable{
 	
 	private int seq;
 	private String id;
@@ -17,11 +20,11 @@ public class JobDto implements Serializable{
 	private String comname;
 	private String comimage;
 	private String comcate;
-	private String comjobname;
-	private String comcareer;
-	private String comlocation;
-	private String comskill;
-	private String comtag;
+	private Map<String, Object> comjobname;
+	private Map<String, Object> comcareer;
+	private Map<String, Object> comlocation;
+	private Map<String, Object> comskill;
+	private Map<String, Object> comtag;
 	private String comsalary;
 	private String comfile;
 	private String commapx;
@@ -29,15 +32,15 @@ public class JobDto implements Serializable{
 	private String whoLiked;
 	private String comEmail;
 	
-	
-	public JobDto() {
+	public JobResponse() {
 	}
 
+ 
 
-	public JobDto(int seq, String id, String title, String content, String startline, String deadline, String wdate,
-			int comdel, String comname, String comimage, String comcate, String comjobname, String comcareer,
-			String comlocation, String comskill, String comtag, String comsalary, String comfile, String commapx,
-			String commapy, String whoLiked, String comEmail) {
+	public JobResponse(int seq, String id, String title, String content, String startline, String deadline,
+			String wdate, int comdel, String comname, String comimage, String comcate, Map<String, Object> comjobname,
+			Map<String, Object> comcareer, Map<String, Object> comlocation, Map<String, Object> comskill, Map<String, Object> comtag,
+			String comsalary, String comfile, String commapx, String commapy, String whoLiked, String comEmail) {
 		super();
 		this.seq = seq;
 		this.id = id;
@@ -64,9 +67,14 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
 	public int getSeq() {
 		return seq;
 	}
+
+
+
 
 
 	public void setSeq(int seq) {
@@ -74,9 +82,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getId() {
 		return id;
 	}
+
+
+
 
 
 	public void setId(String id) {
@@ -84,9 +98,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getTitle() {
 		return title;
 	}
+
+
+
 
 
 	public void setTitle(String title) {
@@ -94,9 +114,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getContent() {
 		return content;
 	}
+
+
+
 
 
 	public void setContent(String content) {
@@ -104,9 +130,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getStartline() {
 		return startline;
 	}
+
+
+
 
 
 	public void setStartline(String startline) {
@@ -114,9 +146,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getDeadline() {
 		return deadline;
 	}
+
+
+
 
 
 	public void setDeadline(String deadline) {
@@ -124,9 +162,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getWdate() {
 		return wdate;
 	}
+
+
+
 
 
 	public void setWdate(String wdate) {
@@ -134,9 +178,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public int getComdel() {
 		return comdel;
 	}
+
+
+
 
 
 	public void setComdel(int comdel) {
@@ -144,9 +194,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getComname() {
 		return comname;
 	}
+
+
+
 
 
 	public void setComname(String comname) {
@@ -154,9 +210,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getComimage() {
 		return comimage;
 	}
+
+
+
 
 
 	public void setComimage(String comimage) {
@@ -164,9 +226,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public String getComcate() {
 		return comcate;
 	}
+
+
+
 
 
 	public void setComcate(String comcate) {
@@ -174,54 +242,87 @@ public class JobDto implements Serializable{
 	}
 
 
-	public String getComjobname() {
+
+
+
+	public Map<String, Object> getComjobname() {
 		return comjobname;
 	}
 
 
-	public void setComjobname(String comjobname) {
+
+
+
+	public void setComjobname(Map<String, Object> comjobname) {
 		this.comjobname = comjobname;
 	}
 
 
-	public String getComcareer() {
+
+
+
+	public Map<String, Object> getComcareer() {
 		return comcareer;
 	}
 
 
-	public void setComcareer(String comcareer) {
+
+
+
+	public void setComcareer(Map<String, Object> comcareer) {
 		this.comcareer = comcareer;
 	}
 
 
-	public String getComlocation() {
+
+
+
+	public Map<String, Object> getComlocation() {
 		return comlocation;
 	}
 
 
-	public void setComlocation(String comlocation) {
+
+
+
+	public void setComlocation(Map<String, Object> comlocation) {
 		this.comlocation = comlocation;
 	}
 
 
-	public String getComskill() {
+
+
+
+	public Map<String, Object> getComskill() {
 		return comskill;
 	}
 
 
-	public void setComskill(String comskill) {
+
+
+
+	public void setComskill(Map<String, Object> comskill) {
 		this.comskill = comskill;
 	}
 
 
-	public String getComtag() {
+
+
+
+	public Map<String, Object> getComtag() {
 		return comtag;
 	}
 
 
-	public void setComtag(String comtag) {
+
+
+ 
+	public void setComtag(Map<String, Object> comtag) {
 		this.comtag = comtag;
 	}
+
+
+
 
 
 	public String getComsalary() {
@@ -229,9 +330,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setComsalary(String comsalary) {
 		this.comsalary = comsalary;
 	}
+
+
+
 
 
 	public String getComfile() {
@@ -239,9 +346,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setComfile(String comfile) {
 		this.comfile = comfile;
 	}
+
+
+
 
 
 	public String getCommapx() {
@@ -249,9 +362,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setCommapx(String commapx) {
 		this.commapx = commapx;
 	}
+
+
+
 
 
 	public String getCommapy() {
@@ -259,9 +378,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setCommapy(String commapy) {
 		this.commapy = commapy;
 	}
+
+
+
 
 
 	public String getWhoLiked() {
@@ -269,9 +394,15 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setWhoLiked(String whoLiked) {
 		this.whoLiked = whoLiked;
 	}
+
+
+
 
 
 	public String getComEmail() {
@@ -279,14 +410,21 @@ public class JobDto implements Serializable{
 	}
 
 
+
+
+
 	public void setComEmail(String comEmail) {
 		this.comEmail = comEmail;
 	}
 
 
+
+	
+	
+	
 	@Override
 	public String toString() {
-		return "JobDto [seq=" + seq + ", id=" + id + ", title=" + title + ", content=" + content + ", startline="
+		return "JobResponse [seq=" + seq + ", id=" + id + ", title=" + title + ", content=" + content + ", startline="
 				+ startline + ", deadline=" + deadline + ", wdate=" + wdate + ", comdel=" + comdel + ", comname="
 				+ comname + ", comimage=" + comimage + ", comcate=" + comcate + ", comjobname=" + comjobname
 				+ ", comcareer=" + comcareer + ", comlocation=" + comlocation + ", comskill=" + comskill + ", comtag="
@@ -294,9 +432,18 @@ public class JobDto implements Serializable{
 				+ commapy + ", whoLiked=" + whoLiked + ", comEmail=" + comEmail + "]";
 	}
 
+  
 
-	
-
+	static public JobResponse of(JobDto dto) {
+		JobResponse response = new JobResponse(
+				dto.getSeq(), dto.getId(), dto.getTitle(), dto.getContent(), dto.getStartline(), dto.getDeadline(), 
+				dto.getWdate(), dto.getComdel(), dto.getComname(), dto.getComimage(), dto.getComcate(), new HashMap<>(), 
+				new HashMap<>(), new HashMap<>(),  new HashMap<>(),  new HashMap<>(), dto.getComsalary(), 
+				dto.getComfile(), dto.getCommapx(), dto.getCommapy(), dto.getWhoLiked(), dto.getComEmail()
+				);		
+		
+		return response;
+	}
 	
 
 }

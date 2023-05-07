@@ -18,6 +18,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- 아래 의존성 추가해봄 오류 있으면 지우기 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
