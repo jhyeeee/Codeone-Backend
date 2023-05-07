@@ -33,4 +33,11 @@
 	where id=#{id} and seq=#{seq} and orderstatus = 'paid';
 </select>
 
+<!-- 결제한 사람의 수 -->
+<select id="checkPaidCount" parameterType="Integer" resultType="Integer">
+	select ifnull(count(*), 0)
+	from lectureorder
+	where seq=#{seq} and orderstatus = 'paid';
+</select>
+
 </mapper>
