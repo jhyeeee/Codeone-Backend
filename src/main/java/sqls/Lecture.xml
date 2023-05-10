@@ -35,6 +35,9 @@
 	<if test="category != null and category != ''">
 		and category=#{category}
 	</if>
+	<if test="search != null and search != ''">
+		and title like concat('%', #{search},'%')
+	</if>
 	and delflg=0
 	order by seq desc
 	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->

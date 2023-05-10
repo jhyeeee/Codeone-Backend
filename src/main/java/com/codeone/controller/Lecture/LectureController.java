@@ -174,10 +174,10 @@ public class LectureController {
 			
 			return ResponseEntity.ok(map);
 			
+			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
-		
 		
 		
 //		try {
