@@ -1,13 +1,11 @@
 package com.codeone.dto.job;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 
-public class JobDto extends JobFilterDto implements Serializable{
+public class JobDto implements Serializable{
 	
 	private int seq;
-	private String comid;
+	private String id;
 	private String title;
 	private String content;
 	private String startline;	
@@ -26,21 +24,23 @@ public class JobDto extends JobFilterDto implements Serializable{
 	private String comtag;
 	private String comsalary;
 	private String comfile;
-	private int commapx;
-	private int commapy;
-
+	private String commapx;
+	private String commapy;
+	private String whoLiked;
+	private String comEmail;
+	
 	
 	public JobDto() {
 	}
 
 
-	public JobDto(int seq, String comid, String title, String content, String startline, String deadline, String wdate,
+	public JobDto(int seq, String id, String title, String content, String startline, String deadline, String wdate,
 			int comdel, String comname, String comimage, String comcate, String comjobname, String comcareer,
-			String comlocation, String comskill, String comtag, String comsalary, String comfile, int commapx,
-			int commapy) {
+			String comlocation, String comskill, String comtag, String comsalary, String comfile, String commapx,
+			String commapy, String whoLiked, String comEmail) {
 		super();
 		this.seq = seq;
-		this.comid = comid;
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.startline = startline;
@@ -59,6 +59,8 @@ public class JobDto extends JobFilterDto implements Serializable{
 		this.comfile = comfile;
 		this.commapx = commapx;
 		this.commapy = commapy;
+		this.whoLiked = whoLiked;
+		this.comEmail = comEmail;
 	}
 
 
@@ -72,13 +74,13 @@ public class JobDto extends JobFilterDto implements Serializable{
 	}
 
 
-	public String getComid() {
-		return comid;
+	public String getId() {
+		return id;
 	}
 
 
-	public void setComid(String comid) {
-		this.comid = comid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 
@@ -242,37 +244,59 @@ public class JobDto extends JobFilterDto implements Serializable{
 	}
 
 
-	public int getCommapx() {
+	public String getCommapx() {
 		return commapx;
 	}
 
 
-	public void setCommapx(int commapx) {
+	public void setCommapx(String commapx) {
 		this.commapx = commapx;
 	}
 
 
-	public int getCommapy() {
+	public String getCommapy() {
 		return commapy;
 	}
 
 
-	public void setCommapy(int commapy) {
+	public void setCommapy(String commapy) {
 		this.commapy = commapy;
+	}
+
+
+	public String getWhoLiked() {
+		return whoLiked;
+	}
+
+
+	public void setWhoLiked(String whoLiked) {
+		this.whoLiked = whoLiked;
+	}
+
+
+	public String getComEmail() {
+		return comEmail;
+	}
+
+
+	public void setComEmail(String comEmail) {
+		this.comEmail = comEmail;
 	}
 
 
 	@Override
 	public String toString() {
-		return "JobDto [seq=" + seq + ", comid=" + comid + ", title=" + title + ", content=" + content + ", startline="
+		return "JobDto [seq=" + seq + ", id=" + id + ", title=" + title + ", content=" + content + ", startline="
 				+ startline + ", deadline=" + deadline + ", wdate=" + wdate + ", comdel=" + comdel + ", comname="
 				+ comname + ", comimage=" + comimage + ", comcate=" + comcate + ", comjobname=" + comjobname
 				+ ", comcareer=" + comcareer + ", comlocation=" + comlocation + ", comskill=" + comskill + ", comtag="
 				+ comtag + ", comsalary=" + comsalary + ", comfile=" + comfile + ", commapx=" + commapx + ", commapy="
-				+ commapy + "]";
+				+ commapy + ", whoLiked=" + whoLiked + ", comEmail=" + comEmail + "]";
 	}
 
+
 	
-		
+
 	
+
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 인터페이스 위치 -->
+<mapper namespace="com.codeone.dao.blog.BlogDao">
+
+<!-- 블로그 작성 -->
+	<insert id="writeBlog" parameterType="com.codeone.dto.blog.BlogDto">
+		insert into blog( writer, title, content, category1, category2, regdate, likes, tag, delf, thumbnail)
+		values( #{writer}, #{title}, #{content}, 1, 1,now(),#{likes},#{tag}, 0, #{thumbnail})
+	</insert>
+	
+<!-- 모든 블로그 검색  -->	
+	<select id="getAllBlogs" resultType="com.codeone.dto.blog.BlogDto">	
+		select * from blog		
+		where delf != 1
+	</select>
+	
+		
+<!-- 블로그 검색  -->	
+	<select id="getBlog" parameterType="Integer" resultType="com.codeone.dto.blog.BlogDto">
+		select * from blog
+		where
+			seq = #{seq}		
+	</select>
+	
+<!-- 블로그 삭제 -->
+<update id="deleteBlog" parameterType="Integer">
+	update blog
+	set delf=1
+	where seq=#{seq}
+</update>
+
+<!-- 블로그 업데이트  -->
+	<update id="updateBlog" parameterType="com.codeone.dto.blog.BlogDto">
+		update blog
+		set title=#{title}, content=#{content}, writer=#{writer}, thumbnail=#{thumbnail} , renewdate= now()
+		where seq=#{seq}
+		
+	</update>
+
+
+
+</mapper>

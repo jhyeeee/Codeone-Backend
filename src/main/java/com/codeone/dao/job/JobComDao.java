@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.codeone.dto.job.ComPagingDto;
 import com.codeone.dto.job.JobDto;
-import com.codeone.dto.job.JobFilterDto;
 
 @Mapper
 public interface JobComDao {
@@ -22,5 +21,6 @@ public interface JobComDao {
 	int updateJob(JobDto job);
 	//기업회원 글삭제
 	int deleteJob(int seq);
-
+	
+	
 }

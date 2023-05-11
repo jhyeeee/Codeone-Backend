@@ -1,7 +1,9 @@
 package com.codeone.controller.job;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
@@ -17,24 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codeone.dto.job.JobDto;
-
+//리액트 퀼 안의 content 이미지 업로드 컨트롤러
 
 //@CrossOrigin("*")
 @RestController
 @RequestMapping(value="/job")
 public class ImageController {
-	
-	@PostMapping("/testWrite")
-	public ResponseEntity<String> testWrite(JobDto dto) {
-		System.out.println("hello?");
-		
-		System.out.println(dto.toString() + " 투 스트링");
-		
-		return ResponseEntity.ok().build();
-	}
-	
-	
-	
 
 	String UPLOAD_PATH = "C:\\image\\imagefile";// 업로드 할 위치
 	
@@ -60,7 +50,8 @@ public class ImageController {
 		}
 	}
 	
-	// 이미지 업로드
+	// 이미지 업로드 -> 이미지를 리액트퀼에 삽입하는순간 C:\\image\\imagefile 폴더 안에 업로도됨. 
+	// 발표자 드라이브에 C:\\image\\imagefile 폴더가 있어야함.
 	@PostMapping("/uploadImage")
 	public ResponseEntity<Object> uploadImage(MultipartFile multipartFiles) {
 		System.out.println("uploadImage");
@@ -91,6 +82,4 @@ public class ImageController {
 			return new ResponseEntity<Object>(null, HttpStatus.CONFLICT);
 		}
 	}
-	
-	
 }

@@ -18,6 +18,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- 아래 의존성 추가해봄 오류 있으면 지우기 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -113,20 +119,30 @@
     <artifactId>json</artifactId>
     <version>20180813</version>
 </dependency>
+	
 	<!-- 이메일 -->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>		
 	
-
-
-		
+<!-- 아임포트 검증 -->
+	<dependency>
+	    <groupId>com.github.iamport</groupId>
+	    <artifactId>iamport-rest-client-java</artifactId>
+	    <version>0.2.22</version>
+	</dependency>
 	
-
 	</dependencies>
 
+<!-- 아임포트 검증 -->
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
 	<build>
 		<plugins>
 			<plugin>

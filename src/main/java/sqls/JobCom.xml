@@ -3,16 +3,22 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.codeone.dao.job.JobComDao">
-  
-
-	
-<!-- 기업회원 전용 글목록 보기 -->
-	<select id="combbslist" parameterType="com.codeone.dto.job.ComPagingDto" 
+ 
+ 
+<!-- 기업회원 전용 글목록 보기  -->
+	  <select id="combbslist" parameterType="com.codeone.dto.job.ComPagingDto" 
 	resultType="com.codeone.dto.job.JobDto">
-	SELECT seq, title, content, wdate, comdel
-	FROM joblist
-	LIMIT #{limit}, #{viewCount}  <!-- 페이징처리 -->
-	</select>
+		SELECT *
+		FROM (
+			SELECT ROW_NUMBER() OVER (ORDER BY seq DESC) AS rnum, 
+				seq, id, title, content, comname, wdate, comdel
+			FROM joblist
+			<!-- WHERE comdel = 0 -->
+			) tmp
+		WHERE rnum BETWEEN #{start} AND #{end}
+		ORDER BY seq DESC
+</select>
+	
 
 
 <!-- 기업회원 글의 총수(페이징 위해) -->
@@ -24,24 +30,34 @@
 <!-- insert, update, delete는 resulttype없음 / 처리한 행 수만 반환됨(int) -->	
 <!-- 기업회원 글쓰기 -->
 	<insert id="writeJob" parameterType="com.codeone.dto.job.JobDto">
-	insert into joblist(comid,title,content,startline,deadline,wdate,comdel,
+	insert into joblist(id,title,content,startline,deadline,wdate,comdel,
 				comname,comimage,comcate,comjobname,comcareer,comlocation,comskill,comtag,
-				comsalary, comfile, commapx,commapy, liked)
-	values(#{comid}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
+				comsalary, comfile, commapx,commapy, comEmail)
+	values(#{id}, #{title}, #{content}, #{startline}, #{deadline}, now(), 0, 
 		   #{comname}, #{comimage}, #{comcate},  #{comjobname}, #{comcareer}, #{comlocation}, #{comskill}, 
-		   #{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy}, 0)
+		   #{comtag}, #{comsalary}, #{comfile}, #{commapx}, #{commapy},#{comEmail} )
 	</insert> 
 	
-	
-<!-- 기업회원 글수정 -->
+<!-- 	#{comtag}, #{comsalary}, 'test.txt', #{commapx}, #{commapy}) -->
+<!-- 기업회원 글수정 스킬, 태그, 콘텐츠 빼놨음 (실험)-->
 	<update id="updateJob" parameterType="com.codeone.dto.job.JobDto">
 	update joblist
-	set title = #{title},content = #{content}, startline = #{startline}, deadline = #{deadline}, wdate = #{wdate},
-		comname = #{comname}, comimage = #{comimage}, comcate = #{comcate}, comjobname = #{comjobname}, 
-		comcareer = #{comcareer}, comlocation = #{comlocation}, comskill = #{comskill}, comtag = #{comtag},
-		comsalary = #{comsalary}, comfile = #{comfile}, commapx = #{commapx}, commapy = #{commapy}
+	set title = #{title}, comname = #{comname}, comEmail = #{comEmail}, comsalary = #{comsalary},
+		comjobname = #{comjobname}, comcareer = #{comcareer}, comlocation = #{comlocation},
+		startline = #{startline}, deadline = #{deadline},  commapx = #{commapx}, commapy = #{commapy},
+		comimage = #{comimage},  comfile = #{comfile}		 
 	where seq = #{seq}
 	</update>
+
+<!-- 	<update id="updateJob" parameterType="com.codeone.dto.job.JobDto">
+	update joblist
+	set title = #{title},content = #{content}, startline = #{startline}, deadline = #{deadline}, 
+		comname = #{comname}, comimage = #{comimage}, comjobname = #{comjobname}, 
+		comcareer = #{comcareer}, comlocation = #{comlocation}, comskill = #{comskill}, comtag = #{comtag},
+		comsalary = #{comsalary}, comfile = #{comfile}, commapx = #{commapx}, commapy = #{commapy},
+		 comEmail = #{comEmail}
+	where seq = #{seq}
+	</update> -->
 
 <!-- 기업회원 글삭제 --> 
 	<update id="deleteJob" parameterType="Integer">
@@ -49,5 +65,5 @@
     set comdel=1
 	where seq=#{seq}
 	</update>
-
+ 
 </mapper>

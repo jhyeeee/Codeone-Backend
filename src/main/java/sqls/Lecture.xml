@@ -28,11 +28,16 @@
 </update>
 
 <!-- 강의목록 -->
-<select id="getLectureList" resultType="com.codeone.dto.lecture.LectureDto">
+<select id="getLectureList" parameterType="com.codeone.dto.lecture.LectureParam" resultType="com.codeone.dto.lecture.LectureDto">
 	select *
 	from lecture
-	where delflg=0
-	order by seq desc					<!-- seq순으로 정렬 -->
+	where 1=1
+	<if test="category != null and category != ''">
+		and category=#{category}
+	</if>
+	and delflg=0
+	order by seq desc
+	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->
 </select>
 
 <!-- 강의 한개 정보 -->
@@ -40,6 +45,46 @@
 	select *
 	from lecture
 	where seq=#{seq}	
+</select>
+
+<!-- 강의글 좋아요 -->
+<insert id="likeLecture" parameterType="com.codeone.dto.lecture.LectureLikeDto">
+	insert into lecturelike(id, seq, liketime)
+	values(#{id}, #{seq}, now())
+</insert>
+
+<!-- 좋아요중인지 확인 -->
+<select id="checkLike" parameterType="com.codeone.dto.lecture.LectureLikeDto" resultType="Integer">
+	select ifnull(count(*), 0)
+	from lecturelike
+	where id=#{id} and seq=#{seq}
+</select>
+
+<!-- 좋아요 취소 -->
+<delete id="cancelLike" parameterType="com.codeone.dto.lecture.LectureLikeDto">
+	delete from lecturelike
+	where id=#{id} and seq=#{seq}
+</delete>
+
+<!-- 좋아요 카운트 -->
+<update id="countLike" parameterType="Integer">
+	update lecture
+	set likecount=likecount+1
+	where seq=#{seq}
+</update>
+
+<!-- 좋아요 취소 카운트 -->
+<update id="countCancelLike" parameterType="Integer">
+	update lecture
+	set likecount=likecount-1
+	where seq=#{seq}
+</update>
+
+<!-- 좋아요seq리스트 -->
+<select id="getlikeList" parameterType="String" resultType="Integer">
+	select seq
+	from lecturelike
+	where id=#{id}
 </select>
 
 </mapper>
