@@ -13,8 +13,23 @@
 	
 <!-- 모든 블로그 검색  -->	
 	<select id="getAllBlogs" resultType="com.codeone.dto.blog.BlogDto">	
-		select * from blog		
+		select B.seq, 
+			   B.writer, 
+			   B.title, 
+			   B.content, 
+			   B.category1, 
+			   B.category2,
+			   B.regdate,
+			   B.thumbnail,
+			   B.likes,
+			   B.tag,
+			   B.delf,
+			   Count(R.writer) AS 'replies'
+		from blog B
+		LEFT OUTER JOIN blogreply R
+			ON B.seq = R.blogSeq		
 		where delf != 1
+		group by B.seq
 	</select>
 	
 		
@@ -40,6 +55,20 @@
 		
 	</update>
 
-
+<!-- 블로그 좋아요 업데이트  -->
+	<update id="updateBlogLikes" parameterType="Integer">
+		update blog
+		set likes = likes + 1
+		where seq=#{seq}
+		
+	</update>
+	
+<!-- 블로그 좋아요 취소  -->
+	<update id="deleteBlogLikes" parameterType="Integer">
+		update blog
+		set likes = likes - 1
+		where seq=#{seq}
+		
+	</update>
 
 </mapper>

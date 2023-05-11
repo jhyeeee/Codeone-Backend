@@ -19,4 +19,8 @@ public interface BlogDao {
 	boolean deleteBlog(int seq);
 	
 	boolean updateBlog(BlogDto dto);
+	
+	boolean updateBlogLikes(int seq);
+	
+	boolean deleteBlogLikes(int seq);
 }
