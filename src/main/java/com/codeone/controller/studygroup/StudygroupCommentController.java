@@ -1,7 +1,5 @@
 package com.codeone.controller.studygroup;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codeone.command.studygroup.StudygroupCommentCommand;
 import com.codeone.dto.studygroup.StudygroupCommentDto;
 import com.codeone.dto.studygroup.StudygroupCommentListDto;
+import com.codeone.dto.user.UserDto;
+import com.codeone.etc.LoginUtil;
 import com.codeone.etc.StaticVariable;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.NotFoundCommentException;
@@ -28,6 +28,8 @@ import com.codeone.validator.studygroup.DeleteCommentValidator;
 import com.codeone.validator.studygroup.UpdateCommentValidator;
 import com.codeone.validator.studygroup.WriteCommentValidator;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/studygroup/comment")
 public class StudygroupCommentController {
@@ -36,7 +38,7 @@ public class StudygroupCommentController {
 	StudygroupCommentService studygroupCommentService;
 	
 	@PostMapping()
-	public ResponseEntity<Void> writeComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors) {
+	public ResponseEntity<Void> writeComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors, HttpSession session) {
 		Validator validator = new WriteCommentValidator();
 		validator.validate(studygroupCommentCommand, errors);
 		
@@ -45,9 +47,14 @@ public class StudygroupCommentController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		StudygroupCommentDto studygroupComment = studygroupCommentCommand.toDto();
 		studygroupComment.setMemberSeq(memberSeq);
@@ -66,7 +73,7 @@ public class StudygroupCommentController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity<Void> updateComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors) {
+	public ResponseEntity<Void> updateComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors, HttpSession session) {
 		Validator validator = new UpdateCommentValidator();
 		validator.validate(studygroupCommentCommand, errors);
 		
@@ -75,9 +82,14 @@ public class StudygroupCommentController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		StudygroupCommentDto studygroupComment = studygroupCommentCommand.toDto();
 		studygroupComment.setMemberSeq(memberSeq);
@@ -93,7 +105,7 @@ public class StudygroupCommentController {
 	}
 	
 	@DeleteMapping()
-	public ResponseEntity<Void> deleteComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors) {
+	public ResponseEntity<Void> deleteComment(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors, HttpSession session) {
 		Validator validator = new DeleteCommentValidator();
 		validator.validate(studygroupCommentCommand, errors);
 		
@@ -102,9 +114,14 @@ public class StudygroupCommentController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		StudygroupCommentDto studygroupComment = studygroupCommentCommand.toDto();
 		studygroupComment.setMemberSeq(memberSeq);
@@ -120,7 +137,7 @@ public class StudygroupCommentController {
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<List<StudygroupCommentListDto>> getList(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors) {
+	public ResponseEntity<StudygroupCommentListDto> getList(StudygroupCommentCommand studygroupCommentCommand, BindingResult errors, HttpSession session) {
 		Validator validator = new CommentListValidator();
 		validator.validate(studygroupCommentCommand, errors);
 		
@@ -129,16 +146,19 @@ public class StudygroupCommentController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
-		
+		// 로그인을 했다면 로그인한 사용자 번호 꺼내기
+		int memberSeq = 0;
+		if(LoginUtil.isLogin(session)) {
+			UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+			memberSeq = loginUserInfo.getSeq();
+		}
 		
 		studygroupCommentCommand.setMemberSeq(memberSeq);
 		studygroupCommentCommand.setStart((studygroupCommentCommand.getPageNumber()-1) * StaticVariable.PAGE_PER_CONTENTS_AMOUNT);
 		studygroupCommentCommand.setEnd(studygroupCommentCommand.getPageNumber() * StaticVariable.PAGE_PER_CONTENTS_AMOUNT);
 		
-		List<StudygroupCommentListDto> commentList = studygroupCommentService.getList(studygroupCommentCommand);
-		if(commentList.size() == 0) {
+		StudygroupCommentListDto commentList = studygroupCommentService.getList(studygroupCommentCommand);
+		if(commentList.getAmount() == 0) {
 			return ResponseEntity.noContent().build();
 		} else {
 			return ResponseEntity.ok(commentList);

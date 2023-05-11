@@ -1,7 +1,5 @@
 package com.codeone.service.studygroup;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,7 +76,16 @@ public class StudygroupCommentService {
 		studygroupManagementDao.decreaseCommentAmount(oldStudygroupCommentDto.getStudygroupSeq());
 	}
 
-	public List<StudygroupCommentListDto> getList(StudygroupCommentCommand studygroupCommentCommand) {
-		return studygroupCommentDao.getList(studygroupCommentCommand);
+	public StudygroupCommentListDto getList(StudygroupCommentCommand studygroupCommentCommand) {
+		StudygroupCommentListDto commentList = new StudygroupCommentListDto();
+		
+		// 작성된 댓글 개수 전달
+		commentList.setAmount(studygroupCommentDao.getAmount(studygroupCommentCommand.getStudygroupSeq()));
+		if(commentList.getAmount() != 0) {
+			// 작성된 댓글이 있을 경우에만 댓글 목록 조회
+			commentList.setList(studygroupCommentDao.getList(studygroupCommentCommand));
+		}
+		
+		return commentList;
 	}
 }

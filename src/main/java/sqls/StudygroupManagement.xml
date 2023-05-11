@@ -36,7 +36,7 @@
 		GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
 		GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
 		user.id as `user.id`, user.filename as `user.filename`,
-		sm.isClosed, <if test="memberSeq != 0"> if((SELECT COUNT(*) FROM studygroup_like as sl WHERE sl.studygroupSeq = sm.seq AND sl.memberSeq = #{memberSeq}) != 0, true, false)</if> as isLike
+		sm.isClosed<if test="memberSeq != 0">, if((SELECT COUNT(*) FROM studygroup_like as sl WHERE sl.studygroupSeq = sm.seq AND sl.memberSeq = #{memberSeq}) != 0, true, false) as isLike</if>
 	FROM studygroup_management sm
 	JOIN studygroup_info si
 	ON sm.infoSeq = si.seq
@@ -109,6 +109,10 @@
 	<foreach collection="list" item="studygroupInfo" separator=";">
 		UPDATE studygroup_management SET isClosed = true WHERE seq = #{studygroupInfo.managementSeq}
 	</foreach>
+</update>
+
+<update id="increaseViewAmount" parameterType="int">
+	UPDATE studygroup_management SET viewAmount = viewAmount + 1 WHERE seq = #{seq}
 </update>
 
 </mapper>

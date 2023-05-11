@@ -21,8 +21,14 @@
 	DELETE FROM studygroup_comment WHERE seq = #{seq}
 </delete>
 
-<select id="getList" parameterType="com.codeone.command.studygroup.StudygroupCommentCommand" resultType="com.codeone.dto.studygroup.StudygroupCommentListDto">
-	SELECT sc.*, u.id as `user.id`, u.filename as `user.filename`, IF(commentSeq IS NOT NULL, true, false) as haveReply, IF(sc.memberSeq = #{memberSeq}, true, false) as isMine
+<select id="getAmount" parameterType="int" resultType="int">
+	SELECT COUNT(*)
+	FROM studygroup_comment
+	WHERE studygroupSeq = #{studygroupSeq}
+</select>
+
+<select id="getList" parameterType="com.codeone.command.studygroup.StudygroupCommentCommand" resultType="com.codeone.dto.studygroup.StudygroupCommentDetailDto">
+	SELECT sc.*, u.id as `user.id`<if test="memberSeq != 0"> , u.filename as `user.filename`, IF(commentSeq IS NOT NULL, true, false) as haveReply, IF(sc.memberSeq = #{memberSeq}, true, false) as isMine</if>
 	FROM studygroup_comment sc
 	JOIN user u
 	ON sc.memberSeq = u.seq

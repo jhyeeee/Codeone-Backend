@@ -1,8 +1,7 @@
 package com.codeone.dto.studygroup;
 
 import java.io.Serializable;
-
-import com.codeone.dto.user.UserDto;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,19 +9,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class StudygroupCommentListDto extends StudygroupCommentDto implements Serializable {
-	private StudygroupDetailUserDto user;	// 댓글을 단 사용자 정보
-	private boolean haveReply;				// 댓글에 댓글이 달린 여부
-	private boolean isMine;					// 내가 단 댓글 여부
-	
-	public StudygroupCommentListDto() {
-		user = new StudygroupDetailUserDto();
-	}
-	
-	public void setIsMine(boolean isMine) {
-		this.isMine = isMine;
-	}
-	
-	public boolean getIsMine() {
-		return isMine;
-	}
+	private int amount;								// 댓글이 달린 개수
+	private List<StudygroupCommentDetailDto> list;	// 댓글 목록
 }

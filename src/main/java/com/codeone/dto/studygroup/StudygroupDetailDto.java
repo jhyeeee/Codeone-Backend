@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class StudygroupDetailDto implements Serializable {
 	private boolean isVisible;					// 공개, 비공개
-	private boolean isClosed;					// 모집 마감
+	private boolean isClosed;					// 모집 마감 여부
 	
 	private StudygroupDetailUserDto studygroupDetailUser;	// 스터디 그룹 팀장 정보
 	
@@ -28,4 +28,20 @@ public class StudygroupDetailDto implements Serializable {
 	
 	private int likeAmount;						// 관심 그룹으로 체크한 수
 	private int readAmount;						// 이 글을 읽은 회원의 수
+	
+	public void setIsVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+	
+	public boolean getIsVisible() {
+		return isVisible;
+	}
+	
+	public void setIsClosed(boolean isClosed) {
+		this.isClosed = isClosed;
+	}
+	
+	public boolean getIsClosed() {
+		return isClosed;
+	}
 }

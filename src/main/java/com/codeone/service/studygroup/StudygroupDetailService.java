@@ -75,6 +75,9 @@ public class StudygroupDetailService extends StudygroupService {
 		
 		studygroupDetail.setLikeAmount(likeAmount);												// 관심 그룹 수
 		
+		studygroupDetail.setIsClosed(studygroupManagement.getIsClosed());						// 모집 마감 여부
+		studygroupDetail.setIsVisible(studygroupManagement.getIsVisible());						// 공개/비공개
+		
 		return studygroupDetail;
 	}
 }
