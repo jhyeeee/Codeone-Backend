@@ -95,7 +95,20 @@ public class LectureOrderController {
 		return ResponseEntity.ok("NO_PAID");		// 결제 안함
 	}
 	
-	 
+	@GetMapping(value = "/ordercount")
+	public ResponseEntity<Integer> checkPaidCount(int seq){
+		System.out.println("LectureOrderController checkPaidCount() " + new Date());
+		System.out.println(seq);
+		
+		try {
+			int count = service.checkPaidCount(seq);
+			return ResponseEntity.ok(count);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		
+	}
    
 
 }

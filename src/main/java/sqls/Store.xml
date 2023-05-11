@@ -7,8 +7,8 @@
 <!-- ref 체크하기 -->
 <!-- 중고거래 글쓰기 -->
 <insert id="writeStore" parameterType="com.codeone.dto.store.StoreItemDto">
-	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg )
-	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), 0, #{filename}, #{newfilename}, 0 )
+	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg, readcount)
+	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), 0, #{filename}, #{newfilename}, 0, 0)
 </insert>
 
 <!-- 중고거래 목록 정렬 최신순 -->
@@ -119,6 +119,13 @@
 	update item
 	set status=#{status}
 	where seq=#{seq}
+</update>
+
+<!-- 조회수 -->
+<update id="itemReadCount" parameterType="Integer">
+	update item 
+	set readcount = readcount + 1 
+	where seq = #{seq}
 </update>
 
 </mapper>

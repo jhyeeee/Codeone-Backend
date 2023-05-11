@@ -16,5 +16,7 @@ public interface LectureOrderDao {
 	
 	// 결제한 상품인지 확인
 	int checkOrder(LectureOrderDto dto);
+	
+	int checkPaidCount(int seq);
 
 }

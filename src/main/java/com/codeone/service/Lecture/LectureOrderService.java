@@ -29,5 +29,9 @@ public class LectureOrderService {
 		int n = dao.checkOrder(dto);
 		return n>0?true:false;
 	}
+	
+	public int checkPaidCount(int seq) {
+		return dao.checkPaidCount(seq);
+	}
 
 }

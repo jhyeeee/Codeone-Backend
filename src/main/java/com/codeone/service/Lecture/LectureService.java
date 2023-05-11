@@ -124,4 +124,8 @@ public class LectureService {
 		return dao.getlikeList(id);
 	}
 
+	// 리스트(좋아요순)
+	public List<LectureDto> getLectureListOrderByLike (LectureParam param) {
+		return dao.getLectureListOrderByLike(param);		
+	}
 }

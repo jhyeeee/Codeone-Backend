@@ -57,4 +57,6 @@ public interface StoreDao {
 	// 판매여부 변경
 	void updateStatus(StoreItemDto item);
 
+	// 조회수
+	void itemReadCount(int seq);
 }
