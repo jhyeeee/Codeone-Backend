@@ -90,6 +90,16 @@
 	where id=#{id}
 </select>
 
+<!-- 강의목록(좋아요순)-->
+<select id="getLectureListOrderByLike" parameterType="com.codeone.dto.lecture.LectureParam" resultType="com.codeone.dto.lecture.LectureDto">
+	select *
+	from lecture
+	where delflg=0
+	order by likecount desc
+	limit #{start}, #{dataCount}		<!-- 시작위치부터 data보여줄 숫자만큼보여주기 -->
+</select>
+
+
 </mapper>
 
 

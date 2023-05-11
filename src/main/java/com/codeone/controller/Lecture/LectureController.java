@@ -159,27 +159,25 @@ public class LectureController {
 		param.setStart(start);
 		param.setDataCount(10);
 		System.out.println(param);
-		
+
 		// map으로 좋아요리스트 보내주기
 		// 좋아요한 seq 리스트
 		try {
 			// 강의글 리스트
 			List<LectureDto> lectureList = service.getLectureList(param);
-			
+
 			// id당 좋아요한 seq 리스트
 			List<Integer> likelist = service.getlikeList(id);
 			Map<String, Object> map = new HashMap<>();
 			map.put("list", lectureList);
 			map.put("likelist", likelist);
-			
+
 			return ResponseEntity.ok(map);
-			
-			
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
-		
-		
+
 //		try {
 //			List<LectureDto> lectureList = service.getLectureList(param);
 //			
@@ -285,6 +283,38 @@ public class LectureController {
 			return "LIKING";
 		}
 		return "NOT_LIKE";
+	}
+
+	// 리스트(좋아요순)
+	@GetMapping(value = "orderByLike")
+	public ResponseEntity<Map<String, Object>> getLectureListOrderByLike(LectureParam param, String id) {
+		System.out.println("LectureController getLectureListOrderByLike() " + new Date());
+
+		System.out.println(param);
+		// 글의 시작과 끝
+		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+
+		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+//				int end = ( pn + 1 ) * 10;	// 10 20
+
+		param.setStart(start);
+		param.setDataCount(10);
+		System.out.println(param);
+
+		try {
+			List<LectureDto> orderByLike = service.getLectureListOrderByLike(param);
+			// id당 좋아요한 seq 리스트
+			List<Integer> likelist = service.getlikeList(id);
+			Map<String, Object> map = new HashMap<>();
+			map.put("list", orderByLike);
+			map.put("likelist", likelist);
+
+			return ResponseEntity.ok(map);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+
 	}
 
 }

@@ -42,5 +42,8 @@ public interface LectureDao {
 	
 	// 좋아요한 seq 리스트
 	List<Integer> getlikeList(String id);
+	
+	// 좋아요순 정렬 리스트
+	List<LectureDto> getLectureListOrderByLike(LectureParam param);
 
 }
