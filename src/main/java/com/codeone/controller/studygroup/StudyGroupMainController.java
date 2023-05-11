@@ -27,6 +27,8 @@ import com.codeone.dto.studygroup.StudygroupLikeDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.TechnologyStackDto;
 import com.codeone.dto.studygroup.WayOfProceedingDto;
+import com.codeone.dto.user.UserDto;
+import com.codeone.etc.LoginUtil;
 import com.codeone.etc.StaticVariable;
 import com.codeone.exception.DeletedStudygroupException;
 import com.codeone.exception.NotPermissionToModifyException;
@@ -35,10 +37,13 @@ import com.codeone.service.studygroup.StudygroupDetailService;
 import com.codeone.service.studygroup.StudygroupFilterService;
 import com.codeone.service.studygroup.StudygroupInfoService;
 import com.codeone.service.studygroup.StudygroupLikeService;
+import com.codeone.service.studygroup.StudygroupMngService;
 import com.codeone.validator.studygroup.DeleteStudygroupValidator;
 import com.codeone.validator.studygroup.StudygroupListValidator;
 import com.codeone.validator.studygroup.UpdateStudygroupValidator;
 import com.codeone.validator.studygroup.WriteStudygroupValidator;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/studygroup")
@@ -49,15 +54,22 @@ public class StudyGroupMainController {
 	StudygroupDetailService studygroupDetailService;
 	@Autowired
 	StudygroupLikeService StudygroupLikeService;
+	@Autowired
+	StudygroupMngService studygroupMngService;
 	
 	@Autowired
 	StudygroupFilterService studygroupFilterService;
 	
 	@PostMapping()
-	public ResponseEntity<Void> writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand, BindingResult errors) {
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+	public ResponseEntity<Void> writeStudygroupRecruitment(StudygroupInfoCommand studygroupCommand, BindingResult errors, HttpSession session) {
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		// 커맨드 객체 검증
 		Validator validator = new WriteStudygroupValidator();
@@ -77,9 +89,15 @@ public class StudyGroupMainController {
 	}
 	
 	@DeleteMapping()
-	public ResponseEntity<Void> deleteStudygroupRecruitment(StudygroupDeleteCommand studygroupDeleteCommand, BindingResult errors) {
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+	public ResponseEntity<Void> deleteStudygroupRecruitment(StudygroupDeleteCommand studygroupDeleteCommand, BindingResult errors, HttpSession session) {
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		// 커맨드 객체 검증
 		Validator validator = new DeleteStudygroupValidator();
@@ -112,10 +130,15 @@ public class StudyGroupMainController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity<Void> updateStudygroupRecruitment(StudygroupUpdateCommand studygroupUpdateCommand, BindingResult errors) {
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+	public ResponseEntity<Void> updateStudygroupRecruitment(StudygroupUpdateCommand studygroupUpdateCommand, BindingResult errors, HttpSession session) {
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		// 커맨드 객체 검증
 		Validator validator = new UpdateStudygroupValidator();
@@ -166,7 +189,7 @@ public class StudyGroupMainController {
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<List<StudygroupListDto>> getStudygroupList(StudygroupListCommand studygroupListCommand, BindingResult errors) {
+	public ResponseEntity<List<StudygroupListDto>> getStudygroupList(StudygroupListCommand studygroupListCommand, BindingResult errors, HttpSession session) {
 		Validator validator = new StudygroupListValidator();
 		// 필터링 값을 전달 받았을 경우 전달 받은 필터링 값 검증
 		validator.validate(studygroupListCommand, errors);
@@ -176,9 +199,14 @@ public class StudyGroupMainController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 선택 사항
-		int memberSeq = 1;
+		// 로그인한 사용자 번호 꺼내기 (로그인은 선택 사항)
+		int memberSeq = 0;
+		if(LoginUtil.isLogin(session)) {
+			UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+			memberSeq = loginUserInfo.getSeq();
+		}
 		
+		System.out.println("memberSeq = " + memberSeq);
 		
 		// 좋아요 여부를 확인하기 위해 로그인한 사용자 번호 저장
 		studygroupListCommand.setMemberSeq(memberSeq);
@@ -197,15 +225,20 @@ public class StudyGroupMainController {
 	}
 	
 	@PostMapping("/toggleLike/{seq}")
-	public ResponseEntity<Void> toggleLike(@PathVariable("seq") int seq){
+	public ResponseEntity<Void> toggleLike(@PathVariable("seq") int seq, HttpSession session){
 		if(seq <= 0) {
 			// 클라이언트가 잘못된 값을 보냈다면
 			return ResponseEntity.badRequest().build();
 		}
 		
-		// 로그인 여부 확인 코드 필요
-		int memberSeq = 1;
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
+		if(!LoginUtil.isLogin(session)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
 		
+		UserDto loginUserInfo = LoginUtil.getLoginUserInfo(session);
+		int memberSeq = loginUserInfo.getSeq();
+		// 로그인 여부 확인 및 로그인한 사용자 번호 꺼내기
 		
 		StudygroupLikeDto studygroupLike = new StudygroupLikeDto();
 		studygroupLike.setStudygroupSeq(seq);
@@ -254,5 +287,13 @@ public class StudyGroupMainController {
 		List<NumberOfRecruitsDto> numberOfRecruitsList = studygroupFilterService.getNumberOfRecruitsList();
 		
 		return ResponseEntity.ok(numberOfRecruitsList);
+	}
+	
+	@PostMapping("/{seq}/view")
+	public void increseViewAmount(@PathVariable int seq) {
+		if(seq > 0) {
+			// 클라이언트가 제대로 된 seq를 보냈을 경우에만 조회수 증가
+			studygroupMngService.increaseViewAmount(seq);
+		}
 	}
 }
