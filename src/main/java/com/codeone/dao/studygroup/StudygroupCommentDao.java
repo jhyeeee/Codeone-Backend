@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.codeone.command.studygroup.StudygroupCommentCommand;
+import com.codeone.dto.studygroup.StudygroupCommentDetailDto;
 import com.codeone.dto.studygroup.StudygroupCommentDto;
-import com.codeone.dto.studygroup.StudygroupCommentListDto;
 
 @Mapper
 @Repository
@@ -16,5 +16,6 @@ public interface StudygroupCommentDao {
 	void updateComment(StudygroupCommentDto studygroupComment);
 	StudygroupCommentDto selectOneBySeq(int seq);
 	void deleteComment(int seq);
-	List<StudygroupCommentListDto> getList(StudygroupCommentCommand studygroupCommentCommand);
+	List<StudygroupCommentDetailDto> getList(StudygroupCommentCommand studygroupCommentCommand);
+	int getAmount(int studygroupSeq);
 }
