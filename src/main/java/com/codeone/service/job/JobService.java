@@ -221,6 +221,10 @@ public class JobService {
 		map.put("msg", msg);
 		return map;
 	}
-
+	
+	// 좋아요한 채용공고 일정관리에 등록
+	public List<JobDto> getCalendarjobList(String id){
+		return dao.getCalendarjobList(id);
+	}
 	
 }

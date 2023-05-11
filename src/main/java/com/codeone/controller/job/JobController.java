@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,9 @@ import com.codeone.dto.job.JobParam;
 import com.codeone.dto.job.JobResponse;
 import com.codeone.service.job.JobService;
 //채용 메인페이지 글목록, 상세보기, 필터링, 좋아요 컨트롤러
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @CrossOrigin
 @RequestMapping("job/")
@@ -141,8 +145,25 @@ public class JobController {
 //		return res;
 //	}
 //	
-	
-	
+	// 좋아요한 채용공고 일정관리에 등록
+	@GetMapping(value = "/getCalendarjobList")
+	public ResponseEntity<Map<String, Object>> getCalendarjobList(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    System.out.println("JobController getCalendarjobList() " + new Date());
+	    
+	    // Map으로 dto 전달
+	    Map<String, Object> map = new HashMap<>();        
+	    try {
+	        List<JobDto> list = service.getCalendarjobList(id);
+	        map.put("list", list);
+	        return ResponseEntity.ok(map);                  // 성공
+	        
+	    } catch (Exception e) {
+	        return ResponseEntity.badRequest().build();      // 정보 가져오기 실패
+	    }
+	    
+	    
+	}
+
 }
 
     

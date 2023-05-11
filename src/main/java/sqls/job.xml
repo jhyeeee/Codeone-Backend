@@ -228,5 +228,11 @@
 		WHERE joblistseq = #{joblistseq}
 	</insert>
 	
+	<!-- 좋아요한 채용공고 일정관리에 등록 -->
+	<select id="getCalendarjobList" parameterType="Map" resultType="com.codeone.dto.job.JobDto">
+		SELECT * FROM joblist 
+		WHERE wholiked LIKE CONCAT('%', #{userId}, '%')
+	</select>
+	
 	
 </mapper>
