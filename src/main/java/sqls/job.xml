@@ -4,7 +4,7 @@
 	
 	<!--  채용 글목록 : 페이징 후 -->
 	<mapper namespace="com.codeone.dao.job.JobDao">
-<!-- 	 <select id="job_list" parameterType="com.codeone.dto.job.JobParam" resultType="com.codeone.dto.job.JobDto">
+	 <select id="job_list" parameterType="com.codeone.dto.job.JobParam" resultType="com.codeone.dto.job.JobDto">
 		select *
 		from joblist
 		where comdel=0
@@ -38,9 +38,9 @@
 		order by seq desc
 		limit #{start}, #{dataCount}	
 	</select>
-	 -->
+
 	<!-- 채용글목록 페이징전	 -->		
-	 <select id="job_list" parameterType="Map" resultType="Map">
+<!-- 	 <select id="job_list" parameterType="Map" resultType="Map">
 		select *
 		from joblist
 		where comdel=0
@@ -73,7 +73,7 @@
 		</if>
 		order by seq desc
 	</select>
-	
+	 -->
 	 
 	 <!-- 글의 총 갯수(페이징) -->
 	 

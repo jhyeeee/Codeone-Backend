@@ -19,17 +19,17 @@ public class JobService {
 
 	
 	// 채용 글목록 페이징후
-//	public List<JobDto> joblist(JobParam param) {
-//		return dao.job_list(param);
-//	}
+	public List<JobDto> joblist(JobParam param) {
+		return dao.job_list(param);
+	}
 	
 	//채용 글목록 페이징전
-	public Map<String, Object> joblist(Map<String, Object>params) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", dao.job_list(params));
-		return map;
-	}
- 
+//	public Map<String, Object> joblist(Map<String, Object>params) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("list", dao.job_list(params));
+//		return map;
+//	}
+// 
 	//채용 글의 총수
 		public int getAllJobCount(JobParam param) {
 			return dao.getAllJobCount(param);

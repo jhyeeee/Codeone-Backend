@@ -18,10 +18,10 @@ public interface JobDao {
 	//List<JobDto> job_list(JobDto jobdto);
 	
 	//채용 글목록 페이징후
-//	List<JobDto> job_list(JobParam param);
+	List<JobDto> job_list(JobParam param);
 	
 	//채용 글목록 페이징전
-	List<Map<String, Object>> job_list(Map<String, Object> params);
+//	List<Map<String, Object>> job_list(Map<String, Object> params);
 
 	//채용 글의 총수
 	int getAllJobCount(JobParam param);
