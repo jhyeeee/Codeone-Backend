@@ -73,6 +73,10 @@ public class JobComController {
   		} else {
   			return "NO";
   		}
+  		
+//  		return "YES";
+  		
+
   	} 
   	
   //기업회원 글삭제
