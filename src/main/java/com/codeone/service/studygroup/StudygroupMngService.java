@@ -34,4 +34,8 @@ public class StudygroupMngService extends StudygroupService {
 		// 마감 여부 전환
 		studygroupManagementDao.toggleIsClosed(seq);
 	}
+
+	public void increaseViewAmount(int seq) {
+		studygroupManagementDao.increaseViewAmount(seq);
+	}
 }
