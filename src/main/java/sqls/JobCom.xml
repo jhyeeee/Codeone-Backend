@@ -45,7 +45,7 @@
 	set title = #{title}, comname = #{comname}, comEmail = #{comEmail}, comsalary = #{comsalary},
 		comjobname = #{comjobname}, comcareer = #{comcareer}, comlocation = #{comlocation},
 		startline = #{startline}, deadline = #{deadline},  commapx = #{commapx}, commapy = #{commapy},
-		comimage = #{comimage},  comfile = #{comfile}		 
+		comimage = #{comimage},  comfile = #{comfile}, content=#{content}		 
 	where seq = #{seq}
 	</update>
 

@@ -12,8 +12,17 @@
 	</insert>
 <!-- 해당 블로그댓글 전부 가져오기  -->	
 	<select id="getAllBlogReply" parameterType="Integer" resultType="com.codeone.dto.blog.BlogReplyDto">	
-		select * from blogReply		
-		where blogseq = #{blogseq}
+		select R.seq, 
+			   R.blogSeq, 
+			   R.content,
+			   R.regdate,
+			   R.renewdate,
+			   U.id AS 'writer',
+			   U.filename AS 'profileUrl'  
+		from blogReply R
+		INNER JOIN user U
+		  ON R.writer = U.email				
+		where R.blogseq = #{blogseq}
 	</select>
 	
 

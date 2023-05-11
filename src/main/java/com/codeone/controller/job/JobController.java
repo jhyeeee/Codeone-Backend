@@ -101,12 +101,11 @@ public class JobController {
 	public Map<String, Object> code_list(@RequestParam Map<String, Object> params) throws Exception{
 		log.info("code_list calld");
 		params.forEach((key, value) -> log.info("{} : {}", key, value));
-		
+
 		Map<String, Object> res = new HashMap<String, Object>();
 		res.put("list", service.code_list(params));
 	
-//		Map codes = (Map) res.get("list");
-//		codes.forEach((key, value) -> log.info("res {} : {}", key, value));
+
 		return res;
 	}
 	
