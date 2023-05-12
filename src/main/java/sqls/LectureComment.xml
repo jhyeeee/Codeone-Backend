@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.lecture.LectureCommentDao">
+
+<!-- 댓글 작성 -->
+<insert id="writeCommentLecture" parameterType="com.codeone.dto.lecture.LectureCommentDto">
+	insert into lecturecomment(lectureseq, id, content, wdate, updatewdate,  delflg)
+	values(#{lectureseq}, #{id}, #{content}, now(), now(), 0)
+</insert>
+
+<!-- 댓글 목록 추후 페이징 추가-->
+<!-- <select id="getLectureCommentList" parameterType="com.codeone.dto.lecture.LectureCommentParam" resultType="com.codeone.dto.lecture.LectureCommentDto">
+	select *
+	from lecturecomment	
+	where lectureseq=#{lectureseq} and delflg=0
+	order by seq desc 						seq순으로 정렬
+	limit #{start}, #{dataCount}			앞이 데이터 몇번부터, 뒤가 몇개보여줄지
+</select> -->
+
+<!-- 댓글목록 프로필사진추가 -->
+<select id="getLectureCommentList" parameterType="com.codeone.dto.lecture.LectureCommentParam" resultType="com.codeone.dto.lecture.LectureCommentUserDto">
+	select c.*, u.filename, u.newfilename
+	from lecturecomment c
+	join user u
+	on c.id = u.id
+	where c.lectureseq=#{lectureseq} and c.delflg=0
+	order by c.seq desc
+	limit #{start}, #{dataCount}
+</select>
+
+<!-- 댓글의 총 갯수 (페이징) 글의 seq넣어주고 갯수가져오기 -->
+<select id="getLectureCommentCount" parameterType="Integer" resultType="java.lang.Integer">
+	select ifnull(count(*), 0)	<!-- null이 아닐땐 count체크, null이면 0 -->
+	from lecturecomment
+	where lectureseq=#{lectureseq} and delflg=0	
+</select>
+
+<!-- 댓글 수정 -->
+<update id="updateLectureComment" parameterType="com.codeone.dto.lecture.LectureCommentDto">
+	update lecturecomment
+	set content=#{content}, updatewdate=now()	
+	where seq=#{seq}
+</update>
+
+<!-- 댓글 삭제 -->
+<update id="deleteLectureComment" parameterType="Integer">
+	update lecturecomment
+	set delflg=1	
+	where seq=#{seq}
+</update>
+
+<!-- 댓글단 유저정보 -->
+
+<select id="getCommentUser" parameterType="com.codeone.dto.lecture.LectureCommentDto" resultType="com.codeone.dto.user.UserDto">
+	select u.*
+	from lecturecomment c
+	join user u
+	on c.id = u.id
+	where c.seq=#{seq} and c.lectureseq=#{lectureseq}
+</select>
+
+ 
+<!-- id넣고 유저정보불러오기 -->
+<!-- <select id="getCommentUser">
+	select * 
+	from user
+	where id=#{id}
+</select>
+ -->
+
+</mapper>
