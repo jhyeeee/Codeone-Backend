@@ -1,6 +1,9 @@
 package com.codeone.controller.studygroup;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codeone.command.studygroup.StudygroupDeleteCommand;
@@ -23,6 +27,7 @@ import com.codeone.dto.studygroup.NumberOfRecruitsDto;
 import com.codeone.dto.studygroup.PositionDto;
 import com.codeone.dto.studygroup.RecruitmentTypeDto;
 import com.codeone.dto.studygroup.StudygroupDetailDto;
+import com.codeone.dto.studygroup.StudygroupInfoDto;
 import com.codeone.dto.studygroup.StudygroupLikeDto;
 import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.TechnologyStackDto;
@@ -295,5 +300,23 @@ public class StudyGroupMainController {
 			// 클라이언트가 제대로 된 seq를 보냈을 경우에만 조회수 증가
 			studygroupMngService.increaseViewAmount(seq);
 		}
+	}
+	
+	// 좋아요한 모집글 캘린더에 불러오기
+	@GetMapping("/getLikedInfo")
+	public ResponseEntity<Map<String, Object>> getLikedInfo(@RequestParam("seq") int seq){
+		System.out.println("studygroupController getLikedInfo() " + new Date());
+	    System.out.println("//////// seq확인 "+seq);
+	    
+	    Map<String, Object> map = new HashMap<>();
+	    
+	    try {
+	    	List<StudygroupInfoDto> list = studygroupInfoService.getLikedInfo(seq);
+	    	map.put("list", list);
+	    	return ResponseEntity.ok(map); 
+	    	
+	    } catch (Exception e) {
+	    	return ResponseEntity.badRequest().build();
+	    }
 	}
 }
