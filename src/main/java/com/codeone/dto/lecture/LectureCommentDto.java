@@ -11,6 +11,7 @@ import lombok.Data;
 //		lectureseq int NOT NULL,  		
 //		id VARCHAR(100) NOT NULL,   		
 //		content varchar(1000) NOT NULL,
+//		starrate int 
 //	 	wdate DATETIME NOT NULL,
 //	    updatewdate DATETIME NOT NULL,
 //		delflg int not null	
@@ -22,6 +23,7 @@ public class LectureCommentDto implements Serializable {
 	private int lectureseq;				// 강의 seq
 	private String id;					// userId
 	private String content;				// 댓글내용
+	private int starrate;				// 별점 0 - 5점
 	private String wdate;				// 등록일
 	private String updatewdate;			// 수정일
 	private int delflg; 				// 삭제여부 0이 기본

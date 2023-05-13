@@ -36,8 +36,8 @@ public class LectureCommentController {
 	@PostMapping()
 	public ResponseEntity<Void> writeCommentLecture(@RequestBody LectureCommentDto dto) {
 
-		System.out.println(dto);
-		log.info("writeCommentLecture 호출");
+//		System.out.println(dto);
+		log.info("writeCommentLecture 호출=>" + dto);
 
 		boolean isWriteComment = service.writeCommentLecture(dto);
 		if (isWriteComment) {

@@ -6,8 +6,8 @@
 
 <!-- 댓글 작성 -->
 <insert id="writeCommentLecture" parameterType="com.codeone.dto.lecture.LectureCommentDto">
-	insert into lecturecomment(lectureseq, id, content, wdate, updatewdate,  delflg)
-	values(#{lectureseq}, #{id}, #{content}, now(), now(), 0)
+	insert into lecturecomment(lectureseq, id, content, starrate, wdate, updatewdate,  delflg)
+	values(#{lectureseq}, #{id}, #{content}, #{starrate}, now(), now(), 0)
 </insert>
 
 <!-- 댓글 목록 추후 페이징 추가-->

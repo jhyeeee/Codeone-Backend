@@ -29,7 +29,7 @@
 <!-- 댓글 수정 -->
 <update id="updateStoreComment" parameterType="com.codeone.dto.store.StoreCommentDto">
 	update itemcomment
-	set content=#{content}, wdate=now()	
+	set content=#{content}, updatewdate=now()	
 	where seq=#{seq}
 </update>
 
