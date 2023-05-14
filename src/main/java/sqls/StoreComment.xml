@@ -6,8 +6,8 @@
 
 <!-- 댓글 작성 -->
 <insert id="writeCommentStore" parameterType="com.codeone.dto.store.StoreCommentDto">
-	insert into itemcomment(itemseq, id, content, wdate, updatewdate, delflg)
-	values(#{itemseq}, #{id}, #{content}, now(), now(), 0)
+	insert into itemcomment(itemseq, id, content, wdate, delflg)
+	values(#{itemseq}, #{id}, #{content}, now(), 0)
 </insert>
 
 <!-- 댓글 목록 추후 페이징 추가-->

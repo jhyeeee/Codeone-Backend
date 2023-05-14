@@ -50,7 +50,7 @@ public class LectureCommentController {
 	@GetMapping()
 	public ResponseEntity<Map<String, Object>> getLectureCommentList(LectureCommentParam param) {
 		
-		log.info("getLectureCommentList=>" + param);
+		log.info("getLectureCommentList=>"+param);
 
 		// param == itemseq, start, end, pageNumber
 
@@ -97,7 +97,7 @@ public class LectureCommentController {
 	@PutMapping()
 	public ResponseEntity<Void> updateLectureComment(@RequestBody LectureCommentDto dto) {
 
-		log.info("updateLectureComment 호출" + dto);
+		log.info(dto);
 		// System.out.println(dto);
 
 		try {
@@ -112,7 +112,7 @@ public class LectureCommentController {
 	// 댓글 삭제
 	@DeleteMapping()
 	public ResponseEntity<Void> deleteLectureComment(int seq) {
-		log.info("deleteLectureComment 호출" + seq);
+		log.info(seq);
 
 		try {
 			service.deleteLectureComment(seq);
