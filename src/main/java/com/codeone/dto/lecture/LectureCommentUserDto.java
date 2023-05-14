@@ -12,6 +12,7 @@ public class LectureCommentUserDto implements Serializable{
 	private int lectureseq;				// 강의 seq
 	private String id;					// userId
 	private String content;				// 댓글내용
+	private int starrate;				// 별점추가
 	private String wdate;				// 등록일
 	private String updatewdate;			// 수정일
 	private int delflg; 				// 삭제여부 0이 기본
