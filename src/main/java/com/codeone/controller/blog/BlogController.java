@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.codeone.dto.blog.BlogCategoryDto;
+import com.codeone.dto.blog.BlogCategoryParam;
 import com.codeone.dto.blog.BlogDto;
 import com.codeone.dto.user.UserDto;
 import com.codeone.service.blog.BlogService;
@@ -46,12 +48,16 @@ public class BlogController {
 			String title, 
 			String content, 
 			MultipartFile multipartFiles, 
+			int category1,
+			int category2,
 			HttpServletRequest req) throws Exception {
 		System.out.println("blogWrite");
 		BlogDto dto = new BlogDto();
 		dto.setWriter(writer);
 		dto.setTitle(title);
-		dto.setContent(content);		
+		dto.setContent(content);
+		dto.setCategory1(category1);
+		dto.setCategory2(category2);
 		System.out.println(dto.toString());
 		String thumbnail = defaultImage;
 		System.out.println(multipartFiles);
@@ -193,6 +199,28 @@ public class BlogController {
 		}
 		
 	}
+	
+	
+	// 카테고리 가져오기
+	@GetMapping("/getBlogCategory")
+	public ResponseEntity<List<BlogCategoryDto>> getBlogCategory(HttpServletRequest req,BlogCategoryParam param) {
+		System.out.println("getBlogCategory");
+		
+		System.out.println(param.getCatetype());
+		System.out.println(param.getCate1seq());
+		
+
+		
+		
+		List<BlogCategoryDto> result = service.getBlogCategory(param);
+		
+		return ResponseEntity.ok().body(result);
+		
+		
+	}
+	
+	
+	
 	
 	
 	private String saveThumbnailPicture(HttpServletRequest req, MultipartFile multipartFiles) throws Exception{

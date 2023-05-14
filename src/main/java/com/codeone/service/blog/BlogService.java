@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codeone.dao.blog.BlogDao;
 import com.codeone.dao.user.UserDao;
+import com.codeone.dto.blog.BlogCategoryDto;
+import com.codeone.dto.blog.BlogCategoryParam;
 import com.codeone.dto.blog.BlogDto;
 @Service
 @Transactional
@@ -39,4 +41,9 @@ public class BlogService {
 	public List<BlogDto> getSerchBlogs(String searchTerm) {
 		return dao.getSearchBlogs(searchTerm);
 	}
+	
+	public List<BlogCategoryDto> getBlogCategory(BlogCategoryParam param) {
+		return dao.getBlogCategory(param);
+	}
+	
 }

@@ -8,7 +8,7 @@
 <!-- 블로그 작성 -->
 	<insert id="writeBlog" parameterType="com.codeone.dto.blog.BlogDto">
 		insert into blog( writer, title, content, category1, category2, regdate, likes, tag, delf, thumbnail)
-		values( #{writer}, #{title}, #{content}, 1, 1,now(),#{likes},#{tag}, 0, #{thumbnail})
+		values( #{writer}, #{title}, #{content}, #{category1}, #{category2},now(),#{likes},#{tag}, 0, #{thumbnail})
 	</insert>
 	
 <!-- 모든 블로그 검색  -->	
@@ -105,6 +105,19 @@
 				where id=#{search}
 			</if>			  	
 		</if> -->	
+	</select>
+	
+<!-- 블로그 카테고리   -->
+	<select id="getBlogCategory" parameterType="com.codeone.dto.blog.BlogCategoryParam" resultType="com.codeone.dto.blog.BlogCategoryDto">
+		select * 
+		<if test="catetype == 1">
+			from category1
+		</if>
+		<if test="catetype == 2 and cate1seq != 0">
+			from category2
+			where
+				cate1seq = #{cate1seq}
+		</if>				
 	</select>
 	
 
