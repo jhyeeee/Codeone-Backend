@@ -56,6 +56,16 @@ public class JobController {
 		// search, choice 넣어주고 리스트 불러오기
 		List<JobDto> list = service.joblist(param);
 		
+		for(int i=0; i< list.size(); i++) {
+			//System.out.println(list.get(i).getComimage());
+			
+			int dump = list.get(i).getComimage().split("\\\\").length;
+			System.out.println("** dump :  " + dump);
+			System.out.println("image name : " + list.get(i).getComimage().split("\\\\")[dump-1]);
+			
+			list.get(i).setComimage("http://localhost/jobImage/"+list.get(i).getComimage().split("\\\\")[dump-1] );
+		}
+		
 		// 글의 총갯수
 		int totalCount = service.getAllJobCount(param); // search, choice 들어오는값은 없음.
 
@@ -70,16 +80,16 @@ public class JobController {
 	}
 
 	
-		//채용 글목록 페이징전
-//		@GetMapping("list")
-//		public Map<String, Object> list(@RequestParam Map<String, Object> params) throws Exception {
-//			Map<String, Object> res = new HashMap<String, Object>();
-//			
-//			System.out.println("params title == > " + params.get("title"));
-//
-//			res.put("list", service.joblist(params)); 
-//			return res;		
-//		}	  
+	//채용일정 목록
+	@GetMapping(value = "jobcalendar")
+	public Map<String, Object> list(@RequestParam Map<String, Object> params) throws Exception {
+		Map<String, Object> res = new HashMap<String, Object>();
+		
+		System.out.println("params title == > " + params.get("title"));
+
+		res.put("list", service.jobcalendar(params)); 
+		return res;		 
+	}	  
 
 		
 		
