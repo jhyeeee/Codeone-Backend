@@ -115,4 +115,28 @@
 	UPDATE studygroup_management SET viewAmount = viewAmount + 1 WHERE seq = #{seq}
 </update>
 
+<select id="getAmountByMemberSeq" parameterType="int" resultType="int">
+	SELECT COUNT(*) FROM studygroup_management WHERE memberSeq = #{memberSeq} AND isDeleted = false
+</select>
+
+<select id="selectAllMyStudygroupList" parameterType="com.codeone.command.studygroup.StudygroupListCommand" resultType="com.codeone.dto.studygroup.StudygroupListDto">
+	SELECT
+		sm.seq,
+		si.deadlineForRecruitment, si.title,
+		GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
+		GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
+		sm.isClosed
+	FROM studygroup_management sm
+	JOIN studygroup_info si
+	ON sm.infoSeq = si.seq
+	JOIN studygroup_position sp
+	ON sm.seq = sp.managementSeq
+	JOIN studygroup_stack ss
+	ON sm.seq = ss.managementSeq
+	WHERE sm.memberSeq = #{memberSeq} AND isDeleted = false
+	GROUP BY sm.seq
+	ORDER BY sm.regdate DESC
+	LIMIT #{start}, #{end}
+</select>
+
 </mapper>

@@ -1,11 +1,14 @@
 package com.codeone.service.studygroup;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codeone.command.studygroup.StudygroupListCommand;
 import com.codeone.dto.studygroup.StudygroupInfoDto;
+import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.exception.NotPermissionToModifyException;
 import com.codeone.exception.UnmodifiableConditionException;
@@ -13,6 +16,14 @@ import com.codeone.exception.UnmodifiableConditionException;
 @Service
 @Transactional
 public class StudygroupMngService extends StudygroupService {
+	public int getMyStudygroupAmount(int memberSeq) {
+		return studygroupManagementDao.getAmountByMemberSeq(memberSeq);
+	}
+	
+	public List<StudygroupListDto> getMyStudygroupList(StudygroupListCommand command) {
+		return studygroupManagementDao.selectAllMyStudygroupList(command);
+	}
+	
 	public void toggleIsClosed(int seq, int memberSeq) throws NotPermissionToModifyException, UnmodifiableConditionException {
 		// 요청한 스터디 그룹의 마감 여부를 전환할 수 있는 권한이 있는지 확인
 		StudygroupManagementDto studygroupManagement = checkPermissionToModify(seq, memberSeq);

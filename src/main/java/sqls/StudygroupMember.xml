@@ -6,7 +6,7 @@
 <mapper namespace="com.codeone.dao.studygroup.StudygroupMemberDao">
 
 <select id="getStudygroupMemberAmountByStudygroupSeq" parameterType="int" resultType="int">
-	SELECT COUNT(*) FROM studygroup_member WHERE studygroup_seq = #{studygroupSeq}
+	SELECT COUNT(*) FROM studygroup_member WHERE studygroupSeq = #{studygroupSeq}
 </select>
 
 <insert id="joinMember" parameterType="com.codeone.dto.studygroup.StudygroupMemberDto">
