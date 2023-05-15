@@ -7,8 +7,8 @@
 <!-- 강의글 추가 -->
 <insert id="writeLecture" parameterType="com.codeone.dto.lecture.LectureDto">
 
-	insert into lecture(id, category, title, content, price, zoomurl, zoompwd, filename, newfilename, wdate, likecount, delflg )
-	values(#{id}, #{category}, #{title}, #{content}, #{price}, #{zoomurl}, #{zoompwd}, #{filename}, #{newfilename}, now(), 0, 0 )
+	insert into lecture(id, category, title, content, price, zoomurl, zoompwd, startDate, endDate, filename, newfilename, wdate, updatewdate, likecount, delflg )
+	values(#{id}, #{category}, #{title}, #{content}, #{price}, #{zoomurl}, #{zoompwd}, #{startDate}, #{endDate}, #{filename}, #{newfilename}, now(), now(), 0, 0 )
 
 </insert>
 
@@ -16,7 +16,7 @@
 <update id="updateLecture" parameterType="com.codeone.dto.lecture.LectureDto">
 	update lecture
 	set title=#{title}, content=#{content}, category=#{category}, price=#{price}, zoomurl=#{zoomurl}, zoompwd=#{zoompwd},
-		filename=#{filename}, newfilename=#{newfilename}, wdate=now()
+		filename=#{filename}, newfilename=#{newfilename}, startDate=#{startDate}, endDate=#{endDate}, updatewdate=now()
 	where seq=#{seq}
 </update>
 

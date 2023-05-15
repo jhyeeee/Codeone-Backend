@@ -30,7 +30,9 @@ import com.codeone.dto.store.StoreLikeDto;
 import com.codeone.service.Lecture.LectureService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @RestController
 @RequestMapping("/lecture")
 public class LectureController {
@@ -46,9 +48,13 @@ public class LectureController {
 
 		// id 추후 관리자아이디로 넣어주기
 
-		String id = "sss";
-		dto.setId(id);
-
+//		String id = "sss";
+//		dto.setId(id);
+		
+		// dto확인
+		log.info(dto);
+		
+		
 		// 파일추가
 
 		String msg = service.uploadImgFile(dto, uploadFile, req);
