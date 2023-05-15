@@ -65,5 +65,13 @@
     set  id=#{id}, filename=#{filename}
     where email=#{email} and emailKey=#{emailKey}
 </update>
+
+<!--채용페이지:기업회원 인증 시 업데이트-->
+<update id="updateCompanyAuth" parameterType="com.codeone.dto.user.UserDto">
+    update user 
+	set auth = #{auth}
+    where id = #{id}
+</update>
+
    	
 </mapper>
