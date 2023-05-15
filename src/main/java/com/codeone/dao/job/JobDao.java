@@ -18,10 +18,10 @@ public interface JobDao {
 	//List<JobDto> job_list(JobDto jobdto);
 	
 	//채용 글목록 페이징후
-//	List<JobDto> job_list(JobParam param);
+	List<JobDto> job_list(JobParam param);
 	
-	//채용 글목록 페이징전
-	List<Map<String, Object>> job_list(Map<String, Object> params);
+	//채용일정 목록
+	List<Map<String, Object>> jobcalendar_list(Map<String, Object> params);
 
 	//채용 글의 총수
 	int getAllJobCount(JobParam param);
@@ -54,6 +54,7 @@ public interface JobDao {
 	
 	int delete_Like(Map<String, Object> params) throws Exception;
 	
-	
+	//좋아요한 채용공고 일정관리에 등록
+	public List<JobDto> getCalendarjobList(String id);
 	
 }

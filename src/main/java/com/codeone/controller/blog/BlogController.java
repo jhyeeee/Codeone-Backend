@@ -33,7 +33,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/blog")
 public class BlogController {
-	final String defaultImage = "http://localhost/user/blogThumbnailImages/imageDefault/png";
+//	final String defaultImage = "http://localhost/user/blogThumbnailImages/imageDefault/png";
+	final String defaultImage = "http://localhost/blog/getBlogThumbnailImages/imageDefault/png";
 	@Autowired
 	private BlogService service;
 	@Autowired
@@ -172,6 +173,27 @@ public class BlogController {
 	}
 	
 	
+	// 검색 기능
+	@GetMapping("/searchBlog/{searchTerm}")
+	public ResponseEntity<List<BlogDto>> searchBlog(HttpServletRequest req, @PathVariable String searchTerm) {
+		System.out.println(searchTerm + " searchTerm");
+		
+		List<BlogDto> result = service.getSerchBlogs(searchTerm);
+		
+		if(result.size() > 0) {
+			HttpHeaders header = new HttpHeaders();
+	        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			System.out.println(result);
+	     	
+			return ResponseEntity.ok()
+	 				.headers(header)
+	 				.body(result);
+		} else {
+			return ResponseEntity.noContent().build();
+		}
+		
+	}
+	
 	
 	private String saveThumbnailPicture(HttpServletRequest req, MultipartFile multipartFiles) throws Exception{
 		// 이미지 저장
@@ -193,5 +215,8 @@ public class BlogController {
 		
 		return filename;
 	}
+	
+	
+	
 	
 }

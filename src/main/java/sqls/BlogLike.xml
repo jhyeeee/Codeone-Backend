@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 인터페이스 위치 -->
+<mapper namespace="com.codeone.dao.blog.BlogLikeDao">
+
+	<!-- 블로그 좋아요 작성 -->
+	<insert id="blogDoLike" parameterType="com.codeone.dto.blog.BlogLikeDto">
+		insert into bloglikes ( blogseq, useremail)
+		values( #{blogseq}, #{useremail})
+	</insert>
+	
+	<!-- 블로그 좋아요 취소 -->
+	<delete id="blogDoNotLike" parameterType="com.codeone.dto.blog.BlogLikeDto">
+		delete from bloglikes
+		where blogseq = #{blogseq} and useremail = #{useremail}
+	</delete>
+
+	<select id="getWhoLikeThisBlog" parameterType="com.codeone.dto.blog.BlogLikeDto" resultType="Integer">
+		select Count(*)
+		from bloglikes
+		where blogseq = #{blogseq} and useremail = #{useremail}
+	</select>
+
+
+
+</mapper>

@@ -35,6 +35,7 @@ public class UserDto implements Serializable {
 	private String newfilename;
 	private int delflg;					// 기본 0으로 가입, 삭제시 1 
 	private int auth;					// 0:관리자, 1:일반회원, 2:기업회원
+
 	
 	
 	public UserDto() {

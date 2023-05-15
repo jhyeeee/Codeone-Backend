@@ -75,6 +75,7 @@ public class JobComController {
   		}
   	} 
   	
+  	
   //기업회원 글삭제
   	@PostMapping(value = "/deleteJob")
   	public String deleteJob(int seq) {

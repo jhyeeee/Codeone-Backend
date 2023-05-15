@@ -222,8 +222,12 @@ public class StoreController {
 	@GetMapping(value = "/storedetail")
 	public StoreItemDto getStoreItem(int seq) {
 		System.out.println("StoreController getStoreItem() " + new Date());
-
-		StoreItemDto item = service.getStoreItem(seq);
+		
+		// readcount 늘려주기
+		service.itemReadCount(seq);
+		
+		StoreItemDto item = service.getStoreItem(seq);		
+		
 		return item;
 
 	}

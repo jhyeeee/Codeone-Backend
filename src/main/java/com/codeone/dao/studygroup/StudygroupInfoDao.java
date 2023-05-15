@@ -14,4 +14,7 @@ public interface StudygroupInfoDao {
 	StudygroupInfoDto selectOneBySeq(int seq);
 	int updateStudygroupRecruitment(StudygroupInfoDto studygroup);
 	List<StudygroupInfoDto> selectAllClosed();
+	
+	// 좋아요한 모집글 캘린더에 불러오기
+	public List<StudygroupInfoDto> getLikedInfo(int seq);
 }

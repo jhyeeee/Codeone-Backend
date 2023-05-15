@@ -19,14 +19,14 @@ public class JobService {
 
 	
 	// 채용 글목록 페이징후
-//	public List<JobDto> joblist(JobParam param) {
-//		return dao.job_list(param);
-//	}
+	public List<JobDto> joblist(JobParam param) {
+		return dao.job_list(param);
+	}
 	
-	//채용 글목록 페이징전
-	public Map<String, Object> joblist(Map<String, Object>params) {
+	//채용일정 목록
+	public Map<String, Object> jobcalendar(Map<String, Object>params) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", dao.job_list(params));
+		map.put("list", dao.jobcalendar_list(params));
 		return map;
 	}
  
@@ -221,6 +221,10 @@ public class JobService {
 		map.put("msg", msg);
 		return map;
 	}
-
+	
+	// 좋아요한 채용공고 일정관리에 등록
+	public List<JobDto> getCalendarjobList(String id){
+		return dao.getCalendarjobList(id);
+	}
 	
 }

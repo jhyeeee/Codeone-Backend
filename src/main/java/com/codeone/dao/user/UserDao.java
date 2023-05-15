@@ -34,6 +34,7 @@ public interface UserDao {
 	UserDto checkEmailKey(String emailKey);
 	
 	int updateProfile(UserDto user);
-
-
+	
+	//기업회원 인증 시 업데이트
+	int updateCompanyAuth(UserDto dto);
 }

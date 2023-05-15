@@ -1,6 +1,7 @@
 package com.codeone.service.studygroup;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.codeone.dao.studygroup.StudygroupManagementDao;
 import com.codeone.dao.studygroup.StudygroupMemberDao;
 import com.codeone.dao.studygroup.StudygroupMemberVotingDao;
 import com.codeone.dto.studygroup.StudygroupInfoDto;
+import com.codeone.dto.studygroup.StudygroupListDto;
 import com.codeone.dto.studygroup.StudygroupManagementDto;
 import com.codeone.dto.studygroup.StudygroupMemberVotingDto;
 import com.codeone.enumVariable.VotingType;
@@ -89,5 +91,10 @@ public class StudygroupService {
 		}
 		
 		return modifiable;
+	}
+	
+	// 좋아요한 모집글 캘린더에 불러오기
+	public List<StudygroupInfoDto> getLikedInfo(int seq){
+		return studygroupInfoDao.getLikedInfo(seq);
 	}
 }

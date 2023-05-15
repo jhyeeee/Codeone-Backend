@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,9 @@ import com.codeone.dto.job.JobResponse;
 import com.codeone.service.job.JobService;
 //채용 메인페이지 글목록, 상세보기, 필터링, 좋아요 컨트롤러
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @CrossOrigin
 @RequestMapping("job/")
 @RestController
@@ -33,50 +37,59 @@ public class JobController {
 	private Logger log = LoggerFactory.getLogger(JobController.class);
  
 	//채용 글목록 페이징 후
-//	@GetMapping(value = "/list")
-//	public Map<String, Object> joblist(JobParam param) {
-//		System.out.println("JobController joblist() " + new Date());
-//
-//		// 글의 시작과 끝
-//		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
-//		int pn = param.getPageNumber(); // 0 1 2 3 4
-//
-//		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
-////		int end = ( pn + 1 ) * 10;	// 10 20
-//
-//		param.setStart(start);
-//		param.setDataCount(10); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
-//
-//	 	System.out.println(param);
-//
-//		// search, choice 넣어주고 리스트 불러오기
-//		List<JobDto> list = service.joblist(param);
-//		
-//		// 글의 총갯수
-//		int totalCount = service.getAllJobCount(param); // search, choice 들어오는값은 없음.
-//
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("list", list);
-//		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
-//		
-//		
-//		System.out.println(totalCount);
-//		return map;
-//
-//	}
-	
-	
-	
-		//채용 글목록 페이징전
-		@GetMapping("list")
-		public Map<String, Object> list(@RequestParam Map<String, Object> params) throws Exception {
-			Map<String, Object> res = new HashMap<String, Object>();
-			
-			System.out.println("params title == > " + params.get("title"));
+	@GetMapping(value = "list")
+	public Map<String, Object> joblist(JobParam param) {
+		System.out.println("JobController joblist() " + new Date());
 
-			res.put("list", service.joblist(params)); 
-			return res;		
-		}	  
+		// 글의 시작과 끝
+		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+
+		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+
+
+		param.setStart(start);
+		param.setDataCount(10); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
+
+	 	System.out.println(param);
+
+		// search, choice 넣어주고 리스트 불러오기
+		List<JobDto> list = service.joblist(param);
+		
+		for(int i=0; i< list.size(); i++) {
+			//System.out.println(list.get(i).getComimage());
+			
+			int dump = list.get(i).getComimage().split("\\\\").length;
+			System.out.println("** dump :  " + dump);
+			System.out.println("image name : " + list.get(i).getComimage().split("\\\\")[dump-1]);
+			
+			list.get(i).setComimage("http://localhost/jobImage/"+list.get(i).getComimage().split("\\\\")[dump-1] );
+		}
+		
+		// 글의 총갯수
+		int totalCount = service.getAllJobCount(param); // search, choice 들어오는값은 없음.
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("cnt", totalCount); // 리액트 글의 총수 보내주기
+		
+		
+		System.out.println(totalCount);
+		return map;
+
+	}
+
+	
+	//채용일정 목록
+	@GetMapping(value = "jobcalendar")
+	public Map<String, Object> list(@RequestParam Map<String, Object> params) throws Exception {
+		Map<String, Object> res = new HashMap<String, Object>();
+		
+		System.out.println("params title == > " + params.get("title"));
+
+		res.put("list", service.jobcalendar(params)); 
+		return res;		 
+	}	  
 
 		
 		
@@ -101,12 +114,11 @@ public class JobController {
 	public Map<String, Object> code_list(@RequestParam Map<String, Object> params) throws Exception{
 		log.info("code_list calld");
 		params.forEach((key, value) -> log.info("{} : {}", key, value));
-		
+
 		Map<String, Object> res = new HashMap<String, Object>();
 		res.put("list", service.code_list(params));
 	
-//		Map codes = (Map) res.get("list");
-//		codes.forEach((key, value) -> log.info("res {} : {}", key, value));
+
 		return res;
 	}
 	
@@ -142,8 +154,25 @@ public class JobController {
 //		return res;
 //	}
 //	
-	
-	
+	// 좋아요한 채용공고 일정관리에 등록
+	@GetMapping(value = "/getCalendarjobList")
+	public ResponseEntity<Map<String, Object>> getCalendarjobList(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    System.out.println("JobController getCalendarjobList() " + new Date());
+	    
+	    // Map으로 dto 전달
+	    Map<String, Object> map = new HashMap<>();        
+	    try {
+	        List<JobDto> list = service.getCalendarjobList(id);
+	        map.put("list", list);
+	        return ResponseEntity.ok(map);                  // 성공
+	        
+	    } catch (Exception e) {
+	        return ResponseEntity.badRequest().build();      // 정보 가져오기 실패
+	    }
+	    
+	    
+	}
+
 }
 
     
