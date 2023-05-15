@@ -82,6 +82,9 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 	
+	
+	
+	
 	// 회원가입 페이지 이동 react 프론트에서 이메일 인증 넣어주기
 	// 회원가입
 	@PostMapping(value = "/addUser")
@@ -391,7 +394,27 @@ public class UserController {
 		
 		return filename;
 	}
-    
+	
+    // 채용페이지:회원정보에 기업회원인증여부 업데이트 (기업회원=2)
+	@PostMapping(value = "/updateCompanyAuth")
+	private String updateCompanyAuth(UserDto dto, HttpSession session) {
+		System.out.println("userController updateCompanyAuth()" + new Date());
+		
+		boolean b = service.updateCompanyAuth(dto);
+  		if(b) {
+  			UserDto user = service.getMember(dto.getEmail());
+  			//session.invalidate(); // 세션 초기화 
+	        session.setAttribute("user", user);	
+	       
+  			return "YES";
+  		} else {
+  			return "NO";
+  		}
+  	} 
+	
+	
+	
 }
 
+	
     

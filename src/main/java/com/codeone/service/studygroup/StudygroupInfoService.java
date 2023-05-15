@@ -211,4 +211,5 @@ public class StudygroupInfoService extends StudygroupService {
 	public List<StudygroupListDto> getStudygroupList(StudygroupListCommand studygroupListCommand) {
 		return studygroupManagementDao.selectAllStudygroupList(studygroupListCommand);
 	}
+	
 }

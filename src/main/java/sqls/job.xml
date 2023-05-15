@@ -39,8 +39,8 @@
 		limit #{start}, #{dataCount}	
 	</select>
 
-	<!-- 채용글목록 페이징전	 -->		
-<!-- 	 <select id="job_list" parameterType="Map" resultType="Map">
+	<!-- 채용일정 목록	 -->		
+	 <select id="jobcalendar_list" parameterType="Map" resultType="Map">
 		select *
 		from joblist
 		where comdel=0
@@ -73,7 +73,7 @@
 		</if>
 		order by seq desc
 	</select>
-	 -->
+
 	 
 	 <!-- 글의 총 갯수(페이징) -->
 	 

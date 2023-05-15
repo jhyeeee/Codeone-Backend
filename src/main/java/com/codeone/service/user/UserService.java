@@ -115,6 +115,12 @@ public class UserService {
     	return dao.updateProfile(user);
     }
 
+    // 회원정보에 기업회원인증여부 업데이트
+    public boolean updateCompanyAuth(UserDto dto) {
+    	int n = dao.updateCompanyAuth(dto);
+    	return n>0?true:false;	
+	}
+
 
 }
 

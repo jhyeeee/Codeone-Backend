@@ -23,4 +23,7 @@ public interface BlogDao {
 	boolean updateBlogLikes(int seq);
 	
 	boolean deleteBlogLikes(int seq);
+	
+	List<BlogDto> getSearchBlogs(String searchTerm);
+	
 }

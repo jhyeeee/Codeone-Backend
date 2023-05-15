@@ -35,4 +35,8 @@ public class BlogService {
 	public boolean updateBlog (BlogDto dto) {
 		return dao.updateBlog(dto);
 	}
+	
+	public List<BlogDto> getSerchBlogs(String searchTerm) {
+		return dao.getSearchBlogs(searchTerm);
+	}
 }

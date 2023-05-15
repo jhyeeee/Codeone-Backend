@@ -26,4 +26,14 @@
 	ON si.managementSeq = sm.seq
 	WHERE sm.isClosed = false AND si.deadlineForRecruitment &lt; CURRENT_TIMESTAMP();
 </select>
+
+<!-- 좋아요한 모집글 캘린더에 불러오기 -->
+<select id="getLikedInfo" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	SELECT i.*
+	FROM studygroup_info i
+	JOIN studygroup_management m ON i.seq = m.infoSeq
+	JOIN studygroup_like l ON m.seq = l.studygroupSeq
+	WHERE l.memberSeq = #{memberSeq}; 
+</select>
+
 </mapper>
