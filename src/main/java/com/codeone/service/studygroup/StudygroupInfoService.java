@@ -108,11 +108,16 @@ public class StudygroupInfoService extends StudygroupService {
 		if(studygroupManagement == null) {
 			// 존재 하지 않는 seq 번호를 전달했거나 삭제할 모집글의 작성자가 아닐 경우
 			throw new NotPermissionToModifyException();
-		} else if(studygroupManagement.getIsClosed()) {
+		} else if(studygroupManagement.getIsDeleted()) {
 			// 이미 삭제 처리된 모집 글에 다시 삭제 요청을 했을 경우
 			return true;
 		}
 		
+		studygroupManagementDao.deleteStudygroupRecruitment(studygroup.getSeq());
+		
+		return true;
+		
+		/*
 		// 삭제를 요청한 스터디 그룹을 삭제할 수 있는지 여부 확인
 		if(isModifiableStudygroup(studygroupManagement.getInfoSeq(), VotingType.DELETE)) {
 			// 삭제를 요청한 스터디 그룹을 삭제할 수 있다면
@@ -123,6 +128,7 @@ public class StudygroupInfoService extends StudygroupService {
 			// 삭제를 요청한 스터디 그룹을 삭제할 수 없다면
 			return false;
 		}
+		*/
 	}
 	
 	/**
@@ -145,6 +151,27 @@ public class StudygroupInfoService extends StudygroupService {
 			throw new NotPermissionToModifyException();
 		}
 		
+		// 공개, 비공개 여부를 수정하기 위한 스터디 그룹 관리 정보 생성
+		StudygroupManagementDto newStudygroupManagement = studygroup.toStudygroupManagementDto();
+		
+		// 기타 상세 정보를 수정하기 위한 스터디 그룹 정보 생성
+		StudygroupInfoDto newStudygroupInfo = studygroup.toStudygroupInfoDto();
+		newStudygroupInfo.setSeq(studygroupManagement.getInfoSeq());
+		
+		// 공개, 비공개 여부 수정
+		studygroupManagementDao.updateIsVisible(newStudygroupManagement);
+		// 기타 상세 정보 수정
+		studygroupInfoDao.updateStudygroupRecruitment(newStudygroupInfo);
+		
+		// 스터디 그룹의 모집 분야 재설정
+		resetStudygroupPosition(newStudygroupInfo, true);
+		
+		// 스터디 그룹의 기술 스택 재설정
+		resetStudygroupStack(newStudygroupInfo, true);
+		
+		return true;
+		
+		/*
 		// 수정을 요청한 스터디 그룹을 수정할 수 있는지 여부 확인
 		if(isModifiableStudygroup(studygroupManagement.getInfoSeq(), VotingType.UPDATE)) {
 			// 수정을 요청한 스터디 그룹을 수정할 수 있다면
@@ -172,6 +199,7 @@ public class StudygroupInfoService extends StudygroupService {
 			// 수정을 요청한 스터디 그룹을 수정할 수 없다면
 			return false;
 		}
+		*/
 	}
 	
 	/**

@@ -114,12 +114,11 @@ public class StudyGroupMainController {
 		}
 		
 		// 삭제하기 위해 삭제를 요청한 사용자(로그인한 사용자)의 번호를 저장
-		StudygroupDeleteCommand studygroup = new StudygroupDeleteCommand();
-		studygroup.setMemberSeq(memberSeq);
+		studygroupDeleteCommand.setMemberSeq(memberSeq);
 		
 		try {
 			// 모집글 삭제
-			boolean result = studygroupInfoService.deleteStudygroupRecruitment(studygroup);
+			boolean result = studygroupInfoService.deleteStudygroupRecruitment(studygroupDeleteCommand);
 			
 			if(result) {
 				// 모집글을 삭제했을 경우
