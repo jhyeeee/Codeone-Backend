@@ -159,11 +159,11 @@ public class LectureController {
 		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
 		int pn = param.getPageNumber(); // 0 1 2 3 4
 
-		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+		int start = pn * 20; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
 //				int end = ( pn + 1 ) * 10;	// 10 20
 
 		param.setStart(start);
-		param.setDataCount(10);
+		param.setDataCount(20);
 		System.out.println(param);
 
 		// map으로 좋아요리스트 보내주기
