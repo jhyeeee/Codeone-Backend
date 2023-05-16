@@ -8,13 +8,14 @@ import org.springframework.stereotype.Repository;
 import com.codeone.dto.blog.BlogCategoryDto;
 import com.codeone.dto.blog.BlogCategoryParam;
 import com.codeone.dto.blog.BlogDto;
+import com.codeone.dto.blog.BlogParam;
 
 @Mapper
 @Repository
 public interface BlogDao {	
 	boolean writeBlog(BlogDto dto);
 	
-	List<BlogDto> getAllBlogs();
+	List<BlogDto> getAllBlogs(BlogParam param);
 	
 	BlogDto getBlog(int seq);
 	

@@ -11,6 +11,7 @@ import com.codeone.dao.user.UserDao;
 import com.codeone.dto.blog.BlogCategoryDto;
 import com.codeone.dto.blog.BlogCategoryParam;
 import com.codeone.dto.blog.BlogDto;
+import com.codeone.dto.blog.BlogParam;
 @Service
 @Transactional
 public class BlogService {
@@ -22,8 +23,8 @@ public class BlogService {
 		return dao.writeBlog(dto);
 	}
 	
-	public List<BlogDto> getAllBlogs() {
-		return dao.getAllBlogs();
+	public List<BlogDto> getAllBlogs(BlogParam param) {
+		return dao.getAllBlogs(param);
 	}
 	
 	public BlogDto getBlog(int seq) {

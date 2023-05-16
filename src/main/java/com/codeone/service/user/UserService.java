@@ -121,7 +121,12 @@ public class UserService {
     	return n>0?true:false;	
 	}
 
-
+    // 회원 ID로 유저 찾기
+    public UserDto getUserById(String id) {
+    	return dao.getUserById(id);
+    }
+    
+    
 }
 
 
