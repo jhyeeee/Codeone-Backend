@@ -306,7 +306,7 @@ public class UserController {
  			return new ResponseEntity<byte[]>(new byte[] {}, HttpStatus.CONFLICT);
  		}
  	}
-    
+     
     
     // 프로필 체인지
     @PostMapping(value = "/profileChange")
@@ -397,7 +397,7 @@ public class UserController {
 	
     // 채용페이지:회원정보에 기업회원인증여부 업데이트 (기업회원=2)
 	@PostMapping(value = "/updateCompanyAuth")
-	private String updateCompanyAuth(UserDto dto, HttpSession session) {
+	private ResponseEntity<UserDto> updateCompanyAuth(UserDto dto, HttpSession session ) {
 		System.out.println("userController updateCompanyAuth()" + new Date());
 		
 		boolean b = service.updateCompanyAuth(dto);
@@ -406,14 +406,16 @@ public class UserController {
   			//session.invalidate(); // 세션 초기화 
 	        session.setAttribute("user", user);	
 	       
-  			return "YES";
+			HttpHeaders header = new HttpHeaders();
+	        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+	     	return ResponseEntity.ok()
+	 				.headers(header)
+	 				.body(user);
+	     	
   		} else {
-  			return "NO";
+  			return ResponseEntity.noContent().build();  //204
   		}
-  	} 
-	
-	
-	
+  	} 	
 }
 
 	
