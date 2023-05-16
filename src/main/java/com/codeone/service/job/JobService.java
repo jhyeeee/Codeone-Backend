@@ -55,17 +55,28 @@ public class JobService {
 //	}
 //	
 		//채용 update페이지 상세보기
-	public JobResponse job(int id) {
+	public JobResponse job(int id) {	
 		JobDto job = dao.job(id).orElse(new JobDto());	
 		System.out.println("codeName : " + job.getComjobname());
+		
+		JobResponse response = JobResponse.of(job);
+	
+		
+		 // 이미지 경로 수정
+	    String comimage = job.getComimage(); // 기존 이미지 경로 가져오기
+	    int dump = comimage.split("\\\\").length; // 역슬래시로 분리된 경로의 길이 계산
+	    String imageName = comimage.split("\\\\")[dump-1]; // 파일 이름 추출
+	    String imageUrl = "http://localhost/jobImage/" + imageName; // 완전한 이미지 URL 생성
+	    response.setComimage(imageUrl); // 완전한 이미지 URL로 설정
+	    
+	    
 		List<Map<String, Object>> codeNameList = dao.code_list(Map.of("codeName", job.getComjobname()));
 		List<Map<String, Object>> careerList = dao.code_list(Map.of("career", job.getComcareer()));
 		List<Map<String, Object>> locationList = dao.code_list(Map.of("comLocation", job.getComlocation()));
 		List<Map<String, Object>> skillList = dao.code_list(Map.of("comSkill", job.getComskill()));
 		List<Map<String, Object>> tagList = dao.code_list(Map.of("comTag", job.getComtag()));
 		
-			
-		JobResponse response = JobResponse.of(job);
+		
 		
 		// codeNameList가 비어있지 않다면, response에 값을 설정
 		if (!codeNameList.isEmpty()) {

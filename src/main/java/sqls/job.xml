@@ -213,7 +213,7 @@
 		(joblistseq, memberseq, regdate)
 		values
 		(#{joblistseq}, #{memberseq}, now())
-	</insert>
+	</insert>     
 	
 		<!-- 좋아요 취소 -->
 <!-- 	<update id="update_UnLike" parameterType="Map">
