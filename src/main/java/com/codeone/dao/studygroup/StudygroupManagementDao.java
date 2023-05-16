@@ -26,4 +26,6 @@ public interface StudygroupManagementDao {
 	void updateIsVisible(StudygroupManagementDto studygroupManagement);
 	void updateAllClose(List<StudygroupInfoDto> list);
 	void increaseViewAmount(int seq);
+	int getAmountByMemberSeq(int memberSeq);
+	List<StudygroupListDto> selectAllMyStudygroupList(StudygroupListCommand studygroupListCommand);
 }

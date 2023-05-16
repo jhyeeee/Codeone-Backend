@@ -1,22 +1,13 @@
     package com.codeone.controller.user;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
-
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
-import java.util.UUID;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,23 +18,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import com.codeone.dto.user.UserDto;
 import com.codeone.etc.TempKey;
 import com.codeone.service.user.UserService;
-import java.util.Base64;
-import java.util.Base64.Decoder;
-import java.util.Base64.Encoder;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -393,7 +379,7 @@ public class UserController {
 		String filename = "http://localhost/user/getProfileImage/"+ fileId + "/" + fileExtension;
 		
 		return filename;
-	}
+	} 
 	
     // 채용페이지:회원정보에 기업회원인증여부 업데이트 (기업회원=2)
 	@PostMapping(value = "/updateCompanyAuth")
@@ -406,12 +392,12 @@ public class UserController {
   			//session.invalidate(); // 세션 초기화 
 	        session.setAttribute("user", user);	
 	       
+
 			HttpHeaders header = new HttpHeaders();
 	        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 	     	return ResponseEntity.ok()
 	 				.headers(header)
-	 				.body(user);
-	     	
+	 				.body(user);	     	
   		} else {
   			return ResponseEntity.noContent().build();  //204
   		}

@@ -31,9 +31,6 @@ public class StudygroupCommentService {
 		} else if(studygroupManagement.getIsDeleted()) {
 			// 삭제된 스터디 그룹에 댓글을 달려 했다면
 			throw new DeletedStudygroupException();
-		} else if(studygroupManagement.getMemberSeq() == studygroupComment.getMemberSeq()) {
-			// 본인이 쓴 모집 글에 댓글을 달려 했다면
-			throw new IllegalArgumentException();
 		}
 		
 		// 댓글 작성
