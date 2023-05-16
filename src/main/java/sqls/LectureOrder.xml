@@ -40,4 +40,12 @@
 	where seq=#{seq} and orderstatus = 'paid';
 </select>
 
+<!-- 결제한 사람의 수 글목록리스트에서쓸것 -->
+<select id="checkPaidCountList" parameterType="Integer" resultType="Integer">
+	select ifnull(count(*), 0), seq
+	from lectureorder
+	where seq=#{seq} and orderstatus = 'paid';
+</select>
+
+
 </mapper>

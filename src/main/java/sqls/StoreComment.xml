@@ -6,18 +6,32 @@
 
 <!-- 댓글 작성 -->
 <insert id="writeCommentStore" parameterType="com.codeone.dto.store.StoreCommentDto">
-	insert into itemcomment(itemseq, id, content, wdate, delflg)
-	values(#{itemseq}, #{id}, #{content}, now(), 0)
+	insert into itemcomment(itemseq, id, content, wdate, updatewdate, delflg)
+	values(#{itemseq}, #{id}, #{content}, now(), now(), 0)
 </insert>
 
 <!-- 댓글 목록 추후 페이징 추가-->
+<!-- 
 <select id="getStoreCommentList" parameterType="com.codeone.dto.store.StoreCommentParam" resultType="com.codeone.dto.store.StoreCommentDto">
 	select *
 	from itemcomment	
 	where itemseq=#{itemseq} and delflg=0
-	order by seq desc 						<!-- seq순으로 정렬 -->
-	limit #{start}, #{dataCount}			<!-- 앞이 데이터 몇번부터, 뒤가 몇개보여줄지 -->
+	order by seq desc 						seq순으로 정렬
+	limit #{start}, #{dataCount}			앞이 데이터 몇번부터, 뒤가 몇개보여줄지
 </select>
+ -->
+ 
+<!-- 댓글목록 프로필사진추가 -->
+<select id="getStoreCommentList" parameterType="com.codeone.dto.store.StoreCommentParam" resultType="com.codeone.dto.store.StoreCommentUserDto">
+	select c.*, u.filename, u.newfilename
+	from itemcomment c
+	join user u
+	on c.id = u.id
+	where c.itemseq=#{itemseq} and c.delflg=0
+	order by c.seq desc
+	limit #{start}, #{dataCount}
+</select>
+
 
 <!-- 댓글의 총 갯수 (페이징) 글의 seq넣어주고 갯수가져오기 -->
 <select id="getStoreCommentCount" parameterType="Integer" resultType="java.lang.Integer">
@@ -29,7 +43,7 @@
 <!-- 댓글 수정 -->
 <update id="updateStoreComment" parameterType="com.codeone.dto.store.StoreCommentDto">
 	update itemcomment
-	set content=#{content}, wdate=now()	
+	set content=#{content}, updatewdate=now()	
 	where seq=#{seq}
 </update>
 
