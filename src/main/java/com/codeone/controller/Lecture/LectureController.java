@@ -46,7 +46,7 @@ public class LectureController {
 
 		// id 추후 관리자아이디로 넣어주기
 
-		String id = "sss";
+		String id = "hello1";
 		dto.setId(id);
 
 		// 파일추가

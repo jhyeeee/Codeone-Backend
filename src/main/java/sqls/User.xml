@@ -46,6 +46,14 @@
 	where email=#{email}
 </select>
 
+
+<!-- id로 유저 가져오기  -->
+<select id="getUserById" parameterType="String" resultType="com.codeone.dto.user.UserDto">
+	select *
+	from user
+	where id=#{id}
+</select>
+
 <select id="selectOneBySeq" parameterType="com.codeone.dto.user.UserDto" resultType="com.codeone.dto.user.UserDto">
 	SELECT *
 	FROM user

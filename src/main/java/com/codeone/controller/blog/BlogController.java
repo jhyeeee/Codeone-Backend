@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.codeone.dto.blog.BlogCategoryDto;
+import com.codeone.dto.blog.BlogCategoryParam;
 import com.codeone.dto.blog.BlogDto;
+import com.codeone.dto.blog.BlogParam;
 import com.codeone.dto.user.UserDto;
 import com.codeone.service.blog.BlogService;
 import com.codeone.service.user.UserService;
@@ -46,12 +49,16 @@ public class BlogController {
 			String title, 
 			String content, 
 			MultipartFile multipartFiles, 
+			int category1,
+			int category2,
 			HttpServletRequest req) throws Exception {
 		System.out.println("blogWrite");
 		BlogDto dto = new BlogDto();
 		dto.setWriter(writer);
 		dto.setTitle(title);
-		dto.setContent(content);		
+		dto.setContent(content);
+		dto.setCategory1(category1);
+		dto.setCategory2(category2);
 		System.out.println(dto.toString());
 		String thumbnail = defaultImage;
 		System.out.println(multipartFiles);
@@ -74,10 +81,22 @@ public class BlogController {
 	
 	
 	@GetMapping("/getAllBlogs")
-	public ResponseEntity<List<BlogDto>> getAllBlogs () {
+	public ResponseEntity<List<BlogDto>> getAllBlogs (BlogParam param) {
 		System.out.println("getAllBlogs");
 
-		List<BlogDto> result = service.getAllBlogs();
+		// 글의 시작과 끝
+		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
+		int pn = param.getPageNumber(); // 0 1 2 3 4
+
+		int start = pn * 15; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+//				int end = ( pn + 1 ) * 10;	// 10 20
+
+		param.setStart(start);
+		param.setDataCount(15);
+		System.out.println(param);
+		
+		
+		List<BlogDto> result = service.getAllBlogs(param);
 		
 		HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -136,7 +155,6 @@ public class BlogController {
 		// 파일이 바뀌어있을 경우
 		String thumbnail = "";
 		if(!Objects.isNull(multipartFiles)) {
-			System.out.println("여기 나와 제발");
 			thumbnail =  saveThumbnailPicture(req, multipartFiles);
 			dto.setThumbnail(thumbnail);
 		}
@@ -193,6 +211,43 @@ public class BlogController {
 		}
 		
 	}
+	
+	
+	// 카테고리 가져오기
+	@GetMapping("/getBlogCategory")
+	public ResponseEntity<List<BlogCategoryDto>> getBlogCategory(HttpServletRequest req,BlogCategoryParam param) {
+		System.out.println("getBlogCategory");
+		
+		System.out.println(param.getCatetype());
+		System.out.println(param.getCate1seq());
+		
+
+		
+		
+		List<BlogCategoryDto> result = service.getBlogCategory(param);
+		
+		return ResponseEntity.ok().body(result);
+		
+		
+	}
+	
+	
+	@GetMapping("/getBlogWriter")
+	public ResponseEntity<UserDto> getBlogWriter(HttpServletRequest req, String writer) {
+		System.out.println("getBlogWriter");
+		System.out.println(writer);
+
+		UserDto user = userService.getUserById(writer);
+		if(Objects.isNull(user)) {
+			return ResponseEntity.noContent().build();
+		}		
+		
+		return ResponseEntity.ok().body(user);
+		
+		
+	}
+	
+	
 	
 	
 	private String saveThumbnailPicture(HttpServletRequest req, MultipartFile multipartFiles) throws Exception{
