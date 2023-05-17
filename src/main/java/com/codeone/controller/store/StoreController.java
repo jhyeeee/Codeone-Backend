@@ -166,11 +166,11 @@ public class StoreController {
 		// 0부터 시작하기떄문에 리액트에서 넘겨줄 때 -1해서 넘겨줌
 		int pn = param.getPageNumber(); // 0 1 2 3 4
 
-		int start = pn * 25; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
+		int start = pn * 10; // 페이지 숫자 넘어온것 10 20 30 40부터 시작
 //		int end = ( pn + 1 ) * 10;	// 10 20
 
 		param.setStart(start);
-		param.setDataCount(25); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
+		param.setDataCount(10); // 데이터 10개씩 보여주기 추후 25개로 바꾸기
 
 		System.out.println(param);
 
