@@ -19,8 +19,9 @@ public class StoreCommentDto implements Serializable {
 	
 	private int seq;				// 댓글 seq
 	private int itemseq;			// 중고거래 글의 seq
-	private String id;				// 작성자
+	private String id;				// 작성자	
 	private String content;			// 댓글 내용
 	private String wdate;			// 댓글 작성일
+	private String updatewdate;		// 댓글 수정일
 	private int delflg;				// 삭제여부
 }

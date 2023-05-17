@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.admin.StudyManageDao">
+
+<update id="updateStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	UPDATE studygroup_info SET title = #{title}, contents = #{contents}, recruitmentType = #{recruitmentType}, wayOfProceeding = #{wayOfProceeding}, numberOfRecruits = #{numberOfRecruits}, startDate = #{startDate}, endDate = #{endDate}, deadlineForRecruitment = #{deadlineForRecruitment}
+	WHERE seq = #{seq}
+</update>
+
+<insert id="writeStudygroupRecruitment" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto" useGeneratedKeys="true" keyProperty="seq">
+	INSERT INTO studygroup_info(managementSeq, title, contents, recruitmentType, wayOfProceeding, numberOfRecruits, startDate, endDate, deadlineForRecruitment)
+	VALUES (#{managementSeq}, #{title}, #{contents}, #{recruitmentType}, #{wayOfProceeding}, #{numberOfRecruits}, #{startDate}, #{endDate}, #{deadlineForRecruitment})
+</insert>
+
+<select id="selectOneBySeq" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	SELECT * FROM studygroup_info WHERE seq = #{seq}
+</select>
+
+<select id="selectAllClosed" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	SELECT managementSeq
+	FROM studygroup_info si
+	JOIN studygroup_management sm
+	ON si.managementSeq = sm.seq
+	WHERE sm.isClosed = false AND si.deadlineForRecruitment &lt; CURRENT_TIMESTAMP();
+</select>
+	
+<select id="allStudyManage" resultType="com.codeone.dto.studygroup.StudygroupInfoDto">
+SELECT *
+FROM studygroup_info
+LEFT JOIN studygroup_management ON studygroup_info.seq = studygroup_management.infoSeq
+UNION
+SELECT *
+FROM studygroup_info
+RIGHT JOIN studygroup_management ON studygroup_info.seq = studygroup_management.infoSeq;
+</select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<!--  채용 글목록 -->
+	<mapper namespace="com.codeone.dao.admin.JobManageDao">
+	
+	<!-- 관리자페이지 글 불러오기 -->
+	<select id="getAllJobsMng" resultType="com.codeone.dto.job.JobDto">
+		select * 
+		from joblist
+	</select>
+	
+	<!-- 블로그 삭제 -->
+	<update id="showHideJob" parameterType="Integer">
+		update joblist
+		set comdel=#{comdel}
+		where seq=#{seq}
+	</update>
+	
+	
+</mapper>

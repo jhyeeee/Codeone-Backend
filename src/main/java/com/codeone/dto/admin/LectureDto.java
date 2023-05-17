@@ -1,4 +1,4 @@
-package com.codeone.dto.lecture;
+package com.codeone.dto.admin;
 
 import java.io.Serializable;
 
@@ -31,15 +31,10 @@ public class LectureDto implements Serializable {
 	private String content;			// 강의소개
 	private int price;				// 가격
 	private String wdate;			// 작성일
-	private String updatewdate;		// 글 수정일
 	private int likecount;			// 좋아요 갯수
 	private String zoomurl;			// 수업 url
 	private String zoompwd;			// 수업 pwd
-	private String startDate;		// 강의 시작일 
-	private String endDate;			// 강의 종강일
 	private String filename;		// 강의 대표이미지 original 파일명
 	private String newfilename;		// 서버에 저장할 파일명
 	private int delflg;				// 삭제여부
-	
-//	private int llCount;			// 좋아요갯수
 }

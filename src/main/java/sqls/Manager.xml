@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.admin.ManagerDao">
+	
+	<!-- 아이디 중복체크 -->
+	<select id="checkId" parameterType="String" resultType="Integer">
+	  select count(*)
+	  from user
+	  where id=#{id} and auth=0
+	</select>
+	
+	<!-- 관리자 등록 -->
+	<insert id="addManager" parameterType="com.codeone.dto.admin.ManagerDto">
+		insert into user(email, emailKey, emailAuth, name, id, phoneNumber, regdate, filename, newfilename, delflg, auth, pwd)
+		values(#{email}, #{emailKey}, 0, #{name}, #{id}, #{phoneNumber}, now(), #{filename}, null, 0, 0, #{pwd}) <!-- 관리자 0 -->
+	</insert>
+
+	<!-- 관리자 로그인 -->
+	<select id="adminLogin" parameterType="com.codeone.dto.admin.ManagerDto" resultType="com.codeone.dto.admin.ManagerDto">
+		select *
+		from user
+		where id=#{id} and pwd=#{pwd} and auth=0 <!-- 관리자 0 -->
+	</select>
+	
+	<select id="allUser" resultType="com.codeone.dto.admin.ManagerDto">
+		select *
+		from user
+		where auth=1
+		order by id asc
+	</select>
+	
+	<select id="allManager" resultType="com.codeone.dto.admin.ManagerDto">
+		select *
+		from user
+		where auth=0
+		order by id asc
+	</select>
+	
+	<select id="allBiz" resultType="com.codeone.dto.admin.ManagerDto">
+		select *
+		from user
+		where auth=2 
+		order by id asc
+	</select>
+	
+	<select id="allBan" resultType="com.codeone.dto.admin.ManagerDto">
+		select *
+		from user
+		where auth=3 
+		order by id asc
+	</select>
+	
+	<update id="modifyName" parameterType="com.codeone.dto.admin.ManagerDto">
+		update user set name=#{name} where id=#{id}
+	</update>
+	
+	<update id="modifyEmail" parameterType="com.codeone.dto.admin.ManagerDto">
+		update user set email=#{email} where id=#{id}
+	</update>
+	
+	<update id="modifyPhone" parameterType="com.codeone.dto.admin.ManagerDto">
+		update user set phoneNumber=#{phoneNumber} where id=#{id}
+	</update>
+	
+	<update id="modifyAuth" parameterType="com.codeone.dto.admin.ManagerDto">
+		update user set auth=#{auth} where id=#{id}
+	</update>
+</mapper>

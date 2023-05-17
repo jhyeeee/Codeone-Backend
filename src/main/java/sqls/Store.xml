@@ -7,8 +7,8 @@
 <!-- ref 체크하기 -->
 <!-- 중고거래 글쓰기 -->
 <insert id="writeStore" parameterType="com.codeone.dto.store.StoreItemDto">
-	insert into item(id, title, content, price, location, itemcondition, status, wdate, likecount, filename, newfilename, delflg, readcount)
-	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), 0, #{filename}, #{newfilename}, 0, 0)
+	insert into item(id, title, content, price, location, itemcondition, status, wdate, updatewdate, likecount, filename, newfilename, delflg, readcount)
+	values(#{id}, #{title}, #{content}, #{price}, #{location}, #{itemcondition},"sale", now(), now(), 0, #{filename}, #{newfilename}, 0, 0)
 </insert>
 
 <!-- 중고거래 목록 정렬 최신순 -->
@@ -52,10 +52,19 @@
 </select>
 
 <!-- 중고거래 item -->
-<select id="getStoreItem" parameterType="Integer" resultType="com.codeone.dto.store.StoreItemDto">
+<!-- <select id="getStoreItem" parameterType="Integer" resultType="com.codeone.dto.store.StoreItemDto">
 	select *
 	from item
 	where seq=#{seq}
+</select> -->
+
+<!-- 프로필사진추가 -->
+<select id="getStoreItem" parameterType="Integer" resultType="com.codeone.dto.store.StoreItemDto">
+	select i.*, u.filename as 'profile'
+	from item i
+	join user u
+	on i.id = u.id
+	where i.seq=#{seq}
 </select>
 
 <!-- 중고거래글 좋아요 -->
@@ -103,7 +112,7 @@
 <update id="updateStoreWrite" parameterType="com.codeone.dto.store.StoreItemDto">
 	update item
 	set title=#{title}, content=#{content}, location=#{location}, price=#{price}, itemcondition=#{itemcondition}, 
-	filename=#{filename}, newfilename=#{newfilename}, wdate=now()
+	filename=#{filename}, newfilename=#{newfilename}, updatewdate=now()
 	where seq=#{seq}
 </update>
 
