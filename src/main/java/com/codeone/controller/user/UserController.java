@@ -158,11 +158,14 @@ public class UserController {
 		user.setEmail(email);
 		// 기본
 //		= "http://localhost/user/getImage/defaultAccount/png";
+		System.out.println(multipartFile);
+		System.out.println(profileUrl);
 		
 		//파일이 null일경우(회원가입시 프로필 사진을 변경 안했을 경우)
 		if(Objects.isNull(multipartFile)) {
 			// 기본사진일경우
-			if(Objects.isNull(profileUrl)) {
+			if(profileUrl == null || profileUrl.isEmpty()) {
+
 				profileUrl = defaultAccount;
 			}
 			// 소셜
@@ -173,6 +176,8 @@ public class UserController {
 			user.setFilename(filename);
 		}		
 		
+		System.out.println(user.getFilename());
+
 		String emailKey = new TempKey().getKey(10, false); 
 		user.setEmailKey(emailKey);
 		if (service.checkEmail(user.getEmail())) { // 중복된 이메일이 있음
