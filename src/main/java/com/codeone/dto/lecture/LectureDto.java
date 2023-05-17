@@ -40,4 +40,6 @@ public class LectureDto implements Serializable {
 	private String filename;		// 강의 대표이미지 original 파일명
 	private String newfilename;		// 서버에 저장할 파일명
 	private int delflg;				// 삭제여부
+	
+//	private int llCount;			// 좋아요갯수
 }
