@@ -138,8 +138,24 @@
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-websocket</artifactId>
 	</dependency>
+	
+	<!--json-->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20220320</version>
+		</dependency>
+		
+	<!--chatbot-->
+		<dependency>
+		    <groupId>net.morimekta.utils</groupId>
+		    <artifactId>android-util</artifactId>
+		    <version>2.7.1</version>
+		</dependency>
+		
 
 	</dependencies>
+
 
 <!-- 아임포트 검증 -->
 	<repositories>
