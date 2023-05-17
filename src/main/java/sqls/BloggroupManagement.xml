@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.blog.BloggroupManagementDao">
+
+<!-- <insert id="insert" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto" useGeneratedKeys="true" keyProperty="seq">
+	INSERT INTO studygroup_management(memberSeq, isVisible) VALUES (#{memberSeq}, #{isVisible});
+</insert>
+
+<update id="updateInfoSeq" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	UPDATE studygroup_management SET infoSeq = #{infoSeq} WHERE seq = #{seq}
+</update>
+
+<select id="selectOne" parameterType="int" resultType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	SELECT * FROM studygroup_management WHERE seq = #{seq}
+</select>
+
+<update id="deleteStudygroupRecruitment" parameterType="int">
+	UPDATE studygroup_management SET isDeleted = b'1' WHERE seq = #{seq}
+</update>
+
+<select id="selectAllStudygroupList" parameterType="com.codeone.command.studygroup.StudygroupListCommand" resultType="com.codeone.dto.studygroup.StudygroupListDto">
+	<if test="technologyStack != null">
+		SELECT *
+		FROM (
+	</if>
+	<if test="recruitmentPart != null and technologyStack == null">
+		SELECT *
+		FROM (
+	</if>
+	SELECT
+		sm.seq, sm.viewAmount, sm.commentAmount,
+		si.recruitmentType, si.deadlineForRecruitment, si.title,
+		GROUP_CONCAT(DISTINCT sp.positionSeq) as recruitmentPart,
+		GROUP_CONCAT(DISTINCT ss.stackSeq) as technologyStack,
+		user.id as `user.id`, user.filename as `user.filename`,
+		sm.isClosed<if test="memberSeq != 0">, if((SELECT COUNT(*) FROM studygroup_like as sl WHERE sl.studygroupSeq = sm.seq AND sl.memberSeq = #{memberSeq}) != 0, true, false) as isLike</if>
+	FROM studygroup_management sm
+	JOIN studygroup_info si
+	ON sm.infoSeq = si.seq
+	JOIN studygroup_position sp
+	ON sm.seq = sp.managementSeq
+	JOIN studygroup_stack ss
+	ON sm.seq = ss.managementSeq
+	JOIN user
+	ON sm.memberSeq = user.seq
+	WHERE sm.isVisible = true AND sm.isDeleted = false
+	<if test="recruitmentType != 0">
+		AND si.recruitmentType = #{recruitmentType}
+	</if>
+	<if test="term != null">
+		AND (title LIKE CONCAT('%', #{term}, '%') OR (contents LIKE CONCAT('%', #{term}, '%')))
+	</if>
+	<if test="isOpened == true">
+		AND sm.isClosed = false
+	</if>
+	GROUP BY sm.seq
+	ORDER BY sm.regdate DESC
+	<if test="technologyStack != null">
+	) a
+	WHERE
+		<foreach collection="technologyStack" item="stack" separator=" OR " >
+			technologyStack LIKE CONCAT('%', #{stack}, '%')
+		</foreach>
+	</if>
+	<if test="recruitmentPart != null">
+		<if test="technologyStack == null">
+			) a
+			WHERE
+		</if>
+		<if test="technologyStack != null">
+			AND
+		</if>
+		
+		<foreach collection="recruitmentPart" item="part" separator=" OR ">
+			recruitmentPart LIKE CONCAT('%', #{part}, '%')
+		</foreach>
+	</if>
+	LIMIT #{start}, #{end}
+</select>
+
+<update id="toggleIsClosed" parameterType="int">
+	UPDATE studygroup_management SET isClosed = !isClosed WHERE seq = #{seq}
+</update>
+
+<update id="increaseLikeAmount" parameterType="int">
+	UPDATE studygroup_management SET likeAmount = likeAmount + 1 WHERE seq = #{seq}
+</update>
+
+<update id="decreaseLikeAmount" parameterType="int">
+	UPDATE studygroup_management SET likeAmount = likeAmount - 1 WHERE seq = #{seq}
+</update>
+
+<update id="increaseCommentAmount" parameterType="int">
+	UPDATE studygroup_management SET commentAmount = commentAmount + 1 WHERE seq = #{seq}
+</update>
+
+<update id="decreaseCommentAmount" parameterType="int">
+	UPDATE studygroup_management SET commentAmount = commentAmount - 1 WHERE seq = #{seq}
+</update>
+
+<update id="updateIsVisible" parameterType="com.codeone.dto.studygroup.StudygroupManagementDto">
+	UPDATE studygroup_management SET isVisible = #{isVisible} WHERE seq = #{seq}
+</update>
+
+<update id="updateAllClose" parameterType="com.codeone.dto.studygroup.StudygroupInfoDto">
+	<foreach collection="list" item="studygroupInfo" separator=";">
+		UPDATE studygroup_management SET isClosed = true WHERE seq = #{studygroupInfo.managementSeq}
+	</foreach>
+</update>
+
+<update id="increaseViewAmount" parameterType="int">
+	UPDATE studygroup_management SET viewAmount = viewAmount + 1 WHERE seq = #{seq}
+</update> -->
+
+<select id="getAmountByMemberEmail" parameterType="String" resultType="int">
+	SELECT COUNT(*) FROM blog WHERE writer = #{memberEmail} AND delf != 1
+</select>
+
+
+<select id="getMyLikeBloggroupAmount" parameterType="String" resultType="int">
+	select Count(*) 
+	from bloglikes L
+	LEFT OUTER JOIN blog B
+			ON B.seq = L.blogSeq
+    where L.useremail = #{memberEmail}AND B.delf != 1;
+</select>
+
+
+
+<select id="selectAllMyBlogroupList" parameterType="com.codeone.dto.blog.BlogParam" resultType="com.codeone.dto.blog.BlogDto">
+		select B.seq, 
+			   U.id AS 'writer', 
+			   B.title, 
+			   B.content, 
+			   B.category1, 
+			   B.category2,
+			   B.regdate,
+			   B.thumbnail,
+			   B.likes,
+			   B.tag,
+			   B.delf,
+			   Count(R.writer) AS 'replies'
+		from blog B
+		LEFT OUTER JOIN user U
+			ON B.writer = U.email
+		LEFT OUTER JOIN blogreply R
+			ON B.seq = R.blogSeq		
+		where B.writer=#{userEmail} AND  delf != 1
+		group by B.seq
+		order by B.regdate desc
+		limit #{start}, #{dataCount}
+</select>
+
+<select id="getMyLikeBloggroupList" parameterType="com.codeone.dto.blog.BlogParam" resultType="com.codeone.dto.blog.BlogDto">
+		select B.seq, 
+			   U.id AS 'writer', 
+			   B.title, 
+			   B.content, 
+			   B.category1, 
+			   B.category2,
+			   B.regdate,
+			   B.thumbnail,
+			   B.likes,
+			   B.tag,
+			   B.delf,
+			   Count(R.writer) AS 'replies'
+		from blog B
+		LEFT OUTER JOIN blogreply R
+			ON B.seq = R.blogSeq		
+		LEFT OUTER JOIN user U
+			ON B.writer = U.email
+		LEFT OUTER JOIN bloglikes L
+			ON B.seq = L.blogSeq		
+		where L.useremail = 'mapodaegyo12@gmail.com' AND B.delf != 1
+		group by B.seq
+		order by B.regdate desc
+		limit #{start}, #{dataCount}
+</select>
+
+</mapper>
