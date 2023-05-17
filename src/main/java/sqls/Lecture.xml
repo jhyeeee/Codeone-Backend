@@ -45,6 +45,24 @@
 
 <!-- 강의목록 -->
 <!-- <select id="getLectureList" parameterType="com.codeone.dto.lecture.LectureParam" resultType="com.codeone.dto.lecture.LectureDto">
+	SELECT l.*, COUNT(ll.seq) as llCount
+	FROM lecture l
+	LEFT JOIN lecturelike ll ON l.seq = ll.seq
+	WHERE 1=1
+	<if test="category != null and category != ''">
+	  AND category=#{category}
+	</if>
+	<if test="search != null and search != ''">
+	  AND title LIKE CONCAT('%', #{search}, '%')
+	</if>
+	AND delflg = 0
+	GROUP BY l.seq
+	ORDER BY l.seq DESC
+	LIMIT #{start}, #{dataCount}		시작위치부터 data보여줄 숫자만큼보여주기
+</select> -->
+
+<!-- 강의목록 -->
+<!-- <select id="getLectureList" parameterType="com.codeone.dto.lecture.LectureParam" resultType="com.codeone.dto.lecture.LectureDto">
 	select l.*, c.
 	from lecture l
 	join lecturecomment c

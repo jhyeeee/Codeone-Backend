@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.admin.LectureManageDao">
+
+
+<!-- 관리자 강의목록 -->
+<select id="getMngLectureList" resultType="com.codeone.dto.lecture.LectureDto">
+	select *
+	from lecture
+</select>
+	
+	<!-- 관리자 강의목록 숨김/노출 -->
+	<update id="showHideLecture" parameterType="Integer">
+		update lecture
+		set delflg=#{delflg}
+		where seq=#{seq}
+	</update>
+
+</mapper>
+
+
+
+
+

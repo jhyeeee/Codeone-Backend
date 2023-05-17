@@ -35,14 +35,15 @@ public class StoreItemDto implements Serializable {
 	private String location;		// 판매위치
 	private String itemcondition;	// 중고 "old", 새제품 "new"
 	private String status;			// 판매여부
-	private String wdate;			// 작성
+	private String wdate;			// 작성일
+	private String updatewdate;		// 글 수정일
 	private int likecount;			// 좋아요 수
 	private String filename;		// 사진
 	private String newfilename;	
 	private int delflg;				// 삭제여부 삭제된글:1
 	private int readcount;			// 조회수 새로추가함
 	
-	
+	private String profile;
 	
 	
 }

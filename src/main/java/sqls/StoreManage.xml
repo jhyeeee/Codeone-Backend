@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.codeone.dao.admin.StoreManageDao">
+
+<!-- 관리자페이지 글 불러오기 -->
+	<select id="getAllStoreMng" resultType="com.codeone.dto.store.StoreItemDto">
+		SELECT * FROM item
+	</select>
+	
+<!-- 블로그 삭제 -->
+	<update id="showHideStore" parameterType="Integer">
+		update item
+		set delflg=#{delflg}
+		where seq=#{seq}
+	</update>
+
+</mapper>
+
+
+
+
+
+
